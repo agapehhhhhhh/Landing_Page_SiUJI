@@ -1,0 +1,53 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+.next/
+.turbo/
+out/
+coverage/
+
+# Env
+.env*
+test.env
+
+# OS
+Thumbs.db
+.DS_Store
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+.history/
+.swp
+.swo
+.swn
+
+# Payload CMS
+payload-config.js
+payload-config.ts
+payload-types.ts
+
+# Logs
+logs/
+*.log
+debug.log
+
+# Docker
+docker-compose.override.yml
+.env.docker
+
+# Misc
+*.local
+*.cache
+*.tmp
+tmp/

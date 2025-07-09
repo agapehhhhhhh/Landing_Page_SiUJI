@@ -1,0 +1,481 @@
+/* Custom Feezy School Admin Theme */
+
+/* Import utilities */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import './utilities.scss';
+
+:root {
+  --feezy-primary: #ffd700;
+  --feezy-primary-dark: #e6c200;
+  --feezy-primary-light: #fff8dc;
+  --feezy-secondary: #2c3e50;
+  --feezy-accent: #3498db;
+  --feezy-success: #27ae60;
+  --feezy-warning: #f39c12;
+  --feezy-danger: #e74c3c;
+  --feezy-light: #f8f9fa;
+  --feezy-dark: #2c3e50;
+  --feezy-gradient: linear-gradient(135deg, var(--feezy-primary) 0%, var(--feezy-primary-dark) 100%);
+  --feezy-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+}
+
+/* Global Admin Wrapper */
+.payload-admin {
+  --theme-bg: var(--feezy-light);
+  --theme-text: var(--feezy-dark);
+  --theme-elevation-50: rgba(255, 215, 0, 0.05);
+  --theme-elevation-100: rgba(255, 215, 0, 0.1);
+  --theme-elevation-200: rgba(255, 215, 0, 0.15);
+  --theme-elevation-300: rgba(255, 215, 0, 0.2);
+  --theme-elevation-400: rgba(255, 215, 0, 0.25);
+  --theme-elevation-500: rgba(255, 215, 0, 0.3);
+  
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Custom Header Styling */
+.payload-admin .app-header {
+  background: var(--feezy-gradient) !important;
+  border-bottom: 3px solid var(--feezy-primary-dark) !important;
+  box-shadow: var(--feezy-shadow) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.payload-admin .app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.payload-admin .app-header .nav__brand {
+  color: var(--feezy-dark) !important;
+  font-weight: 800 !important;
+  font-size: 1.4rem !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  position: relative !important;
+  z-index: 10;
+}
+
+.payload-admin .app-header .nav__brand::before {
+  content: "🏫 ";
+  font-size: 1.6rem;
+  margin-right: 0.5rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Custom Sidebar */
+.payload-admin .nav {
+  background: var(--feezy-secondary) !important;
+  border-right: 2px solid var(--feezy-primary) !important;
+}
+
+.payload-admin .nav-group__label {
+  color: var(--feezy-primary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3) !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.payload-admin .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  transition: all 0.3s ease !important;
+  border-radius: 6px !important;
+  margin: 2px 8px !important;
+}
+
+.payload-admin .nav-link:hover {
+  background: rgba(255, 215, 0, 0.2) !important;
+  color: var(--feezy-primary) !important;
+  transform: translateX(4px) !important;
+}
+
+.payload-admin .nav-link.active,
+.payload-admin .nav-link[aria-current="page"] {
+  background: var(--feezy-primary) !important;
+  color: var(--feezy-dark) !important;
+  font-weight: 600 !important;
+}
+
+/* Custom Button Styling */
+.payload-admin .btn--style-primary {
+  background: var(--feezy-primary) !important;
+  color: var(--feezy-dark) !important;
+  border: 2px solid var(--feezy-primary) !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.payload-admin .btn--style-primary:hover {
+  background: var(--feezy-primary-dark) !important;
+  border-color: var(--feezy-primary-dark) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3) !important;
+}
+
+.payload-admin .btn--style-secondary {
+  background: transparent !important;
+  color: var(--feezy-accent) !important;
+  border: 2px solid var(--feezy-accent) !important;
+}
+
+.payload-admin .btn--style-secondary:hover {
+  background: var(--feezy-accent) !important;
+  color: white !important;
+}
+
+/* Custom Form Elements */
+.payload-admin .field-type input,
+.payload-admin .field-type textarea,
+.payload-admin .field-type select {
+  border: 2px solid #e1e8ed !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+}
+
+.payload-admin .field-type input:focus,
+.payload-admin .field-type textarea:focus,
+.payload-admin .field-type select:focus {
+  border-color: var(--feezy-primary) !important;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2) !important;
+  outline: none !important;
+}
+
+/* Custom Cards */
+.payload-admin .card {
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+.payload-admin .card:hover {
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Custom Tables */
+.payload-admin .table {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.payload-admin .table th {
+  background: var(--feezy-primary) !important;
+  color: var(--feezy-dark) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.85rem !important;
+}
+
+.payload-admin .table tbody tr:hover {
+  background: rgba(255, 215, 0, 0.05) !important;
+}
+
+/* Custom Badges/Status */
+.payload-admin .pill {
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.payload-admin .pill--style-success {
+  background: var(--feezy-success) !important;
+  color: white !important;
+}
+
+.payload-admin .pill--style-warning {
+  background: var(--feezy-warning) !important;
+  color: white !important;
+}
+
+.payload-admin .pill--style-error {
+  background: var(--feezy-danger) !important;
+  color: white !important;
+}
+
+/* Custom Dashboard Stats */
+.payload-admin .dashboard-stats {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.payload-admin .stat-card {
+  background: white !important;
+  padding: 1.5rem !important;
+  border-radius: 12px !important;
+  border-left: 4px solid var(--feezy-primary) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+.payload-admin .stat-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.15) !important;
+}
+
+/* Custom Breadcrumbs */
+.payload-admin .breadcrumbs {
+  background: rgba(255, 215, 0, 0.1) !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.payload-admin .breadcrumbs a {
+  color: var(--feezy-accent) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.payload-admin .breadcrumbs a:hover {
+  color: var(--feezy-primary-dark) !important;
+}
+
+/* Custom Page Title */
+.payload-admin .page-header h1 {
+  color: var(--feezy-dark) !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.payload-admin .page-header .page-description {
+  color: #666 !important;
+  font-size: 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Custom Loading States */
+.payload-admin .spinner {
+  border-top-color: var(--feezy-primary) !important;
+  border-right-color: var(--feezy-primary) !important;
+}
+
+/* Custom Notifications */
+.payload-admin .toast--style-success {
+  background: var(--feezy-success) !important;
+  border-left: 4px solid #1e8449 !important;
+}
+
+.payload-admin .toast--style-error {
+  background: var(--feezy-danger) !important;
+  border-left: 4px solid #c0392b !important;
+}
+
+.payload-admin .toast--style-warning {
+  background: var(--feezy-warning) !important;
+  border-left: 4px solid #d68910 !important;
+}
+
+/* Custom Rich Text Editor */
+.payload-admin .rich-text-editor {
+  border: 2px solid #e1e8ed !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.payload-admin .rich-text-editor:focus-within {
+  border-color: var(--feezy-primary) !important;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2) !important;
+}
+
+/* Custom File Upload */
+.payload-admin .upload {
+  border: 2px dashed var(--feezy-primary) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 215, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+.payload-admin .upload:hover {
+  background: rgba(255, 215, 0, 0.1) !important;
+  border-color: var(--feezy-primary-dark) !important;
+}
+
+/* Custom Modal */
+.payload-admin .modal {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+.payload-admin .modal-header {
+  background: var(--feezy-primary) !important;
+  color: var(--feezy-dark) !important;
+  font-weight: 600 !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .payload-admin .nav {
+    width: 100% !important;
+  }
+  
+  .payload-admin .dashboard-stats {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Custom Scrollbar */
+.payload-admin ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.payload-admin ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.payload-admin ::-webkit-scrollbar-thumb {
+  background: var(--feezy-primary);
+  border-radius: 4px;
+}
+
+.payload-admin ::-webkit-scrollbar-thumb:hover {
+  background: var(--feezy-primary-dark);
+}
+
+/* Additional Visual Enhancements */
+.payload-admin .collection-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+}
+
+.payload-admin .collection-card {
+  background: white !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+  border-left: 4px solid var(--feezy-primary) !important;
+}
+
+.payload-admin .collection-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--feezy-shadow) !important;
+}
+
+.payload-admin .collection-card h3 {
+  color: var(--feezy-dark) !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 600 !important;
+}
+
+.payload-admin .collection-card p {
+  color: #666 !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Welcome Message */
+.payload-admin .dashboard-welcome {
+  background: var(--feezy-gradient) !important;
+  color: var(--feezy-dark) !important;
+  padding: 2rem !important;
+  border-radius: 12px !important;
+  margin-bottom: 2rem !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.payload-admin .dashboard-welcome::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.payload-admin .dashboard-welcome h2 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.payload-admin .dashboard-welcome p {
+  font-size: 1.1rem !important;
+  opacity: 0.8 !important;
+}
+
+/* Enhanced Animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.payload-admin .btn--style-primary:active {
+  animation: pulse 0.6s ease-in-out !important;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .payload-admin {
+    --theme-bg: #1a1a1a;
+    --theme-text: #ffffff;
+  }
+  
+  .payload-admin .card {
+    background: #2a2a2a !important;
+    border-color: rgba(255, 215, 0, 0.3) !important;
+  }
+  
+  .payload-admin .collection-card {
+    background: #2a2a2a !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .payload-admin .nav,
+  .payload-admin .app-header,
+  .payload-admin .btn {
+    display: none !important;
+  }
+  
+  .payload-admin .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* Accessibility Improvements */
+.payload-admin .btn:focus,
+.payload-admin .nav-link:focus,
+.payload-admin input:focus,
+.payload-admin textarea:focus {
+  outline: 2px solid var(--feezy-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .payload-admin {
+    --feezy-primary: #000000;
+    --feezy-primary-dark: #333333;
+    --feezy-secondary: #ffffff;
+  }
+}
