@@ -60,10 +60,7 @@ export default async function HomePage() {
         </div>
       </div>
       <div className="footer">
-        <p>🏫 Feezy School CMS - Update content by editing collections in</p>
-        <a className="codeLink" href={fileURL}>
-          <code>collections/*.ts</code>
-        </a>
+        <p>🏫 Feezy School CMS - Update content by editing collections</p>
       </div>
     </div>
   )
