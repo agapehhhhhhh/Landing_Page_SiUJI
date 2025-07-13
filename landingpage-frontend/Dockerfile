@@ -17,8 +17,8 @@
    RUN npm run build
 
    # Expose port yang digunakan oleh aplikasi
-   EXPOSE 3000
+   EXPOSE 5173
 
    # Jalankan aplikasi
-   CMD ["npm", "start"]
+   CMD ["npm", "run", "dev"]
    

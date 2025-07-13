@@ -1,0 +1,38 @@
+   version: '3.8'
+
+   services:
+     backend:
+       build:
+         context: ./landingpage-cms
+         dockerfile: Dockerfile
+       ports:
+         - "3000:3000"
+       environment:
+         - NODE_ENV=production
+         - DATABASE_URL=postgres://user:password@db:5432/database
+       depends_on:
+         - db
+
+     frontend:
+       build:
+         context: ./landingpage-frontend
+         dockerfile: Dockerfile
+       ports:
+         - "5173:5173"
+       environment:
+         - NODE_ENV=production
+       depends_on:
+         - backend
+
+     db:
+       image: postgres:13
+       environment:
+         POSTGRES_USER: user
+         POSTGRES_PASSWORD: password
+         POSTGRES_DB: database
+       volumes:
+         - db_data:/var/lib/postgresql/data
+
+   volumes:
+     db_data:
+   
