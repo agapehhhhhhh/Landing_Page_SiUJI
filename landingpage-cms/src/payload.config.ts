@@ -6,16 +6,17 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import LandingPage from './collections/LandingPage'
 import HeroSection from './collections/HeroSection'
 import Features from './collections/Features'
 import WhyChoose from './collections/WhyChoose'
-import HowItWorks from './collections/HowItWorks'
+import Product from './collections/Product'
 import Testimonials from './collections/Testimonials'
 import FAQ from './collections/FAQ'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import Header from './collections/Header'
+import Footer from './collections/Footer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,10 +28,10 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: '- Feezy School CMS',
+      titleSuffix: '- SiUJI CMS',
     },
   },
-  collections: [Users, Media, LandingPage, HeroSection, Features, WhyChoose, HowItWorks, Testimonials, FAQ],
+  collections: [Users, Media, Header, Footer, HeroSection, Features, WhyChoose, Product, Testimonials, FAQ],
   cors: ['http://localhost:5173'],
   csrf: ['http://localhost:5173'],
   editor: lexicalEditor(),

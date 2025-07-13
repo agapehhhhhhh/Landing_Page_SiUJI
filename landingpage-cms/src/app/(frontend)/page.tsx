@@ -27,10 +27,9 @@ export default async function HomePage() {
             width={65}
           />
         </picture>
-        {!user && <h1>Welcome to Feezy School CMS.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
+        {!user && <h1>Welcome to SiUJI CMS.</h1>}
         <p className="project-description">
-          Content Management System untuk Feezy School Landing Page. 
+          Content Management System untuk SiUJI Landing Page. 
           Kelola semua konten website dengan mudah melalui admin panel.
         </p>
         <div className="links">
@@ -60,7 +59,7 @@ export default async function HomePage() {
         </div>
       </div>
       <div className="footer">
-        <p>🏫 Feezy School CMS - Update content by editing collections</p>
+        <p>🏫 SiUJI CMS - Update content by editing collections</p>
       </div>
     </div>
   )

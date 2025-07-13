@@ -10,7 +10,7 @@ html {
   font-size: 18px;
   line-height: 32px;
 
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+  background: linear-gradient(135deg, #4CC5BD 0%, #4AC5BE 100%);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -120,7 +120,7 @@ svg {
     margin: 20px 0 40px 0;
     font-size: 16px;
     line-height: 24px;
-    color: #555;
+    color: #ffffff;
     max-width: 600px;
     text-align: center;
   }
