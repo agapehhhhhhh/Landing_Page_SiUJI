@@ -1,38 +1,68 @@
-   version: '3.8'
+services:
+  backend:
+    build:
+      context: ./landingpage-cms
+      dockerfile: Dockerfile
+      target: ${DOCKER_TARGET:-development}
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DATABASE_URI=${DATABASE_URI}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - CSRF_ORIGINS=${CSRF_ORIGINS}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./landingpage-cms:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - siuji-network
 
-   services:
-     backend:
-       build:
-         context: ./landingpage-cms
-         dockerfile: Dockerfile
-       ports:
-         - "3000:3000"
-       environment:
-         - NODE_ENV=production
-         - DATABASE_URL=postgres://user:password@db:5432/database
-       depends_on:
-         - db
+  frontend:
+    build:
+      context: ./landingpage-frontend
+      dockerfile: Dockerfile
+      target: ${DOCKER_TARGET:-development}
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - VITE_API_URL=${VITE_API_URL}
+    depends_on:
+      - backend
+    volumes:
+      - ./landingpage-frontend:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - siuji-network
 
-     frontend:
-       build:
-         context: ./landingpage-frontend
-         dockerfile: Dockerfile
-       ports:
-         - "5173:5173"
-       environment:
-         - NODE_ENV=production
-       depends_on:
-         - backend
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-siuji_db}
+    ports:
+      - "${DB_PORT_EXPOSE:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - siuji-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-user} -d ${DB_NAME:-siuji_db}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-     db:
-       image: postgres:13
-       environment:
-         POSTGRES_USER: user
-         POSTGRES_PASSWORD: password
-         POSTGRES_DB: database
-       volumes:
-         - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
 
-   volumes:
-     db_data:
-   
+networks:
+  siuji-network:
+    driver: bridge
