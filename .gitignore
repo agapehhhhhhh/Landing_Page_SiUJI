@@ -14,7 +14,7 @@ out/
 coverage/
 
 # Env
-.env*
+.env
 test.env
 
 # OS
