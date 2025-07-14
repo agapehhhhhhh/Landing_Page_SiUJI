@@ -1,23 +1,65 @@
-# Payload Blank Template
+# ⚡ SIUJI Backend - Payload CMS
 
-This template comes configured with the bare minimum to get started on anything you need.
+Backend application untuk SIUJI Landing Page menggunakan Payload CMS 3 dan Next.js 15.
 
-## Quick start
+## 🛠️ **Tech Stack**
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Payload CMS 3** - Modern headless CMS
+- **Next.js 15** - React framework untuk backend
+- **TypeScript** - Type-safe development
+- **PostgreSQL** - Database relasional
+- **PNPM** - Fast package manager
 
-## Quick Start - local setup
+## 📁 **Project Structure**
 
-To spin up this template locally, follow these steps:
+```
+src/
+├── collections/          # Payload CMS collections schema
+│   ├── HeroSection.ts   # Hero section collection
+│   ├── Features.ts      # Features collection
+│   ├── Products.ts      # Products collection
+│   ├── Testimonials.ts  # Testimonials collection
+│   ├── FAQ.ts          # FAQ collection
+│   ├── Header.ts       # Header configuration
+│   ├── Footer.ts       # Footer configuration
+│   ├── Media.ts        # Media/file uploads
+│   └── Users.ts        # Admin users
+├── app/                 # Next.js app directory
+│   ├── (frontend)/     # Frontend routes
+│   ├── (payload)/      # Payload admin interface
+│   └── api/            # API routes
+├── payload.config.ts    # Payload CMS configuration
+└── payload-types.ts     # Auto-generated TypeScript types
+```
 
-### Clone
+## 🚀 **Development**
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+### **Local Development**
+```bash
+# Install dependencies
+pnpm install
 
-### Development
+# Start development server
+pnpm dev
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+```
+
+### **Environment Variables**
+```bash
+# Required environment variables
+DATABASE_URI=postgresql://user:password@localhost:5432/siuji_db
+PAYLOAD_SECRET=your-secret-key-64-chars-long
+NODE_ENV=development
+
+# Optional
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+CSRF_ORIGINS=http://localhost:5173
+```
 
 3. `pnpm install && pnpm dev` to install dependencies and start the dev server
 4. open `http://localhost:3000` to open the app in your browser
