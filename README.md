@@ -253,8 +253,8 @@ src/components/
 #### **Backend Setup**
 ```bash
 cd landingpage-cms
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 #### **Frontend Setup**
