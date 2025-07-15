@@ -110,22 +110,228 @@ docker-compose up -d --build
 
 ## ⚙️ **Environment Setup**
 
-### **Development Mode** (Default)
+### **📋 Quick Setup**
+
+#### **1. Initial Setup**
 ```bash
-# .env configuration
+# Copy environment template
+cp .env.example .env
+```
+
+#### **2. Choose Your Environment**
+
+##### **🐳 Docker Development (Recommended)**
+```bash
+# Edit .env file:
+# 1. Uncomment "OPTION 1: DOCKER DATABASE" section
+# 2. Comment out "OPTION 2: LOCAL DATABASE" section
+
+# Example .env for Docker:
 NODE_ENV=development
 DOCKER_TARGET=development
 DATABASE_URI=postgresql://user:password@db:5432/siuji_db
-VITE_API_URL=http://localhost:3000/api
+DB_USER=user
+DB_PASSWORD=password
+DB_NAME=siuji_db
+DB_HOST=db
+DB_PORT=5432
 ```
 
-### **Production Mode**
+##### **💻 Local Development**
 ```bash
-# Edit .env dan uncomment production settings:
+# Edit .env file:
+# 1. Comment out "OPTION 1: DOCKER DATABASE" section  
+# 2. Uncomment "OPTION 2: LOCAL DATABASE" section
+
+# Example .env for Local:
+NODE_ENV=development
+DOCKER_TARGET=development
+DATABASE_URI=postgresql://postgres:root@localhost:5432/landingpage-cms
+DB_USER=postgres
+DB_PASSWORD=root
+DB_NAME=landingpage-cms
+DB_HOST=localhost
+DB_PORT=5432
+```
+
+### **🔄 Environment Switching**
+
+#### **Switch to Docker**
+```bash
+# 1. Edit .env - uncomment Docker database config
+# 2. Comment out local database config
+# 3. Start Docker
+docker-compose up
+
+# Access:
+# - Frontend: http://localhost:5173
+# - Backend: http://localhost:3000
+# - Database: localhost:5432
+```
+
+#### **Switch to Local**
+```bash
+# 1. Edit .env - uncomment local database config
+# 2. Comment out Docker database config
+# 3. Start services manually
+cd landingpage-cms && npm run dev     # Terminal 1
+cd landingpage-frontend && npm run dev # Terminal 2
+
+# Access:
+# - Frontend: http://localhost:5173
+# - Backend: http://localhost:3000
+```
+
+#### **Switch to Production**
+```bash
+# 1. Edit .env - uncomment production settings
+# 2. Comment out development settings
+# 3. Update production values
+# 4. Deploy
+docker-compose up --build
+```
+
+### **🛠️ Configuration Templates**
+
+#### **Docker Template**
+```bash
+# Copy and paste to .env for Docker setup
+NODE_ENV=development
+DOCKER_TARGET=development
+DATABASE_URI=postgresql://user:password@db:5432/siuji_db
+DB_USER=user
+DB_PASSWORD=password
+DB_NAME=siuji_db
+DB_HOST=db
+DB_PORT=5432
+DB_PORT_EXPOSE=5432
+PAYLOAD_SECRET=K8mN9pQ2rS5tV7wX0yZ3bC6dF9gH2jK5mN8pQ1rS4tV7wX0yZ3bC6dF9gH2jK5mN
+VITE_API_URL=http://localhost:3000/api
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+CSRF_ORIGINS=http://localhost:5173
+```
+
+#### **Local Template**
+```bash
+# Copy and paste to .env for Local setup
+NODE_ENV=development
+DOCKER_TARGET=development
+DATABASE_URI=postgresql://postgres:root@localhost:5432/landingpage-cms
+DB_USER=postgres
+DB_PASSWORD=root
+DB_NAME=landingpage-cms
+DB_HOST=localhost
+DB_PORT=5432
+DB_PORT_EXPOSE=5432
+PAYLOAD_SECRET=K8mN9pQ2rS5tV7wX0yZ3bC6dF9gH2jK5mN8pQ1rS4tV7wX0yZ3bC6dF9gH2jK5mN
+VITE_API_URL=http://localhost:3000/api
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+CSRF_ORIGINS=http://localhost:5173
+```
+
+#### **Production Template**
+```bash
+# Copy and paste to .env for Production setup
 NODE_ENV=production
 DOCKER_TARGET=production
-DATABASE_URI=postgresql://production_user:strong_password@db:5432/production_db
+DATABASE_URI=postgresql://prod_user:strong-password@db:5432/siuji_production
+DB_USER=prod_user
+DB_PASSWORD=strong-password
+DB_NAME=siuji_production
+DB_HOST=db
+DB_PORT=5432
+# DB_PORT_EXPOSE=     # Don't expose in production
+PAYLOAD_SECRET=production-secret-64-chars-minimum-length-required
 VITE_API_URL=https://your-domain.com/api
+CORS_ORIGINS=https://your-domain.com,https://www.your-domain.com
+CSRF_ORIGINS=https://your-domain.com
+```
+
+### **🔐 Security Notes**
+
+#### **Generate New Payload Secret**
+```bash
+# Generate secure secret
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+#### **Database Security**
+- Use strong passwords in production
+- Don't expose database ports in production
+- Use environment variables for sensitive data
+
+### **🚨 Troubleshooting**
+
+#### **Common Issues**
+
+##### **Port Already in Use**
+```bash
+# Kill processes using ports
+netstat -tulpn | grep :3000
+sudo kill -9 <PID>
+```
+
+##### **Database Connection Failed**
+```bash
+# Check database is running
+docker-compose ps
+# Or for local PostgreSQL
+pg_isready -h localhost -p 5432
+```
+
+##### **Environment Variables Not Loading**
+```bash
+# Check .env file exists
+ls -la .env
+
+# Check variables are set
+echo $DATABASE_URI
+```
+
+### **📝 Development Workflow**
+
+#### **Daily Development**
+```bash
+# 1. Pull latest changes
+git pull origin main
+
+# 2. Check environment
+cat .env
+
+# 3. Start development
+docker-compose up    # Docker
+# OR
+npm run dev         # Local
+
+# 4. Make changes
+# Edit files in src/
+
+# 5. Test changes
+# Auto-reload with hot reload
+
+# 6. Commit changes
+git add .
+git commit -m "feat: add new feature"
+git push origin main
+```
+
+#### **Environment Switching Workflow**
+```bash
+# 1. Stop current services
+docker-compose down   # Docker
+# OR
+Ctrl+C               # Local
+
+# 2. Edit .env file
+# Switch database configuration
+
+# 3. Start services
+docker-compose up     # Docker
+# OR
+npm run dev          # Local
+
+# 4. Verify connection
+curl http://localhost:3000/api
 ```
 
 ### **Environment Variables**

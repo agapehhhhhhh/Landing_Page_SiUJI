@@ -12,6 +12,7 @@ import WhyChoose from './collections/WhyChoose'
 import Product from './collections/Product'
 import Testimonials from './collections/Testimonials'
 import FAQ from './collections/FAQ'
+import { LandingPage } from './collections/LandingPage'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -31,7 +32,7 @@ export default buildConfig({
       titleSuffix: '- SiUJI CMS',
     },
   },
-  collections: [Users, Media, Header, Footer, HeroSection, Features, WhyChoose, Product, Testimonials, FAQ],
+  collections: [Users, Media, Header, Footer, HeroSection, Features, WhyChoose, Product, Testimonials, FAQ, LandingPage],
   cors: ['http://localhost:5173'],
   csrf: ['http://localhost:5173'],
   editor: lexicalEditor(),
