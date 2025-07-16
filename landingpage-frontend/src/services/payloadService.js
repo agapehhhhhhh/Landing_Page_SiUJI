@@ -12,9 +12,11 @@ export const fetchLandingPage = async () => {
     ]);
     return {
       hero: hero ?? {
-        heroTitle: "Default Title",
-        heroSubtitle: "Subtitle",
-        heroImage: { url: "" }, 
+        heroTitle: "Headline Utama Dari Aplikasi SIUJIII",
+        heroSubtitle:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        ctaButtonText: "Get Started Nowwwwwwwww",
+        heroImage: { url: "require('@/assets/ilustrasi-hero.png')" },
       },
     };
   } catch (e) {

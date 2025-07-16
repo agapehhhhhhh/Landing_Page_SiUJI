@@ -1,13 +1,23 @@
 <template>
   <section class="hero">
+    <div class="shape-svg">
+      <!-- SVG Background -->
+      <svg viewBox="0 0 1440 800" preserveAspectRatio="none">
+        <path
+          d="M960,0 C1180,200 1220,600 1440,800 L1440,0 L0,0 Z"
+          fill="#4CC5BD"
+        />
+      </svg>
+    </div>
+
     <div class="hero-container">
-      <!-- Text Kiri -->
+      <!-- Kiri: Teks -->
       <div class="hero-text">
         <h1>{{ data.heroTitle || "Headline Utama Dari Aplikasi SIUJIII" }}</h1>
         <p>
           {{
             data.heroSubtitle ||
-            "Subheadline dari aplikasi yang bertujuan untuk Menjelaskan lebih lanjut tentang how atau dengan apa manfaat tersebut dicapai."
+            "Subheadline dari aplikasi yang bertujuan untuk menjelaskan lebih lanjut tentang how atau manfaatnya."
           }}
         </p>
         <a class="hero-button" :href="data.ctaButtonLink || '#'">
@@ -16,21 +26,18 @@
         </a>
       </div>
 
-      <!-- Ilustrasi Kanan -->
+      <!-- Kanan: Ilustrasi & Floating -->
       <div class="hero-visual">
-        <div class="shape-bg"></div>
         <img
           class="hero-image"
-          :src="data.heroImage?.url || '/assets/hero-illustration.svg'"
+          :src="data.heroImage?.url || require('@/assets/ilustrasi-hero.png')"
           alt="Hero Illustration"
         />
         <img src="/assets/float-book.svg" class="floating book" alt="book" />
         <img src="/assets/float-file.svg" class="floating file" alt="file" />
-        <img
-          src="/assets/float-pencil.svg"
-          class="floating pencil"
-          alt="pencil"
-        />
+        <img src="/assets/float-pencil.svg" class="floating pencil" alt="pencil" />
+        <img src="/assets/float-pencil.svg" class="floating pen" alt="pen" />
+        <img src="/assets/float-pencil.svg" class="floating monitor" alt="monitor" />
       </div>
     </div>
   </section>
@@ -44,46 +51,65 @@ defineProps({
 
 <style scoped>
 .hero {
-  min-height: 100dvh;
+  position: relative;
   width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   background: linear-gradient(120deg, #e3f6f5, #ffffff);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  box-sizing: border-box;
-  overflow: hidden;
+}
+
+.shape-svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.shape-svg svg {
+  width: 100%;
+  height: 100%;
 }
 
 .hero-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
-  margin: auto;
+  height: 100%;
   width: 100%;
-  padding: 2rem;
+  padding: 0 4rem;
   position: relative;
-  flex-wrap: wrap;
+  z-index: 2;
 }
 
 .hero-text {
   flex: 1 1 50%;
-  max-width: 520px;
-  z-index: 2;
+  max-width: 580px;
+  padding-left: 1rem;
+  padding-top: 0px;
+  z-index: 3;
+  margin-top: -100px;
+  margin-left: 2rem;
 }
-/* Headline utama */
+
 .hero-text h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  color: #363636;
+  margin-left: 1rem;
+  color: #1c1c1c;
+  line-height: 1.3;
 }
-/* Subheadline */
+
 .hero-text p {
   font-size: 1.1rem;
   color: #363636;
   margin-bottom: 2rem;
+  margin-left: 1.1rem;
   line-height: 1.6;
 }
 
@@ -91,7 +117,7 @@ defineProps({
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #24c3a7;
+  background: #4cc5bd;
   color: white;
   padding: 14px 28px;
   font-weight: 600;
@@ -101,88 +127,83 @@ defineProps({
   text-decoration: none;
   transition: background 0.3s ease;
   gap: 10px;
-  border: 2px solid #146657ff; /* stroke/outline */
-}
-
-.hero-button span {
-  font-size: 1.2rem;
+  border: 2px solid #146657;
+  margin-left: 1rem;
 }
 
 .hero-button:hover {
-  background: #1fa38a;
+  background: #3ab5ab;
 }
 
 .hero-visual {
   flex: 1 1 50%;
   position: relative;
-  min-width: 200px;
-  height: 800px;
-  max-width: 800x;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-image {
+  max-width: 460px;
+  z-index: 2;
   position: relative;
-  width: 100%;
-  z-index: 3;
-}
-
-.shape-bg {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #24c3a7;
-  clip-path: ellipse(75% 100% at 100% 50%);
-  z-index: 1;
-  border-top-left-radius: 200px;
-  border-bottom-left-radius: 100px;
+  left: 250px;
+  top: 0px;
 }
 
 .floating {
   position: absolute;
   width: 40px;
   height: 40px;
-  z-index: 4;
-}
-
-.book {
-  top: 30px;
-  right: 100px;
+  z-index: 3;
   animation: float 4s ease-in-out infinite;
 }
 
-.file {
-  bottom: 40px;
-  right: 60px;
-  animation: float 5s ease-in-out infinite;
+.book {
+  top: 20%;
+  right: 10%;
+  animation-delay: 0s;
 }
 
 .pencil {
-  top: 120px;
-  right: 160px;
-  animation: float 6s ease-in-out infinite;
+  top: 45%;
+  right: 65%;
+  animation-delay: 0.5s;
+}
+
+.file {
+  bottom: 10%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.pen {
+  bottom: 80%;
+  left: 50%;
+  animation-delay: 1.5s;
+}
+
+.monitor {
+  bottom: 15%;
+  left: 50%;
+  animation-delay: 2s;
 }
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @media (max-width: 900px) {
   .hero-container {
     flex-direction: column;
     text-align: center;
+    padding-top: 120px;
   }
 
-  .hero-visual {
-    margin-top: 3rem;
-    height: auto;
+  .hero-text {
+    padding: 0 1rem;
   }
 
   .hero-text h1 {
@@ -191,6 +212,19 @@ defineProps({
 
   .hero-text p {
     font-size: 1rem;
+  }
+
+  .hero-visual {
+    margin-top: 2rem;
+    height: auto;
+  }
+
+  .floating {
+    display: none;
+  }
+
+  .shape-svg svg path {
+    d: path("M720,0 C980,200 1020,600 1440,800 L1440,0 L0,0 Z");  
   }
 }
 </style>
