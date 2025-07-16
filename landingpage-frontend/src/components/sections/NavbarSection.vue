@@ -1,6 +1,6 @@
 // NavbarSection.vue
 <template>
-  <header :class="['navbar', { 'scrolled': isScrolled }]">
+  <header :class="['navbar', { scrolled: isScrolled }]">
     <div class="container">
       <div class="logo">
         <img src="@/assets/logo.svg" alt="SIUJI Logo" />
@@ -19,21 +19,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from "vue";
 
-const isScrolled = ref(false)
+const isScrolled = ref(false);
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 80
-}
+  isScrolled.value = window.scrollY > 80;
+};
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
+  window.addEventListener("scroll", handleScroll);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <style scoped>
@@ -80,7 +80,7 @@ onUnmounted(() => {
 }
 
 .nav-links a:hover {
-  color: #24c3a7;
+  color: #4CC5BD;
   background: none;
 }
 
@@ -88,12 +88,12 @@ onUnmounted(() => {
   padding: 8px 20px;
   border: 2px solid #1c1c1c;
   border-radius: 20px;
-  background: none;
+  background: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   transition: all 0.3s;
 }
 
 .login-button:hover {
-  background: #f3f3f3;
+  background: #4CC5BD;
 }
 </style>
