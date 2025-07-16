@@ -5,6 +5,12 @@
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 ![TypeScript](https://img.shields.io/badge/typescript-5.x-blue.svg)
 
+## 🚦 CI/CD Status
+[![CI Pipeline](https://github.com/your-username/your-repo/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/ci.yml)
+[![Code Quality](https://github.com/your-username/your-repo/actions/workflows/quality.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/quality.yml)
+[![Security Scan](https://github.com/your-username/your-repo/actions/workflows/security.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/security.yml)
+[![Deployment](https://github.com/your-username/your-repo/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/deploy.yml)
+
 **SIUJI** adalah platform landing page modern yang dibangun dengan teknologi terdepan untuk memberikan pengalaman pengguna yang luar biasa dan manajemen konten yang mudah.
 
 ---

@@ -134,9 +134,9 @@ onMounted(() => {
       <!-- CTA Section -->
       <section class="cta-section">
         <div class="container">
-          <h2>Siap Memulai dengan SIUJI?</h2>
+          <h2>Apakah Anda Siap Memulai dengan SIUJI?</h2>
           <p>Bergabunglah dengan ribuan pengguna yang sudah merasakan manfaatnya</p>
-          <a href="#" class="cta-button-secondary">Daftar Sekarang</a>
+          <a href="#" class="cta-button-secondary">Daftar Sekarang Cuy</a>
         </div>
       </section>
 
