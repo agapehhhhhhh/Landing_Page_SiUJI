@@ -1,5 +1,9 @@
 <template>
   <section class="about-section">
+    <!-- BACKGROUND SHAPE -->
+    <div class="bg-decor bg-blob-top"></div>
+    <div class="bg-decor bg-circle-1"></div>
+    <div class="bg-decor bg-circle-2"></div>
     <!-- Judul -->
     <div class="section-title">
       <h2>What is SIUJI?</h2>
@@ -21,11 +25,11 @@
 
       <div class="right-images">
         <div class="image-stack">
-          <div
+         <div
             v-for="(img, index) in slides[currentIndex].images"
             :key="index"
             class="stack-image"
-            :style="{ zIndex: hoveredIndex === index ? 10 : index }"
+            :style="{ zIndex: getZIndex(index) }"
             @mouseover="hoveredIndex = index"
             @mouseleave="hoveredIndex = -1"
           >
@@ -94,16 +98,24 @@ function prevSlide() {
 function nextSlide() {
   currentIndex.value = (currentIndex.value + 1) % slides.length
 }
+function getZIndex(index: number): number {
+  if (hoveredIndex.value === index) return 10
+  // Gambar tengah (index 1) selalu lebih tinggi default-nya
+  return index === 1 ? 3 : index === 0 ? 1 : 2
+}
+
 </script>
 
 <style scoped>
 .about-section {
+  position: relative;
+  overflow: hidden;
   padding: 60px 20px;
   background: linear-gradient(to bottom right, #1de9b6, #00bcd4);
   color: #333;
-  border-radius: 20px;
-  max-width: 1200px;
-  margin: auto;
+  width: 100vw;
+  transform: translateX(-50%);
+  left: 50%;
 }
 
 .section-title {
@@ -133,10 +145,12 @@ function nextSlide() {
   gap: 20px;
   justify-content: space-between;
   align-items: flex-start;
+  margin-top: 100px;
 }
 
 .left-card {
   flex: 1 1 40%;
+  padding-left: 40px;
 }
 
 .card {
@@ -176,9 +190,14 @@ function nextSlide() {
 
 .stack-image {
   position: relative;
-  margin-left: -80px;
+  margin-left: -160px;
   transition: transform 0.3s ease, z-index 0.3s ease;
   cursor: pointer;
+}
+
+.stack-image:nth-child(2) {
+  transform: scale(1.3); /* buat tengah sedikit lebih besar */
+  z-index: 3;
 }
 
 .stack-image:first-child {
@@ -186,7 +205,7 @@ function nextSlide() {
 }
 
 .stack-image:hover {
-  transform: scale(1.15);
+  transform: scale(1.4);
   z-index: 10;
 }
 
