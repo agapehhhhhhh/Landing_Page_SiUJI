@@ -10,7 +10,7 @@ html {
   font-size: 18px;
   line-height: 32px;
 
-  background: linear-gradient(135deg, #4CC5BD 0%, #4AC5BE 100%);
+  background: rgb(0, 0, 0);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -26,7 +26,7 @@ body {
   line-height: 32px;
 
   margin: 0;
-  color: #2c3e50;
+  color: rgb(1000, 1000, 1000);
 
   @media (max-width: 1024px) {
     font-size: 15px;
@@ -116,67 +116,27 @@ svg {
     }
   }
 
-  .project-description {
-    margin: 20px 0 40px 0;
-    font-size: 16px;
-    line-height: 24px;
-    color: #ffffff;
-    max-width: 600px;
-    text-align: center;
-  }
-
   .links {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
+    gap: 12px;
 
     a {
-      padding: 12px 24px;
-      background: rgba(255, 255, 255, 0.2);
-      color: #2c3e50;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      border: 2px solid rgba(44, 62, 80, 0.2);
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.3);
-        border-color: #2c3e50;
-        transform: translateY(-2px);
-      }
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
     }
 
     .admin {
-      background: #27ae60;
-      color: white;
-      border-color: #27ae60;
-
-      &:hover {
-        background: #229954;
-      }
+      color: rgb(0, 0, 0);
+      background: rgb(1000, 1000, 1000);
+      border: 1px solid rgb(0, 0, 0);
     }
 
     .docs {
-      background: #3498db;
-      color: white;
-      border-color: #3498db;
-
-      &:hover {
-        background: #2980b9;
-      }
-    }
-
-    .frontend {
-      background: #e74c3c;
-      color: white;
-      border-color: #e74c3c;
-
-      &:hover {
-        background: #c0392b;
-      }
+      color: rgb(1000, 1000, 1000);
+      background: rgb(0, 0, 0);
+      border: 1px solid rgb(1000, 1000, 1000);
     }
   }
 
@@ -200,18 +160,5 @@ svg {
       background: rgb(60, 60, 60);
       border-radius: 4px;
     }
-  }
-}
-
-@media (max-width: 768px) {
-  .links {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .links a {
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
   }
 }

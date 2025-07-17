@@ -1,71 +1,80 @@
 import type { CollectionConfig } from 'payload'
 
-const Testimonials: CollectionConfig = {
+export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
   admin: {
     useAsTitle: 'name',
-    group: 'Landing Page Sections',
-    defaultColumns: ['name', 'role', 'isActive'],
+    defaultColumns: ['name', 'position', 'school', 'rating', 'isActive'],
   },
   access: {
     read: () => true,
-    update: () => true,
-    create: () => true,
-    delete: () => true,
   },
   fields: [
     {
       name: 'name',
-      label: 'Nama',
       type: 'text',
       required: true,
+      label: 'Reviewer Name',
     },
     {
-      name: 'role',
-      label: 'Peran',
-      type: 'select',
-      options: [
-        { label: 'Parent', value: 'parent' },
-        { label: 'School Admin', value: 'school_admin' },
-        { label: 'Teacher', value: 'teacher' },
-      ],
-      required: true,
-    },
-    {
-      name: 'schoolName',
-      label: 'Nama Sekolah',
+      name: 'position',
       type: 'text',
-      required: false,
+      required: true,
+      label: 'Job Position',
     },
     {
-      name: 'testimonial',
-      label: 'Testimonial',
+      name: 'school',
+      type: 'text',
+      label: 'School/Institution',
+    },
+    {
+      name: 'content',
       type: 'textarea',
       required: true,
+      label: 'Testimonial Content',
     },
     {
       name: 'rating',
-      label: 'Rating (1-5)',
       type: 'number',
       min: 1,
       max: 5,
       defaultValue: 5,
-      required: true,
+      admin: {
+        description: 'Rating from 1 to 5 stars',
+      },
     },
     {
       name: 'avatar',
-      label: 'Foto Profil',
       type: 'upload',
       relationTo: 'media',
-      required: false,
+      label: 'Profile Photo',
+    },
+    {
+      name: 'testimonialTitle',
+      type: 'text',
+      label: 'Testimonial Title (Optional)',
     },
     {
       name: 'isActive',
-      label: 'Aktif',
       type: 'checkbox',
       defaultValue: true,
     },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        description: 'Order of appearance in testimonial slider',
+      },
+    },
+    {
+      name: 'isFeatured',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Show this testimonial prominently',
+      },
+    },
   ],
+  defaultSort: 'order',
 }
-
-export default Testimonials

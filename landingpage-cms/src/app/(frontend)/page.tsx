@@ -27,11 +27,8 @@ export default async function HomePage() {
             width={65}
           />
         </picture>
-        {!user && <h1>Welcome to SiUJI CMS.</h1>}
-        <p className="project-description">
-          Content Management System untuk SiUJI Landing Page. 
-          Kelola semua konten website dengan mudah melalui admin panel.
-        </p>
+        {!user && <h1>Welcome to your new project.</h1>}
+        {user && <h1>Welcome back, {user.email}</h1>}
         <div className="links">
           <a
             className="admin"
@@ -39,27 +36,23 @@ export default async function HomePage() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            🔧 Go to Admin Panel
+            Go to admin panel
           </a>
           <a
             className="docs"
-            href="/docs"
-            rel="noopener noreferrer"
-          >
-            📚 CMS Documentation
-          </a>
-          <a
-            className="frontend"
-            href="http://localhost:5173"
+            href="https://payloadcms.com/docs"
             rel="noopener noreferrer"
             target="_blank"
           >
-            🌐 View Frontend
+            Documentation
           </a>
         </div>
       </div>
       <div className="footer">
-        <p>🏫 SiUJI CMS - Update content by editing collections</p>
+        <p>Update this page by editing</p>
+        <a className="codeLink" href={fileURL}>
+          <code>app/(frontend)/page.tsx</code>
+        </a>
       </div>
     </div>
   )

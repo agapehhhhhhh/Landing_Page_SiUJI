@@ -1,52 +1,82 @@
 import type { CollectionConfig } from 'payload'
 
-const Features: CollectionConfig = {
+export const Features: CollectionConfig = {
   slug: 'features',
   admin: {
     useAsTitle: 'title',
-    group: 'Landing Page Sections',
-    defaultColumns: ['title', 'order', 'isActive'],
+    defaultColumns: ['title', 'isActive', 'order'],
   },
   access: {
     read: () => true,
-    update: () => true,
-    create: () => true,
-    delete: () => true,
   },
   fields: [
     {
       name: 'title',
-      label: 'Judul Fitur',
       type: 'text',
       required: true,
     },
     {
       name: 'description',
-      label: 'Deskripsi Fitur',
       type: 'textarea',
       required: true,
     },
     {
       name: 'icon',
-      label: 'Icon Fitur',
       type: 'upload',
       relationTo: 'media',
       required: false,
     },
     {
-      name: 'order',
-      label: 'Urutan Tampil',
-      type: 'number',
-      defaultValue: 0,
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
+    {
+      name: 'position',
+      type: 'select',
       required: true,
+      options: [
+        { label: 'Image Left, Text Right', value: 'left' },
+        { label: 'Text Left, Image Right', value: 'right' },
+      ],
+      defaultValue: 'left',
+    },
+    {
+      name: 'features',
+      type: 'array',
+      label: 'Feature List',
+      fields: [
+        {
+          name: 'feature',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'ctaText',
+      type: 'text',
+      label: 'CTA Button Text',
+    },
+    {
+      name: 'ctaLink',
+      type: 'text',
+      label: 'CTA Button Link',
     },
     {
       name: 'isActive',
-      label: 'Aktif',
       type: 'checkbox',
       defaultValue: true,
     },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        description: 'Order of appearance on the page',
+      },
+    },
   ],
+  defaultSort: 'order',
 }
-
-export default Features

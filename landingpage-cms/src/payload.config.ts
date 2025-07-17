@@ -6,18 +6,16 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import HeroSection from './collections/HeroSection'
-import Features from './collections/Features'
-import WhyChoose from './collections/WhyChoose'
-import Product from './collections/Product'
-import Testimonials from './collections/Testimonials'
-import FAQ from './collections/FAQ'
-import { LandingPage } from './collections/LandingPage'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import Header from './collections/Header'
-import Footer from './collections/Footer'
+import { LandingPageContent } from './collections/LandingPageContent'
+import { Features  } from './collections/Features'
+import { Testimonials } from './collections/Testimonials'
+import { PricingPlans } from './collections/PricingPlans'
+import { FAQ } from './collections/FrequentlyAskedQuestion'
+import { Partners } from './collections/Partners'
+import { PlatformAvailability} from './collections/PlatformAvailability'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,13 +26,18 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    meta: {
-      titleSuffix: '- SiUJI CMS',
-    },
   },
-  collections: [Users, Media, Header, Footer, HeroSection, Features, WhyChoose, Product, Testimonials, FAQ, LandingPage],
-  cors: ['http://localhost:5173'],
-  csrf: ['http://localhost:5173'],
+  collections: [
+    Users, 
+    Media, 
+    LandingPageContent, 
+    Features, 
+    Testimonials, 
+    PricingPlans, 
+    FAQ, 
+    Partners, 
+    PlatformAvailability
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
