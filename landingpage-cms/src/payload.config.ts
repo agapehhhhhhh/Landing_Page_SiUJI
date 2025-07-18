@@ -9,7 +9,10 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { LandingPageContent } from './collections/LandingPageContent'
+import HeroSection from './collections/HeroSection'
+import AboutSection from './collections/AboutSection'
+import WhyChooseSection from './collections/WhyChooseSection'
+import ContactSection from './collections/ContactSection'
 import { Features  } from './collections/Features'
 import { Testimonials } from './collections/Testimonials'
 import { PricingPlans } from './collections/PricingPlans'
@@ -29,8 +32,13 @@ export default buildConfig({
   },
   collections: [
     Users, 
-    Media, 
-    LandingPageContent, 
+    Media,
+    // Landing Page Sections
+    HeroSection,
+    AboutSection,
+    WhyChooseSection,
+    ContactSection,
+    // Feature Collections
     Features, 
     Testimonials, 
     PricingPlans, 

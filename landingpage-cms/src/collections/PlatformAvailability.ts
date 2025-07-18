@@ -35,7 +35,7 @@ export const PlatformAvailability: CollectionConfig = {
       name: 'mockupImage',
       type: 'upload',
       relationTo: 'media',
-      required: true,
+      required: false,
       label: 'Platform UI Mockup',
     },
     {

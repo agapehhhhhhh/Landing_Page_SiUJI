@@ -12,7 +12,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "seed:landing": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seeds/seedLandingPage.ts",
+    "seed:landing": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_SECRET=8dae9ecee6bffb5277f4a9dc DATABASE_URI=postgres://postgres:root@127.0.0.1:5432/landingpage-cms tsx src/seeds/seedLandingPage.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test",

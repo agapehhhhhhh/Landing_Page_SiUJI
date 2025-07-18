@@ -1,82 +1,296 @@
-import payload from 'payload'
+import { Payload } from 'payload'
 
-export const seedLandingPageCollections = async () => {
+// Fungsi utama untuk melakukan seeding semua koleksi
+export const seedLandingPageCollections = async (payloadInstance: Payload) => {
   try {
-    console.log('Starting to seed landing page collections...')
+    console.log('🌱 Starting to seed all landing page collections...')
 
-    // 1. Seed basic Landing Page Content sections
-    console.log('Seeding Landing Page Content sections...')
-    
-    const landingPageSections = [
-      {
-        section: 'hero',
+    // Menghapus data lama untuk memastikan data yang bersih (opsional, tapi direkomendasikan)
+    console.log('🗑️ Clearing existing data...')
+    await Promise.all([
+      payloadInstance.delete({ collection: 'hero-section', where: {} }),
+      payloadInstance.delete({ collection: 'about-section', where: {} }),
+      payloadInstance.delete({ collection: 'why-choose-section', where: {} }),
+      payloadInstance.delete({ collection: 'contact-section', where: {} }),
+      payloadInstance.delete({ collection: 'features', where: {} }),
+      payloadInstance.delete({ collection: 'testimonials', where: {} }),
+      payloadInstance.delete({ collection: 'pricing-plans', where: {} }),
+      payloadInstance.delete({ collection: 'faq', where: {} }),
+      payloadInstance.delete({ collection: 'partners', where: {} }),
+      payloadInstance.delete({ collection: 'platform-availability', where: {} }),
+    ])
+    console.log('✅ Existing data cleared.')
+
+    // 1. Seed Hero Section (Global)
+    console.log('Seeding Hero Section...')
+    await payloadInstance.create({
+      collection: 'hero-section',
+      data: {
         title: 'Revolusikan Pendidikan Anda dengan SiUJI',
         subtitle: 'Platform Ujian Digital untuk Pembelajaran Modern',
         description: 'Transformasikan ujian tradisional menjadi pengalaman digital yang menarik. SiUJI memberdayakan pendidik untuk membuat, mengelola, dan memantau ujian online dengan wawasan real-time dan analitik komprehensif.',
         ctaText: 'Mulai Sekarang',
         ctaLink: '/register',
+        features: [
+          { feature: 'Pemantauan real-time' },
+          { feature: 'Lingkungan ujian yang aman' },
+          { feature: 'Analitik komprehensif' },
+          { feature: 'Dukungan multi-platform' }
+        ],
+        isActive: true
+      }
+    })
+    console.log('✅ Hero Section seeded')
+
+    // 2. Seed About Section (Global)
+    console.log('Seeding About Section...')
+    await payloadInstance.create({
+      collection: 'about-section',
+      data: {
+        title: 'Apa itu SIUJI?',
+        subtitle: 'Solusi Pendidikan Digital Lengkap Anda',
+        description: 'SIUJI adalah platform yang memungkinkan pendidik membuat kelas online dimana mereka dapat menyimpan materi kursus secara online; mengelola tugas, kuis dan ujian; memantau tenggat waktu; menilai hasil dan memberikan umpan balik kepada siswa semuanya dalam satu tempat.',
+        targetUsers: [
+          {
+            title: 'Untuk Guru',
+            description: 'Buat, kelola, dan nilai ujian dengan mudah. Dapatkan analitik mendalam tentang kinerja siswa.'
+          },
+          {
+            title: 'Untuk Sekolah',
+            description: 'Sistem manajemen sekolah komprehensif dengan platform ujian terintegrasi untuk pendidikan modern.'
+          },
+          {
+            title: 'Untuk Siswa',
+            description: 'Antarmuka yang menarik dan ramah pengguna untuk mengikuti ujian dan mengakses materi pembelajaran.'
+          }
+        ],
+        isActive: true
+      }
+    })
+    console.log('✅ About Section seeded')
+
+    // 3. Seed Why Choose Section (Global)
+    console.log('Seeding Why Choose Section...')
+    await payloadInstance.create({
+      collection: 'why-choose-section',
+      data: {
+        title: 'Mengapa Memilih Kami?',
+        subtitle: 'Rasakan Masa Depan Pendidikan Digital',
+        points: [
+          {
+            title: 'Pemantauan Real-Time',
+            description: 'Rangkul kekuatan pemantauan real-time dan kendalikan integritas ujian dengan teknologi proctoring canggih.'
+          },
+          {
+            title: 'Akses Seumur Hidup',
+            description: 'Materi dan hasil ujian tersimpan aman dan dapat diakses kapan saja, mendukung pembelajaran berkelanjutan.'
+          },
+          {
+            title: 'Komunitas Besar',
+            description: 'Terhubung, berkolaborasi, dan berbagi dengan rekan pendidik dan siswa, memperkaya pengalaman belajar.'
+          }
+        ],
+        isActive: true
+      }
+    })
+    console.log('✅ Why Choose Section seeded')
+
+    // 4. Seed Contact Section (Global)
+    console.log('Seeding Contact Section...')
+    await payloadInstance.create({
+      collection: 'contact-section',
+      data: {
+        title: 'Hubungi Kami!',
+        subtitle: 'Siap Mentransformasi Pendidikan Anda?',
+        description: 'Punya pertanyaan tentang SiUJI atau butuh solusi khusus? Tim kami siap membantu Anda mendigitalkan proses ujian.',
+        address: 'Jl. Raya Bandung-Sumedang KM 21, Jatinangor, Sumedang, Jawa Barat 45363',
+        phone: '+62 22 7796 8800',
+        email: 'info@siuji.id',
+        workingHours: 'Senin - Jumat: 09:00 - 18:00 WIB',
+        mapConfig: {
+          latitude: -6.9279,
+          longitude: 107.7725,
+          zoom: 15,
+          marker: 'Kantor SiUJI'
+        },
+        isActive: true
+      }
+    })
+    console.log('✅ Contact Section seeded')
+
+    // 5. Seed Features
+    console.log('Seeding Features...')
+    const featuresData = [
+      {
+        title: 'Sistem Ujian Cerdas',
+        description: 'Sistem ujian bertenaga AI canggih dengan mekanisme anti-kecurangan dan kemampuan proctoring real-time.',
+        position: 'left',
+        features: [{ feature: 'AI Proctoring' }, { feature: 'Penilaian Otomatis' }, { feature: 'Randomisasi Soal' }],
+        isActive: true, order: 1
+      },
+      {
+        title: 'Analitik Komprehensif',
+        description: 'Dapatkan wawasan detail tentang kinerja siswa dengan alat analitik dan pelaporan komprehensif.',
+        position: 'right',
+        features: [{ feature: 'Pelacakan Kinerja' }, { feature: 'Laporan Kustom' }, { feature: 'Visualisasi Data' }],
+        isActive: true, order: 2
+      }
+    ];
+    for (const feature of featuresData) {
+      await payloadInstance.create({ collection: 'features', data: feature });
+    }
+    console.log(`✅ ${featuresData.length} Features seeded`);
+
+    // 6. Seed Testimonials
+    console.log('Seeding Testimonials...')
+    const testimonialsData = [
+      {
+        name: 'Dr. Sarah Johnson', position: 'Guru Matematika', school: 'Jakarta International School',
+        content: 'SiUJI telah mengubah cara kami melakukan ujian. Fitur pemantauan real-time memberi saya kepercayaan dalam menjaga integritas akademik.',
+        rating: 5, isActive: true, order: 1
+      },
+      {
+        name: 'Ahmad Rizki', position: 'Koordinator IT', school: 'SMA Negeri 1 Bandung',
+        content: 'Platform ini sangat ramah pengguna dan analitik membantu kami memahami kinerja siswa lebih baik dari sebelumnya.',
+        rating: 5, isActive: true, order: 2
+      }
+    ];
+    for (const testimonial of testimonialsData) {
+      await payloadInstance.create({ collection: 'testimonials', data: testimonial });
+    }
+    console.log(`✅ ${testimonialsData.length} Testimonials seeded`);
+
+    // 7. Seed Pricing Plans
+    console.log('Seeding Pricing Plans...')
+    const pricingPlansData = [
+      {
+        name: 'Basic', price: 0, period: 'month', currency: 'idr', description: 'Untuk coba-coba dan penggunaan personal.',
+        features: [{ feature: 'Hingga 50 siswa', isIncluded: true }, { feature: '2 Ujian per bulan', isIncluded: true }, { feature: 'Dukungan Email', isIncluded: true }],
+        ctaText: 'Mulai Gratis', ctaLink: '/register?plan=basic', isActive: true, order: 1
+      },
+      {
+        name: 'Pro', price: 500000, period: 'month', currency: 'idr', description: 'Solusi terbaik untuk sekolah dan institusi.',
+        features: [{ feature: 'Siswa tak terbatas', isIncluded: true }, { feature: 'Ujian tak terbatas', isIncluded: true }, { feature: 'AI Proctoring', isIncluded: true }, { feature: 'Dukungan Prioritas', isIncluded: true }],
+        ctaText: 'Pilih Pro', ctaLink: '/register?plan=pro', isPopular: true, badge: 'Paling Populer', isActive: true, order: 2
+      },
+      {
+        name: 'Enterprise', price: 0, period: 'once', currency: 'idr', description: 'Solusi kustom untuk kebutuhan institusi besar.',
+        features: [{ feature: 'Semua fitur Pro', isIncluded: true }, { feature: 'Server Khusus', isIncluded: true }, { feature: 'Manager Akun Khusus', isIncluded: true }],
+        ctaText: 'Hubungi Sales', ctaLink: '/contact', isActive: true, order: 3
+      }
+    ];
+    for (const plan of pricingPlansData) {
+      await payloadInstance.create({ collection: 'pricing-plans', data: plan });
+    }
+    console.log(`✅ ${pricingPlansData.length} Pricing Plans seeded`);
+
+    // 8. Seed FAQ
+    console.log('Seeding FAQ...')
+    const faqData = [
+      {
+        question: 'Apa itu SiUJI?',
+        category: 'general',
+        answer: {
+          root: {
+            children: [{
+              type: 'p',
+              children: [{ text: 'SiUJI adalah platform ujian online komprehensif yang dirancang untuk membantu institusi pendidikan melakukan ujian secara efisien, aman, dan terukur.' }]
+            }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            type: 'root',
+            version: 1
+          }
+        },
         isActive: true,
         order: 1
       },
       {
-        section: 'about',
-        title: 'Apa itu SIUJI?',
-        subtitle: 'Solusi Pendidikan Digital Lengkap Anda',
-        description: 'SIUJI adalah platform yang memungkinkan pendidik membuat kelas online dimana mereka dapat menyimpan materi kursus secara online; mengelola tugas, kuis dan ujian; memantau tenggat waktu; menilai hasil dan memberikan umpan balik kepada siswa semuanya dalam satu tempat.',
+        question: 'Bagaimana cara kerja fitur anti-kecurangan?',
+        category: 'features',
+        answer: {
+          root: {
+            children: [{
+              type: 'p',
+              children: [{ text: 'Kami menggunakan kombinasi AI proctoring, penguncian browser, dan randomisasi soal untuk meminimalkan potensi kecurangan selama ujian berlangsung.' }]
+            }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            type: 'root',
+            version: 1
+          }
+        },
         isActive: true,
         order: 2
       },
       {
-        section: 'why-choose',
-        title: 'Mengapa Memilih Kami?',
-        subtitle: 'Rasakan Masa Depan Pendidikan Digital',
+        question: 'Apakah data saya aman?',
+        category: 'technical',
+        answer: {
+          root: {
+            children: [{
+              type: 'p',
+              children: [{ text: 'Tentu. Kami menggunakan enkripsi standar industri dan praktik keamanan terbaik untuk memastikan semua data Anda, termasuk soal dan jawaban siswa, tersimpan dengan aman.' }]
+            }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            type: 'root',
+            version: 1
+          }
+        },
         isActive: true,
         order: 3
-      },
-      {
-        section: 'platform',
-        title: 'Kini SIUJI sudah tersedia di 3 platform',
-        subtitle: 'Akses Dimana Saja, Kapan Saja',
-        description: 'Akses SIUJI sesuai kebutuhan Anda: melalui web browser untuk akses cepat, atau unduh aplikasi di Android dan iOS.',
-        isActive: true,
-        order: 4
-      },
-      {
-        section: 'social-proof',
-        title: 'Dipercaya oleh 1.234 Perusahaan di Seluruh Dunia',
-        subtitle: 'Bergabunglah dengan Institusi Terdepan',
-        isActive: true,
-        order: 7
-      },
-      {
-        section: 'contact',
-        title: 'Hubungi Kami!',
-        subtitle: 'Siap Mentransformasi Pendidikan Anda?',
-        description: 'Punya pertanyaan tentang SiUJI atau butuh solusi khusus? Tim kami siap membantu Anda mendigitalkan proses ujian.',
-        isActive: true,
-        order: 10
       }
-    ]
-
-    for (const section of landingPageSections) {
-      await payload.create({
-        collection: 'landing-page-content',
-        data: section
-      })
+    ];
+    for (const faq of faqData) {
+      await payloadInstance.create({ collection: 'faq', data: faq });
     }
+    console.log(`✅ ${faqData.length} FAQs seeded`);
 
-    console.log('Landing page content sections seeded successfully!')
-    console.log('To seed other collections, run the CMS and use the admin panel.')
-    console.log('Collections available:')
-    console.log('- Features: /admin/collections/features')
-    console.log('- Testimonials: /admin/collections/testimonials') 
-    console.log('- Pricing Plans: /admin/collections/pricing-plans')
-    console.log('- FAQ: /admin/collections/faq')
-    console.log('- Partners: /admin/collections/partners')
-    console.log('- Platform Availability: /admin/collections/platform-availability')
+    // 9. Seed Partners
+    console.log('Seeding Partners...')
+    const partnersData = [
+      // NOTE: 'logo' field is omitted as it requires a media ID from an uploaded file.
+      // You can manually add logos from the admin panel after seeding.
+      { name: 'Universitas Pendidikan Digital', type: 'university', website: 'https://upd.ac.id', location: 'Jakarta', isActive: true, order: 1, isFeatured: true },
+      { name: 'SMA Cendekia Bangsa', type: 'school', website: 'https://smacendekia.sch.id', location: 'Bandung', isActive: true, order: 2 }
+    ];
+    for (const partner of partnersData) {
+      await payloadInstance.create({ collection: 'partners', data: partner });
+    }
+    console.log(`✅ ${partnersData.length} Partners seeded`);
+
+    // 10. Seed Platform Availability
+    console.log('Seeding Platform Availability...')
+    const platformAvailabilityData = [
+      // NOTE: 'icon' and 'mockupImage' are omitted as they require media IDs.
+      { name: 'Aplikasi Web', slug: 'web', description: 'Akses penuh SiUJI melalui browser modern di desktop atau laptop Anda.', downloadLink: '/app', systemRequirements: [{ requirement: 'Browser Chrome, Firefox, atau Safari terbaru' }], isActive: true, order: 1 },
+      { name: 'Android', slug: 'android', description: 'Ikuti ujian dengan mudah dari perangkat Android Anda.', downloadLink: '#', systemRequirements: [{ requirement: 'Android 8.0 Oreo atau lebih baru' }], isActive: true, order: 2, isComingSoon: false },
+      { name: 'iOS', slug: 'ios', description: 'Segera hadir di perangkat iPhone dan iPad Anda.', downloadLink: '#', systemRequirements: [{ requirement: 'iOS 15 atau lebih baru' }], isActive: true, order: 3, isComingSoon: true }
+    ];
+    for (const platform of platformAvailabilityData) {
+      await payloadInstance.create({ collection: 'platform-availability', data: platform });
+    }
+    console.log(`✅ ${platformAvailabilityData.length} Platform Availabilities seeded`);
+
+    console.log('\n🎉 All collections seeded successfully!')
+    console.log('\n📊 Summary:')
+    console.log('- Hero Section: ✅')
+    console.log('- About Section: ✅')
+    console.log('- Why Choose Section: ✅')
+    console.log('- Contact Section: ✅')
+    console.log('- Features: ✅')
+    console.log('- Testimonials: ✅')
+    console.log('- Pricing Plans: ✅')
+    console.log('- FAQ: ✅')
+    console.log('- Partners: ✅')
+    console.log('- Platform Availability: ✅')
 
   } catch (error) {
-    console.error('Error seeding landing page collections:', error)
+    console.error('❌ Error during seeding process:', error)
     throw error
   }
 }
