@@ -1,9 +1,5 @@
 <template>
   <section class="about-section">
-    <!-- BACKGROUND SHAPE -->
-    <div class="bg-decor bg-blob-top"></div>
-    <div class="bg-decor bg-circle-1"></div>
-    <div class="bg-decor bg-circle-2"></div>
     <!-- Judul -->
     <div class="section-title">
       <h2>What is SIUJI?</h2>
@@ -24,10 +20,16 @@
       </div>
 
       <div class="right-images">
-        <div class="image-stack">
-         <div
-            v-for="(img, index) in slides[currentIndex].images"
-            :key="index"
+        <transition-group
+          name="fade-slide"
+          tag="div"
+          class="image-stack"
+          @mouseenter="pauseSlide"
+          @mouseleave="resumeSlide"
+        >
+          <div
+            v-for="(img, index) in rotatingImages"
+            :key="img"
             class="stack-image"
             :style="{ zIndex: getZIndex(index) }"
             @mouseover="hoveredIndex = index"
@@ -35,13 +37,15 @@
           >
             <img :src="img" alt="stacked" />
           </div>
-        </div>
+        </transition-group>
       </div>
     </div>
 
     <!-- Dot carousel + Arrow -->
     <div class="carousel-navigation">
-      <button @click="prevSlide" class="arrow">&larr;</button>
+      <button @click="prevSlide" class="arrow">
+        <span class="material-icons">arrow_back</span>
+      </button>
 
       <div class="carousel-dots">
         <span
@@ -52,13 +56,15 @@
         ></span>
       </div>
 
-      <button @click="nextSlide" class="arrow">&rarr;</button>
+      <button @click="nextSlide" class="arrow">
+        <span class="material-icons">arrow_forward</span>
+      </button>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 interface Slide {
   title: string
@@ -89,21 +95,56 @@ const slides: Slide[] = [
   },
 ]
 
-const currentIndex = ref(0)
+const currentIndex = ref(0) // Untuk mengganti antar For Teacher / For Student
 const hoveredIndex = ref(-1)
+
+// Gambar yang akan berputar otomatis
+const rotatingImages = ref<string[]>([...slides[currentIndex.value].images])
+
+function rotateImages() {
+  const first = rotatingImages.value.shift()
+  if (first) rotatingImages.value.push(first)
+}
+
+let rotateIntervalId: number
+
+onMounted(() => {
+  // Sync awal dengan slide aktif
+  rotatingImages.value = [...slides[currentIndex.value].images]
+
+  rotateIntervalId = window.setInterval(() => {
+    rotateImages()
+  }, 3000)
+})
+
+onUnmounted(() => {
+  clearInterval(rotateIntervalId)
+})
+
+function pauseSlide() {
+  clearInterval(rotateIntervalId)
+}
+
+function resumeSlide() {
+  rotateIntervalId = window.setInterval(() => {
+    rotateImages()
+  }, 3000)
+}
 
 function prevSlide() {
   currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length
-}
-function nextSlide() {
-  currentIndex.value = (currentIndex.value + 1) % slides.length
-}
-function getZIndex(index: number): number {
-  if (hoveredIndex.value === index) return 10
-  // Gambar tengah (index 1) selalu lebih tinggi default-nya
-  return index === 1 ? 3 : index === 0 ? 1 : 2
+  rotatingImages.value = [...slides[currentIndex.value].images] // reset gambar
 }
 
+function nextSlide() {
+  currentIndex.value = (currentIndex.value + 1) % slides.length
+  rotatingImages.value = [...slides[currentIndex.value].images] // reset gambar
+}
+
+function getZIndex(index: number): number {
+  if (hoveredIndex.value === index) return 10
+  return index === 1 ? 3 : index === 0 ? 1 : 2
+}
 </script>
 
 <style scoped>
@@ -116,6 +157,7 @@ function getZIndex(index: number): number {
   width: 100vw;
   transform: translateX(-50%);
   left: 50%;
+  background: url('@/assets/blob-haikei.svg') center/cover no-repeat;
 }
 
 .section-title {
@@ -146,11 +188,13 @@ function getZIndex(index: number): number {
   justify-content: space-between;
   align-items: flex-start;
   margin-top: 100px;
+  padding-left: 100px; /* tambahkan padding di container */
+
 }
 
 .left-card {
   flex: 1 1 40%;
-  padding-left: 40px;
+  max-width: 420px;
 }
 
 .card {
@@ -166,6 +210,7 @@ function getZIndex(index: number): number {
   margin-bottom: 10px;
   border-bottom: 1px solid #ccc;
   padding-bottom: 4px;
+  text-align: center;
 }
 
 .card p {
@@ -205,7 +250,7 @@ function getZIndex(index: number): number {
 }
 
 .stack-image:hover {
-  transform: scale(1.4);
+  transform: scale(1.8);
   z-index: 10;
 }
 
@@ -220,7 +265,7 @@ function getZIndex(index: number): number {
 
 /* === Carousel Nav === */
 .carousel-navigation {
-  margin-top: 32px;
+  margin-top: 90px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,18 +273,27 @@ function getZIndex(index: number): number {
 }
 
 .arrow {
-  background: rgba(255, 255, 255, 0.8);
+  background: none;
   border: none;
-  font-size: 18px;
-  padding: 6px 12px;
-  border-radius: 50%;
+  font-size: 28px;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 8px;
+  transition: transform 0.2s ease;
 }
 
 .arrow:hover {
-  background: white;
-  font-weight: bold;
+  transform: scale(1.2);
+}
+
+.material-icons {
+  font-size: 32px;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.arrow:hover .material-icons {
+  transform: scale(1.2);
 }
 
 .carousel-dots {
@@ -258,6 +312,21 @@ function getZIndex(index: number): number {
 
 .carousel-dots span.active {
   background: white;
+}
+
+/* Fade + geser halus antar gambar */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
 }
 
 /* === Responsive === */
