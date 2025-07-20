@@ -15,7 +15,14 @@ coverage/
 
 # Env
 .env
+.env.local
 test.env
+
+# Specific environment files (keep templates)
+# .env.dev (keep for development)
+# .env.prod (keep as template)
+.env.production
+.env.staging
 
 # OS
 Thumbs.db

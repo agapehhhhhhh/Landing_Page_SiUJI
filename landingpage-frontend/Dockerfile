@@ -1,61 +1,72 @@
-   # ===========================================
-# SIUJI FRONTEND - VUE.JS DOCKERFILE
-# ===========================================
+# Multi-stage Dockerfile for Vue.js frontend
 
 # Development stage
 FROM node:20-alpine AS development
-
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Install dependencies
+RUN apk add --no-cache libc6-compat && \
+    rm -rf /var/cache/apk/*
 
-# Install all dependencies (including dev dependencies)
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S vueuser -u 1001
+
+# Copy package files and install dependencies
+COPY package.json ./
 RUN npm install
 
-# Copy source code
-COPY . .
+# Copy source code and change ownership
+COPY --chown=vueuser:nodejs . .
 
-# Expose Vite dev server port
+USER vueuser
+
 EXPOSE 5173
+CMD ["npm", "run", "dev"]
 
-# Start development server with hot reload
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
-
-# ===========================================
-
-# Builder stage (untuk build production files)
+# Build stage
 FROM node:20-alpine AS builder
-
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files and install dependencies
+COPY package.json ./
+RUN npm install
 
-# Install ALL dependencies (dev dependencies needed for build)
-RUN npm ci
-
-# Copy source code
+# Copy source code and build
 COPY . .
-
-# Build aplikasi untuk production
 RUN npm run build
 
-# ===========================================
+# Production stage
+FROM nginx:alpine AS production
 
-# Production stage (serve static files dengan Node.js)
-FROM node:20-alpine AS production
+# Install security updates
+RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
 
-WORKDIR /app
+# Copy built assets from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Install serve untuk static file serving
-RUN npm install -g serve
+# Create nginx configuration
+RUN echo 'server { \
+    listen 80; \
+    server_name localhost; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    location / { \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Copy built files dari builder stage
-COPY --from=builder /app/dist ./dist
+# Create non-root user for nginx
+RUN addgroup -g 1001 -S nginx && \
+    adduser -S nginxuser -u 1001 -G nginx
 
-# Expose port untuk production
-EXPOSE 5173
+# Change ownership of nginx directories
+RUN chown -R nginxuser:nginx /usr/share/nginx/html && \
+    chown -R nginxuser:nginx /var/cache/nginx && \
+    chown -R nginxuser:nginx /var/log/nginx && \
+    chown -R nginxuser:nginx /etc/nginx/conf.d
 
-# Serve static files
-CMD ["serve", "-s", "dist", "-l", "5173"]
+USER nginxuser
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

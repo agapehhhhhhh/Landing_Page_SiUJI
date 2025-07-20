@@ -3,658 +3,356 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-20.x-brightgreen.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
-![TypeScript](https://img.shields.io/badge/typescript-5.x-blue.svg)
+![Vue](https://img.shields.io/badge/vue-3.x-brightgreen.svg)
+![Payload](https://img.shields.io/badge/payload-3.x-blue.svg)
 
-## 🚦 CI/CD Status
-[![CI Pipeline](https://github.com/your-username/your-repo/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/ci.yml)
-[![Code Quality](https://github.com/your-username/your-repo/actions/workflows/quality.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/quality.yml)
-[![Security Scan](https://github.com/your-username/your-repo/actions/workflows/security.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/security.yml)
-[![Deployment](https://github.com/your-username/your-repo/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/deploy.yml)
-
-**SIUJI** adalah platform landing page modern yang dibangun dengan teknologi terdepan untuk memberikan pengalaman pengguna yang luar biasa dan manajemen konten yang mudah.
+**SIUJI** adalah platform landing page modern dengan Payload CMS dan Vue.js. Dioptimalkan untuk deployment yang mudah dan pengembangan yang cepat.
 
 ---
 
-## 📋 **Daftar Isi**
+## 📋 **Quick Commands**
 
-- [🛠️ Tech Stack](#-tech-stack)
-- [🏗️ Arsitektur Project](#-arsitektur-project)
-- [🚀 Quick Start](#-quick-start)
-- [⚙️ Environment Setup](#-environment-setup)
-- [🐳 Docker Configuration](#-docker-configuration)
-- [📚 API Documentation](#-api-documentation)
-- [🎨 Frontend Features](#-frontend-features)
-- [🔧 Development](#-development)
-- [🚀 Production Deployment](#-production-deployment)
-- [🧪 Testing](#-testing)
-- [📖 Collections Schema](#-collections-schema)
-- [🤝 Contributing](#-contributing)
+### **Development**
+```bash
+# 1. Copy environment file
+cp .env.dev .env
+
+# 2. Start development environment
+npm run dev
+
+# 3. View logs
+npm run dev:logs
+
+# 4. Stop services
+npm run dev:down
+```
+
+### **Production**
+```bash
+# 1. Copy production environment file
+cp .env.prod .env
+
+# 2. Configure production values in .env
+# 3. Start production environment
+npm run prod
+```
+
+---
+
+## 🏗️ **Arsitektur**
+
+| Komponen | Teknologi | Port | URL |
+|----------|-----------|------|-----|
+| **Frontend** | Vue.js 3 + Vite | 5173 | http://localhost:5173 |
+| **Backend** | Payload CMS + Next.js | 3000 | http://localhost:3000/api |
+| **Admin Panel** | Payload CMS | 3000 | http://localhost:3000/admin |
+| **Database** | PostgreSQL | 5432 | localhost:5432 |
+
+```
+siuji-landingpage/
+├── 📁 landingpage-frontend/     # Vue.js Frontend
+├── 📁 landingpage-cms/         # Payload CMS Backend  
+├── 🐳 docker-compose.yaml      # Development orchestration
+├── 🐳 docker-compose.prod.yml  # Production orchestration
+├── 📄 .env.dev                 # Development environment
+├── 📄 .env.prod                # Production template
+└── 📖 README.md                # This file
+```
 
 ---
 
 ## 🛠️ **Tech Stack**
 
 ### **Frontend**
-- **Vue.js 3** - Progressive JavaScript framework
-- **Vite 7** - Next generation frontend tooling
-- **TypeScript** - Type-safe JavaScript
-- **Axios** - HTTP client untuk API calls
+- **Vue.js 3** - Progressive framework
+- **Vite 7** - Build tool
+- **Axios** - HTTP client
 
 ### **Backend**
-- **Next.js 15** - React framework untuk backend
-- **Payload CMS 3** - Headless CMS dengan TypeScript
-- **TypeScript** - Type-safe development
-- **PostgreSQL** - Database relasional
+- **Payload CMS 3** - Headless CMS
+- **Next.js 15** - React framework
+- **PostgreSQL** - Database
 
 ### **Infrastructure**
 - **Docker & Docker Compose** - Containerization
-- **Node.js 20** - JavaScript runtime
-- **PNPM** - Fast, disk space efficient package manager
-
----
-
-## 🏗️ **Arsitektur Project**
-
-```
-siuji-landingpage/
-├── 📁 landingpage-frontend/     # Vue.js Frontend Application
-│   ├── src/
-│   │   ├── components/          # Vue components
-│   │   ├── sections/           # Landing page sections
-│   │   └── services/           # API services
-│   └── Dockerfile
-├── 📁 landingpage-cms/         # Payload CMS Backend
-│   ├── src/
-│   │   ├── collections/        # CMS collections schema
-│   │   ├── app/                # Next.js app
-│   │   └── payload.config.ts   # Payload configuration
-│   └── Dockerfile
-├── 🐳 docker-compose.yml       # Docker orchestration
-├── 📄 .env                     # Environment variables
-└── 📖 README.md
-```
-
----
-
-## 🚀 **Quick Start**
-
-### **Prasyarat**
-- **Docker** & **Docker Compose** installed
-- **Node.js 20+** (untuk development lokal)
-- **Git** untuk version control
-
-### **1. Clone Repository**
-```bash
-git clone <repository-url>
-cd siuji-landingpage
-```
-
-### **2. Setup Environment**
-```bash
-# Copy environment template
-cp .env.example .env
-
-# Edit .env sesuai kebutuhan (opsional untuk development)
-```
-
-### **3. Run dengan Docker**
-```bash
-# Start semua services
-docker-compose up --build
-
-# Atau run in background
-docker-compose up -d --build
-```
-
-### **4. Access Applications**
-- 🎨 **Frontend**: http://localhost:5173
-- 🏠 **Backend API**: http://localhost:3000/api
-- ⚙️ **Admin Panel**: http://localhost:3000/admin
-- 🐘 **Database**: localhost:5432
+- **Node.js 20** - Runtime
 
 ---
 
 ## ⚙️ **Environment Setup**
 
-### **📋 Quick Setup**
+### **Environment Files**
+- `.env.dev` - Development configuration (safe defaults)
+- `.env.prod` - Production template (requires setup)
+- `.env.example` - Documentation template
 
-#### **1. Initial Setup**
+### **Development Environment**
 ```bash
-# Copy environment template
-cp .env.example .env
+# 1. Copy development environment
+cp .env.dev .env
+
+# 2. Start development
+npm run dev
+
+# 3. Access services
+# Frontend: http://localhost:5173
+# Backend API: http://localhost:3000/api  
+# Admin Panel: http://localhost:3000/admin
 ```
 
-#### **2. Choose Your Environment**
-
-##### **🐳 Docker Development (Recommended)**
+### **Production Environment**
 ```bash
-# Edit .env file:
-# 1. Uncomment "OPTION 1: DOCKER DATABASE" section
-# 2. Comment out "OPTION 2: LOCAL DATABASE" section
+# 1. Copy production template
+cp .env.prod .env
 
-# Example .env for Docker:
-NODE_ENV=development
-DOCKER_TARGET=development
-DATABASE_URI=postgresql://user:password@db:5432/siuji_db
-DB_USER=user
-DB_PASSWORD=password
-DB_NAME=siuji_db
-DB_HOST=db
-DB_PORT=5432
+# 2. Configure required values:
+# - DB_PASSWORD (strong password)
+# - PAYLOAD_SECRET (32+ characters)
+# - Domain URLs for production
+
+# 3. Start production
+npm run prod
 ```
-
-##### **💻 Local Development**
-```bash
-# Edit .env file:
-# 1. Comment out "OPTION 1: DOCKER DATABASE" section  
-# 2. Uncomment "OPTION 2: LOCAL DATABASE" section
-
-# Example .env for Local:
-NODE_ENV=development
-DOCKER_TARGET=development
-DATABASE_URI=postgresql://postgres:root@localhost:5432/landingpage-cms
-DB_USER=postgres
-DB_PASSWORD=root
-DB_NAME=landingpage-cms
-DB_HOST=localhost
-DB_PORT=5432
-```
-
-### **🔄 Environment Switching**
-
-#### **Switch to Docker**
-```bash
-# 1. Edit .env - uncomment Docker database config
-# 2. Comment out local database config
-# 3. Start Docker
-docker-compose up
-
-# Access:
-# - Frontend: http://localhost:5173
-# - Backend: http://localhost:3000
-# - Database: localhost:5432
-```
-
-#### **Switch to Local**
-```bash
-# 1. Edit .env - uncomment local database config
-# 2. Comment out Docker database config
-# 3. Start services manually
-cd landingpage-cms && npm run dev     # Terminal 1
-cd landingpage-frontend && npm run dev # Terminal 2
-
-# Access:
-# - Frontend: http://localhost:5173
-# - Backend: http://localhost:3000
-```
-
-#### **Switch to Production**
-```bash
-# 1. Edit .env - uncomment production settings
-# 2. Comment out development settings
-# 3. Update production values
-# 4. Deploy
-docker-compose up --build
-```
-
-### **🛠️ Configuration Templates**
-
-#### **Docker Template**
-```bash
-# Copy and paste to .env for Docker setup
-NODE_ENV=development
-DOCKER_TARGET=development
-DATABASE_URI=postgresql://user:password@db:5432/siuji_db
-DB_USER=user
-DB_PASSWORD=password
-DB_NAME=siuji_db
-DB_HOST=db
-DB_PORT=5432
-DB_PORT_EXPOSE=5432
-PAYLOAD_SECRET=K8mN9pQ2rS5tV7wX0yZ3bC6dF9gH2jK5mN8pQ1rS4tV7wX0yZ3bC6dF9gH2jK5mN
-VITE_API_URL=http://localhost:3000/api
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
-CSRF_ORIGINS=http://localhost:5173
-```
-
-#### **Local Template**
-```bash
-# Copy and paste to .env for Local setup
-NODE_ENV=development
-DOCKER_TARGET=development
-DATABASE_URI=postgresql://postgres:root@localhost:5432/landingpage-cms
-DB_USER=postgres
-DB_PASSWORD=root
-DB_NAME=landingpage-cms
-DB_HOST=localhost
-DB_PORT=5432
-DB_PORT_EXPOSE=5432
-PAYLOAD_SECRET=K8mN9pQ2rS5tV7wX0yZ3bC6dF9gH2jK5mN8pQ1rS4tV7wX0yZ3bC6dF9gH2jK5mN
-VITE_API_URL=http://localhost:3000/api
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
-CSRF_ORIGINS=http://localhost:5173
-```
-
-#### **Production Template**
-```bash
-# Copy and paste to .env for Production setup
-NODE_ENV=production
-DOCKER_TARGET=production
-DATABASE_URI=postgresql://prod_user:strong-password@db:5432/siuji_production
-DB_USER=prod_user
-DB_PASSWORD=strong-password
-DB_NAME=siuji_production
-DB_HOST=db
-DB_PORT=5432
-# DB_PORT_EXPOSE=     # Don't expose in production
-PAYLOAD_SECRET=production-secret-64-chars-minimum-length-required
-VITE_API_URL=https://your-domain.com/api
-CORS_ORIGINS=https://your-domain.com,https://www.your-domain.com
-CSRF_ORIGINS=https://your-domain.com
-```
-
-### **🔐 Security Notes**
-
-#### **Generate New Payload Secret**
-```bash
-# Generate secure secret
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
-
-#### **Database Security**
-- Use strong passwords in production
-- Don't expose database ports in production
-- Use environment variables for sensitive data
-
-### **🚨 Troubleshooting**
-
-#### **Common Issues**
-
-##### **Port Already in Use**
-```bash
-# Kill processes using ports
-netstat -tulpn | grep :3000
-sudo kill -9 <PID>
-```
-
-##### **Database Connection Failed**
-```bash
-# Check database is running
-docker-compose ps
-# Or for local PostgreSQL
-pg_isready -h localhost -p 5432
-```
-
-##### **Environment Variables Not Loading**
-```bash
-# Check .env file exists
-ls -la .env
-
-# Check variables are set
-echo $DATABASE_URI
-```
-
-### **📝 Development Workflow**
-
-#### **Daily Development**
-```bash
-# 1. Pull latest changes
-git pull origin main
-
-# 2. Check environment
-cat .env
-
-# 3. Start development
-docker-compose up    # Docker
-# OR
-npm run dev         # Local
-
-# 4. Make changes
-# Edit files in src/
-
-# 5. Test changes
-# Auto-reload with hot reload
-
-# 6. Commit changes
-git add .
-git commit -m "feat: add new feature"
-git push origin main
-```
-
-#### **Environment Switching Workflow**
-```bash
-# 1. Stop current services
-docker-compose down   # Docker
-# OR
-Ctrl+C               # Local
-
-# 2. Edit .env file
-# Switch database configuration
-
-# 3. Start services
-docker-compose up     # Docker
-# OR
-npm run dev          # Local
-
-# 4. Verify connection
-curl http://localhost:3000/api
-```
-
-### **Environment Variables**
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NODE_ENV` | Environment mode | `development` |
-| `DOCKER_TARGET` | Docker build target | `development` |
-| `DATABASE_URI` | PostgreSQL connection string | `postgresql://user:password@db:5432/siuji_db` |
-| `PAYLOAD_SECRET` | Secret key untuk Payload CMS | Auto-generated |
-| `VITE_API_URL` | Frontend API endpoint | `http://localhost:3000/api` |
-| `CORS_ORIGINS` | Allowed CORS origins | `http://localhost:5173,http://localhost:3000` |
 
 ---
 
 ## 🐳 **Docker Configuration**
 
-### **Services Overview**
+### **Development (docker-compose.yaml)**
+- Hot reloading enabled
+- Volume mounting for live changes
+- Development database with default credentials
+- Optimized for local development
 
-#### **Frontend Service**
-- **Image**: Node.js 20 Alpine
-- **Port**: 5173
-- **Development**: Hot reload dengan Vite
-- **Production**: Static files served dengan `serve`
+### **Production (docker-compose.prod.yml)**
+- Multi-stage builds for optimization
+- Production-ready configurations
+- Health checks enabled
+- Security-focused setup
 
-#### **Backend Service**
-- **Image**: Node.js 20 Alpine dengan PNPM
-- **Port**: 3000
-- **Development**: Hot reload dengan Next.js
-- **Production**: Optimized build dengan security features
-
-#### **Database Service**
-- **Image**: PostgreSQL 15 Alpine
-- **Port**: 5432 (exposed untuk development)
-- **Health Check**: Built-in PostgreSQL health monitoring
-
-### **Docker Commands**
-
+### **Available Scripts**
 ```bash
-# Build semua services
-docker-compose build
+# Development
+npm run dev              # Start development environment
+npm run dev:detached     # Start in background
+npm run dev:logs         # View logs
+npm run dev:down         # Stop services
+npm run dev:clean        # Stop and remove volumes
 
-# Start development
-docker-compose up
+# Production  
+npm run prod             # Start production environment
+npm run prod:detached    # Start in background
+npm run prod:down        # Stop production services
 
-# Start production
-# (Edit .env untuk production settings)
-docker-compose up --build
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-
-# Reset dengan clean volumes
-docker-compose down -v && docker-compose up --build
-```
-
----
-
-## 📚 **API Documentation**
-
-### **Base URL**
-- Development: `http://localhost:3000/api`
-- Production: `https://your-domain.com/api`
-
-### **Main Endpoints**
-
-#### **Landing Page Data**
-```http
-GET /api/landing-page-aggregate
-```
-Mengambil semua data landing page dalam satu request.
-
-#### **Collections Endpoints**
-```http
-GET /api/hero-section          # Hero section data
-GET /api/features              # Features list
-GET /api/testimonials          # Customer testimonials
-GET /api/faq                   # Frequently asked questions
-GET /api/products              # Product information
-GET /api/header                # Header configuration
-GET /api/footer                # Footer configuration
-```
-
-#### **Admin Panel**
-```http
-GET /admin                     # Payload CMS admin interface
-```
-
----
-
-## 🎨 **Frontend Features**
-
-### **Landing Page Sections**
-- ✅ **Hero Section** - Main banner dengan CTA
-- ✅ **Features Section** - Product features showcase
-- ✅ **Products Section** - Product/service listings
-- ✅ **Testimonials** - Customer reviews
-- ✅ **FAQ Section** - Frequently asked questions
-- ✅ **Why Choose Section** - Value propositions
-- ✅ **CTA Section** - Call-to-action areas
-- ✅ **Footer** - Site footer dengan links
-
-### **Vue.js Components**
-```
-src/components/
-├── sections/
-│   ├── HeroSection.vue        # Main hero banner
-│   ├── FeaturesSection.vue    # Features showcase
-│   ├── TestimonialsSection.vue # Customer testimonials
-│   ├── FAQSection.vue         # FAQ accordion
-│   └── FooterSection.vue      # Site footer
-└── services/
-    └── payloadService.js      # API service layer
+# Maintenance
+npm run setup            # Install dependencies
+npm run seed             # Seed database with sample data
+npm run test             # Run tests
 ```
 
 ---
 
 ## 🔧 **Development**
 
-### **Local Development (Tanpa Docker)**
+### **Prerequisites**
+- Docker & Docker Compose
+- Node.js 20+ (optional, for local development)
+- Git
 
-#### **Backend Setup**
+### **Getting Started**
 ```bash
-cd landingpage-cms
-npm install
+# 1. Clone repository
+git clone <repository-url>
+cd Landing_Page_SiUJI
+
+# 2. Start development environment
+cp .env.dev .env
 npm run dev
+
+# 3. Wait for services to start (check logs)
+npm run dev:logs
+
+# 4. Access applications
+# - Frontend: http://localhost:5173
+# - Admin Panel: http://localhost:3000/admin
+# - API: http://localhost:3000/api
 ```
 
-#### **Frontend Setup**
+### **Local Development (Without Docker)**
 ```bash
-cd landingpage-frontend
-npm install
-npm run dev
-```
+# 1. Install dependencies
+npm run setup
 
-#### **Database Setup**
-```bash
-# Jalankan PostgreSQL dengan Docker
-docker run --name siuji-db -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:15-alpine
+# 2. Start PostgreSQL locally
+# Configure .env with local database
+
+# 3. Start services
+cd landingpage-cms && npm run dev &
+cd landingpage-frontend && npm run dev
 ```
 
 ### **Development Workflow**
-1. **Edit collections** di `landingpage-cms/src/collections/`
-2. **Update frontend components** di `landingpage-frontend/src/components/`
-3. **Test changes** dengan hot reload
-4. **Commit changes** dengan conventional commits
+1. **Frontend changes**: Edit files in `landingpage-frontend/src/` 
+2. **Backend changes**: Edit files in `landingpage-cms/src/`
+3. **CMS content**: Use admin panel at http://localhost:3000/admin
+4. **Database**: Access via any PostgreSQL client at localhost:5432
 
 ---
 
 ## 🚀 **Production Deployment**
 
-### **Pre-deployment Checklist**
-- [ ] Update production environment variables
-- [ ] Set strong `PAYLOAD_SECRET`
-- [ ] Configure production database
-- [ ] Set proper CORS origins
-- [ ] Update API URLs
-
-### **Deployment Steps**
+### **Docker Deployment**
 ```bash
-# 1. Set production environment
-# Edit .env dan aktifkan production settings
+# 1. Setup production environment
+cp .env.prod .env
+# Edit .env with production values
 
-# 2. Build production images
-docker-compose build --no-cache
+# 2. Deploy
+npm run prod:detached
 
-# 3. Start production services
-docker-compose up -d
-
-# 4. Verify deployment
-curl http://localhost:3000/api/health
-curl http://localhost:5173
+# 3. Verify deployment
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps
 ```
 
-### **Production Optimizations**
-- ✅ Multi-stage Docker builds
-- ✅ Non-root user untuk security
-- ✅ Health checks untuk monitoring
-- ✅ Optimized static assets
-- ✅ Environment-based configuration
-
----
-
-## 🧪 **Testing**
-
-### **Backend Testing**
+### **Manual Deployment**
 ```bash
-cd landingpage-cms
+# 1. Build applications
+cd landingpage-cms && npm run build
+cd landingpage-frontend && npm run build
 
-# Integration tests
-pnpm test:int
-
-# E2E tests
-pnpm test:e2e
-
-# All tests
-pnpm test
+# 2. Setup production database
+# 3. Configure production environment variables
+# 4. Start applications with PM2 or similar
 ```
 
-### **Frontend Testing**
+### **Environment Variables (Production)**
+Required production environment variables:
 ```bash
-cd landingpage-frontend
+# Database (Required)
+DB_PASSWORD=your_secure_password_here
 
-# Unit tests (ketika tersedia)
-npm test
+# Security (Required)  
+PAYLOAD_SECRET=your_32_character_secret_key_here
 
-# E2E tests (ketika tersedia)
-npm run test:e2e
+# URLs (Required)
+PAYLOAD_PUBLIC_SERVER_URL=https://your-domain.com
+FRONTEND_URL=https://your-frontend-domain.com
+API_URL=https://your-domain.com/api
+
+# Optional: Email, S3, etc.
 ```
 
 ---
 
 ## 📖 **Collections Schema**
 
-### **HeroSection**
-```typescript
-{
-  title: string;           // Main headline
-  subtitle: string;        // Supporting text
-  ctaText: string;         // Button text
-  ctaLink: string;         // Button URL
-  backgroundImage: Media;  // Hero background
-}
+Payload CMS collections untuk mengelola konten landing page:
+
+| Collection | Description | Fields |
+|------------|-------------|---------|
+| **HeroSection** | Main banner/header | title, subtitle, image, CTA |
+| **Features** | Product features | title, description, icon |
+| **AboutSection** | About company | content, images |
+| **Testimonials** | Customer reviews | name, review, rating, photo |
+| **FAQ** | Frequently asked questions | question, answer |
+| **ContactSection** | Contact information | email, phone, address |
+| **PricingPlans** | Pricing information | name, price, features |
+| **Partners** | Partners/clients | name, logo, website |
+| **Media** | File uploads | images, documents |
+| **Users** | User management | admin users |
+
+### **API Endpoints**
+```
+GET /api/hero-sections        # Hero content
+GET /api/features            # Features list  
+GET /api/testimonials        # Customer testimonials
+GET /api/faqs                # FAQ list
+GET /api/contact-sections    # Contact info
+GET /api/pricing-plans       # Pricing data
 ```
 
-### **Features**
-```typescript
-{
-  title: string;           // Feature title
-  description: string;     // Feature description
-  icon: Media;            // Feature icon
-  order: number;          // Display order
-}
+---
+
+## 🧪 **Testing**
+
+```bash
+# Run all tests
+npm run test
+
+# Run CMS tests only
+npm run test:cms
+
+# Run frontend tests only  
+npm run test:frontend
+
+# Run E2E tests
+cd landingpage-cms && npm run test:e2e
 ```
 
-### **Products**
-```typescript
-{
-  name: string;           // Product name
-  description: string;    // Product description
-  price: number;          // Product price
-  image: Media;          // Product image
-  features: string[];     // Product features
-}
+---
+
+## 🔧 **Troubleshooting**
+
+### **Common Issues**
+
+#### **Port Already in Use**
+```bash
+# Check what's using the port
+netstat -tulpn | grep :3000
+# Kill the process or change port in .env
 ```
 
-### **Testimonials**
-```typescript
-{
-  name: string;           // Customer name
-  company: string;        // Customer company
-  message: string;        // Testimonial text
-  rating: number;         // Star rating (1-5)
-  avatar: Media;         // Customer photo
-}
+#### **Database Connection Issues**
+```bash
+# Check if PostgreSQL is running
+docker-compose ps
+# Check logs
+npm run dev:logs
+```
+
+#### **Permission Issues (Windows)**
+```bash
+# Run PowerShell as Administrator
+# Or enable Docker Desktop integration
+```
+
+#### **Build Failures**
+```bash
+# Clean rebuild
+npm run dev:clean
+npm run dev
 ```
 
 ---
 
 ## 🤝 **Contributing**
 
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)  
+5. Open Pull Request
+
 ### **Development Guidelines**
-1. **Follow TypeScript** best practices
-2. **Use conventional commits** untuk commit messages
-3. **Test your changes** sebelum commit
-4. **Update documentation** jika diperlukan
-5. **Follow code formatting** dengan ESLint/Prettier
-
-### **Commit Message Format**
-```
-type(scope): description
-
-feat(frontend): add new testimonials section
-fix(backend): resolve CORS configuration issue
-docs(readme): update deployment instructions
-```
-
-### **Pull Request Process**
-1. Fork repository
-2. Create feature branch
-3. Make changes dengan tests
-4. Submit pull request dengan description
+- Use TypeScript for type safety
+- Follow Vue.js 3 Composition API patterns
+- Write tests for new features
+- Update documentation as needed
 
 ---
 
 ## 📄 **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-## 🙋‍♂️ **Support**
+## 🆘 **Support**
 
-Jika Anda mengalami masalah atau memiliki pertanyaan:
-
-1. **Check documentation** di README ini
-2. **Search existing issues** di repository
-3. **Create new issue** dengan detail yang lengkap
-4. **Contact team** untuk support urgent
+- **Issues**: [GitHub Issues](https://github.com/your-username/your-repo/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-username/your-repo/discussions)
+- **Documentation**: This README file
 
 ---
 
-## 🚀 **What's Next?**
-
-### **Planned Features**
-- [ ] Content scheduling
-- [ ] Multi-language support
-- [ ] Advanced SEO features
-- [ ] Analytics integration
-- [ ] Performance monitoring
-- [ ] Automated testing pipeline
-
----
-
-**Happy Coding! 🎉**
-
-*Built with ❤️ by SIUJI Team*
+**Made with ❤️ for modern web development**

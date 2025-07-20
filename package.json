@@ -1,4 +1,28 @@
 {
+  "name": "siuji-landing-page",
+  "version": "1.0.0",
+  "description": "SIUJI Landing Page with Payload CMS and Vue.js",
+  "scripts": {
+    "dev": "docker-compose --env-file .env.dev up --build",
+    "dev:detached": "docker-compose --env-file .env.dev up -d --build",
+    "dev:logs": "docker-compose logs -f",
+    "dev:down": "docker-compose down",
+    "dev:clean": "docker-compose down -v --remove-orphans && docker system prune -f",
+    "prod": "docker-compose --env-file .env.prod -f docker-compose.yaml -f docker-compose.prod.yml up --build",
+    "prod:detached": "docker-compose --env-file .env.prod -f docker-compose.yaml -f docker-compose.prod.yml up -d --build",
+    "prod:down": "docker-compose -f docker-compose.yaml -f docker-compose.prod.yml down",
+    "setup": "npm run setup:cms && npm run setup:frontend",
+    "setup:cms": "cd landingpage-cms && npm install",
+    "setup:frontend": "cd landingpage-frontend && npm install",
+    "seed": "cd landingpage-cms && npm run seed",
+    "test": "npm run test:cms && npm run test:frontend",
+    "test:cms": "cd landingpage-cms && npm test",
+    "test:frontend": "cd landingpage-frontend && npm test",
+    "health": "docker-compose ps",
+    "logs:cms": "docker-compose logs -f cms",
+    "logs:frontend": "docker-compose logs -f frontend",
+    "logs:db": "docker-compose logs -f db"
+  },
   "devDependencies": {
     "ignore-loader": "^0.1.2"
   }
