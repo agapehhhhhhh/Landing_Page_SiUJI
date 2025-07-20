@@ -24,6 +24,7 @@
     "logs:db": "docker-compose logs -f db"
   },
   "devDependencies": {
-    "ignore-loader": "^0.1.2"
+    "ignore-loader": "^0.1.2",
+    "lottie-web": "^5.13.0"
   }
 }
