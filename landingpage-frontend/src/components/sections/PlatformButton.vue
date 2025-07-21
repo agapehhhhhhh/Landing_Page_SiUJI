@@ -17,17 +17,26 @@ defineProps<{
 
 <style scoped>
 .platform-button {
-  padding: 0.5rem 1rem;
-  border: 2px solid #ccc;
-  border-radius: 25px;
-  background-color: white;
-  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #000; /* hitam tipis */
+  border-radius: 9999px; /* pill style */
+  background-color: #fff;
+  color: #000;
   font-weight: 500;
-  transition: 0.3s;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.platform-button:hover {
+  background-color: #e8f7f2;
+  border-color: #1abc9c;
+}
+.platform-button:focus-visible {
+  outline: 3px solid #1abc9c;
 }
 .platform-button.active {
-  background-color: #1abc9c;
-  color: white;
-  border-color: #1abc9c;
+  background-color: #1abc9c; /* tosca hijau */
+  color: #fff;
+  border-color: #000000;
 }
 </style>
