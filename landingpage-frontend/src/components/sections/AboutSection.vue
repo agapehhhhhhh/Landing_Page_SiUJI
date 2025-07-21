@@ -163,7 +163,10 @@ function getZIndex(index: number): number {
 .section-title {
   background: white;
   border-radius: 16px;
-  padding: 30px;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
   text-align: center;
   max-width: 900px;
   margin: 0 auto 40px;
