@@ -14,6 +14,7 @@
     "setup": "npm run setup:cms && npm run setup:frontend",
     "setup:cms": "cd landingpage-cms && npm install",
     "setup:frontend": "cd landingpage-frontend && npm install",
+    "generate:secret": "node -e \"console.log('PAYLOAD_SECRET=' + require('crypto').randomBytes(16).toString('hex'))\"",
     "seed": "cd landingpage-cms && npm run seed",
     "test": "npm run test:cms && npm run test:frontend",
     "test:cms": "cd landingpage-cms && npm test",
@@ -24,7 +25,6 @@
     "logs:db": "docker-compose logs -f db"
   },
   "devDependencies": {
-    "ignore-loader": "^0.1.2",
     "lottie-web": "^5.13.0"
   }
 }

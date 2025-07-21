@@ -1,10 +1,18 @@
+import dotenv from 'dotenv'
+import path from 'path'
+
+// Load environment variables FIRST before any other imports
+dotenv.config({ path: path.resolve(process.cwd(), '.env') })
+
 import { getPayload } from 'payload'
 import config from '../payload.config'
 import { seedLandingPageCollections } from './seedLandingPageCollections'
-import dotenv from 'dotenv'
 
-// Load environment variables
-dotenv.config()
+// Debug environment variables
+console.log('🔍 Environment check:')
+console.log('PAYLOAD_SECRET:', process.env.PAYLOAD_SECRET ? '✅ Found' : '❌ Missing')
+console.log('DATABASE_URI:', process.env.DATABASE_URI ? '✅ Found' : '❌ Missing')
+console.log('PAYLOAD_SECRET value:', process.env.PAYLOAD_SECRET)
 
 async function seed() {
   const payload = await getPayload({ config })

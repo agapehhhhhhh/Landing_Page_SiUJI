@@ -6,26 +6,27 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
-  db:
-    image: postgres:15-alpine
-    container_name: siuji-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${DB_NAME:-siuji_db}
-      POSTGRES_USER: ${DB_USER:-siuji_user}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-siuji_user}"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - siuji-network
+  # PostgreSQL Database - COMMENTED OUT (Using external PostgreSQL)
+  # Uncomment if you want to use Docker PostgreSQL instead
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: siuji-db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME:-siuji}
+  #     POSTGRES_USER: ${DB_USER:-siuji}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
+  #   ports:
+  #     - "${DB_PORT:-5432}:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-siuji}"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #   networks:
+  #     - siuji-network
 
   # Payload CMS Backend
   cms:
@@ -38,7 +39,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=${NODE_ENV:-development}
-      - DATABASE_URI=postgres://${DB_USER:-siuji_user}:${DB_PASSWORD:-changeme}@db:5432/${DB_NAME:-siuji_db}
+      - DATABASE_URI=postgres://${DB_USER:-siuji}:${DB_PASSWORD:-root}@host.docker.internal:5432/${DB_NAME:-siuji}
       - PAYLOAD_SECRET=${PAYLOAD_SECRET}
       - PAYLOAD_PUBLIC_SERVER_URL=${PAYLOAD_PUBLIC_SERVER_URL:-http://localhost:3000}
       - PORT=3000
@@ -47,9 +48,9 @@ services:
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:5173}
     volumes:
       - cms_media:/app/media
-    depends_on:
-      db:
-        condition: service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
     networks:
       - siuji-network
 

@@ -17,13 +17,17 @@
 # 1. Copy environment file
 cp .env.dev .env
 
-# 2. Start development environment
+# 2. Generate Payload secret key
+npm run generate:secret
+
+# 3. Copy the generated key and replace in .env file
+# 4. Start development environment
 npm run dev
 
-# 3. View logs
+# 5. View logs
 npm run dev:logs
 
-# 4. Stop services
+# 6. Stop services
 npm run dev:down
 ```
 
@@ -36,6 +40,40 @@ cp .env.prod .env
 # 3. Start production environment
 npm run prod
 ```
+
+---
+
+## ⚙️ **Environment Setup**
+
+### **🔑 Generate Payload Secret Key**
+
+Sebelum menjalankan aplikasi, Anda **HARUS** generate secret key 32 karakter untuk Payload CMS:
+
+#### **Method 1: Node.js (Recommended)**
+```bash
+node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
+```
+
+#### **Method 2: OpenSSL**
+```bash
+openssl rand -hex 16
+```
+
+#### **Method 3: PowerShell (Windows)**
+```powershell
+-join ((1..32) | ForEach {'{0:X}' -f (Get-Random -Max 16)})
+```
+
+#### **Method 4: Online Generator**
+Kunjungi: https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
+
+### **📝 Setup Steps**
+1. Copy environment file: `cp .env.dev .env`
+2. Generate secret key dengan salah satu method di atas (atau gunakan `npm run generate:secret`)
+3. Replace `your_32_character_secret_key_here_dev` dengan secret key yang di-generate
+4. Jalankan aplikasi: `npm run dev`
+
+> **💡 Catatan Windows**: Jika `npm run generate:secret` gagal karena PowerShell execution policy, gunakan method Node.js langsung: `node -e "console.log('PAYLOAD_SECRET=' + require('crypto').randomBytes(16).toString('hex'))"`
 
 ---
 
@@ -57,6 +95,43 @@ siuji-landingpage/
 ├── 📄 .env.dev                 # Development environment
 ├── 📄 .env.prod                # Production template
 └── 📖 README.md                # This file
+```
+
+---
+
+## 🛠️ **Troubleshooting**
+
+### **Windows PowerShell Issues**
+
+#### **Error: "running scripts is disabled on this system"**
+```bash
+# Problem: npm commands fail with execution policy error
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Then retry npm commands
+npm --version
+```
+
+#### **Error: "pnpm is not recognized"**
+```bash
+# Project sudah diupdate untuk menggunakan npm, bukan pnpm
+# Gunakan npm untuk semua commands:
+npm install
+npm run dev
+```
+
+### **Docker Issues**
+
+#### **Port already in use**
+```bash
+# Stop semua containers
+npm run dev:down
+
+# Clean all resources
+npm run dev:clean
+
+# Restart
+npm run dev
 ```
 
 ---
