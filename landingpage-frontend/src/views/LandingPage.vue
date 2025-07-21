@@ -4,6 +4,7 @@ import HeroSection from '@/components/sections/HeroSection.vue'
 import AboutSection from '@/components/sections/AboutSection.vue'
 import WhyChooseSection from '@/components/sections/WhyChooseSection.vue'
 import AvailableSection from '@/components/sections/AvailableSection.vue'
+import FooterSection from '@/components/sections/FooterSection.vue'
 import { useLandingPageData } from '@/composables/useLandingPageData'
 
 
@@ -18,6 +19,7 @@ const { pageData, isLoading } = useLandingPageData()
       <AboutSection />
       <WhyChooseSection />
       <AvailableSection />
+      <FooterSection />
     </div>
   </main>
 </template>

@@ -116,6 +116,9 @@ const bannerButtonLink = computed(() => {
 .mockup-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 400px; /* ✨ jaga jarak atas-bawah tetap */
+  margin-bottom: 2rem;
 }
 .mockup-image {
   width: 100%;
@@ -178,5 +181,11 @@ const bannerButtonLink = computed(() => {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .mockup-container {
+    min-height: 300px;
+  }
 }
 </style>
