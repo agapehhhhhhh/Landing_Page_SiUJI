@@ -1,0 +1,49 @@
+# Landing_Page_SiUJI/docker-compose.yml
+
+version: '3.8'
+
+services:
+  # Layanan Database PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: siuji-postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Layanan Backend PayloadCMS
+  backend:
+    container_name: siuji-backend-cms
+    build:
+      context: ./landingpage-cms
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      SERVER_URL: ${SERVER_URL}
+    depends_on:
+      - db
+
+  # Layanan Frontend Vue.js
+  frontend:
+    container_name: siuji-frontend-vue
+    build:
+      context: ./landingpage-frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:80" # Akses frontend melalui http://localhost:8080
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

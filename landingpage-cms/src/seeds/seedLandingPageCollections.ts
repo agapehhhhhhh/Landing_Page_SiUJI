@@ -124,14 +124,14 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
       {
         title: 'Sistem Ujian Cerdas',
         description: 'Sistem ujian bertenaga AI canggih dengan mekanisme anti-kecurangan dan kemampuan proctoring real-time.',
-        position: 'left',
+        position: 'left' as const,
         features: [{ feature: 'AI Proctoring' }, { feature: 'Penilaian Otomatis' }, { feature: 'Randomisasi Soal' }],
         isActive: true, order: 1
       },
       {
         title: 'Analitik Komprehensif',
         description: 'Dapatkan wawasan detail tentang kinerja siswa dengan alat analitik dan pelaporan komprehensif.',
-        position: 'right',
+        position: 'right' as const,
         features: [{ feature: 'Pelacakan Kinerja' }, { feature: 'Laporan Kustom' }, { feature: 'Visualisasi Data' }],
         isActive: true, order: 2
       }
@@ -164,17 +164,17 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
     console.log('Seeding Pricing Plans...')
     const pricingPlansData = [
       {
-        name: 'Basic', price: 0, period: 'month', currency: 'idr', description: 'Untuk coba-coba dan penggunaan personal.',
+        name: 'Basic', price: 0, period: 'month' as const, currency: 'idr' as const, description: 'Untuk coba-coba dan penggunaan personal.',
         features: [{ feature: 'Hingga 50 siswa', isIncluded: true }, { feature: '2 Ujian per bulan', isIncluded: true }, { feature: 'Dukungan Email', isIncluded: true }],
         ctaText: 'Mulai Gratis', ctaLink: '/register?plan=basic', isActive: true, order: 1
       },
       {
-        name: 'Pro', price: 500000, period: 'month', currency: 'idr', description: 'Solusi terbaik untuk sekolah dan institusi.',
+        name: 'Pro', price: 500000, period: 'month' as const, currency: 'idr' as const, description: 'Solusi terbaik untuk sekolah dan institusi.',
         features: [{ feature: 'Siswa tak terbatas', isIncluded: true }, { feature: 'Ujian tak terbatas', isIncluded: true }, { feature: 'AI Proctoring', isIncluded: true }, { feature: 'Dukungan Prioritas', isIncluded: true }],
         ctaText: 'Pilih Pro', ctaLink: '/register?plan=pro', isPopular: true, badge: 'Paling Populer', isActive: true, order: 2
       },
       {
-        name: 'Enterprise', price: 0, period: 'once', currency: 'idr', description: 'Solusi kustom untuk kebutuhan institusi besar.',
+        name: 'Enterprise', price: 0, period: 'once' as const, currency: 'idr' as const, description: 'Solusi kustom untuk kebutuhan institusi besar.',
         features: [{ feature: 'Semua fitur Pro', isIncluded: true }, { feature: 'Server Khusus', isIncluded: true }, { feature: 'Manager Akun Khusus', isIncluded: true }],
         ctaText: 'Hubungi Sales', ctaLink: '/contact', isActive: true, order: 3
       }
@@ -184,69 +184,33 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
     }
     console.log(`✅ ${pricingPlansData.length} Pricing Plans seeded`);
 
-    // 8. Seed FAQ
+    // 8. Seed FAQ - Simplified structure for seeding
     console.log('Seeding FAQ...')
     const faqData = [
       {
         question: 'Apa itu SiUJI?',
-        category: 'general',
-        answer: {
-          root: {
-            children: [{
-              type: 'p',
-              children: [{ text: 'SiUJI adalah platform ujian online komprehensif yang dirancang untuk membantu institusi pendidikan melakukan ujian secara efisien, aman, dan terukur.' }]
-            }],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            type: 'root',
-            version: 1
-          }
-        },
+        category: 'general' as const,
+        answer: 'SiUJI adalah platform ujian online komprehensif yang dirancang untuk membantu institusi pendidikan melakukan ujian secara efisien, aman, dan terukur.',
         isActive: true,
         order: 1
       },
       {
         question: 'Bagaimana cara kerja fitur anti-kecurangan?',
-        category: 'features',
-        answer: {
-          root: {
-            children: [{
-              type: 'p',
-              children: [{ text: 'Kami menggunakan kombinasi AI proctoring, penguncian browser, dan randomisasi soal untuk meminimalkan potensi kecurangan selama ujian berlangsung.' }]
-            }],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            type: 'root',
-            version: 1
-          }
-        },
+        category: 'features' as const,
+        answer: 'Kami menggunakan kombinasi AI proctoring, penguncian browser, dan randomisasi soal untuk meminimalkan potensi kecurangan selama ujian berlangsung.',
         isActive: true,
         order: 2
       },
       {
         question: 'Apakah data saya aman?',
-        category: 'technical',
-        answer: {
-          root: {
-            children: [{
-              type: 'p',
-              children: [{ text: 'Tentu. Kami menggunakan enkripsi standar industri dan praktik keamanan terbaik untuk memastikan semua data Anda, termasuk soal dan jawaban siswa, tersimpan dengan aman.' }]
-            }],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            type: 'root',
-            version: 1
-          }
-        },
+        category: 'technical' as const,
+        answer: 'Tentu. Kami menggunakan enkripsi standar industri dan praktik keamanan terbaik untuk memastikan semua data Anda, termasuk soal dan jawaban siswa, tersimpan dengan aman.',
         isActive: true,
         order: 3
       }
     ];
     for (const faq of faqData) {
-      await payloadInstance.create({ collection: 'faq', data: faq });
+      await payloadInstance.create({ collection: 'faq', data: faq as any });
     }
     console.log(`✅ ${faqData.length} FAQs seeded`);
 
@@ -255,8 +219,8 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
     const partnersData = [
       // NOTE: 'logo' field is omitted as it requires a media ID from an uploaded file.
       // You can manually add logos from the admin panel after seeding.
-      { name: 'Universitas Pendidikan Digital', type: 'university', website: 'https://upd.ac.id', location: 'Jakarta', isActive: true, order: 1, isFeatured: true },
-      { name: 'SMA Cendekia Bangsa', type: 'school', website: 'https://smacendekia.sch.id', location: 'Bandung', isActive: true, order: 2 }
+      { name: 'Universitas Pendidikan Digital', type: 'university' as const, website: 'https://upd.ac.id', location: 'Jakarta', isActive: true, order: 1, isFeatured: true },
+      { name: 'SMA Cendekia Bangsa', type: 'school' as const, website: 'https://smacendekia.sch.id', location: 'Bandung', isActive: true, order: 2 }
     ];
     for (const partner of partnersData) {
       await payloadInstance.create({ collection: 'partners', data: partner });

@@ -1,0 +1,59 @@
+# docker-compose.dev.yml - Untuk Development
+version: '3.8'
+
+services:
+  # Database tetap sama
+  db:
+    image: postgres:15-alpine
+    container_name: siuji-postgres-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Backend untuk Development
+  backend:
+    container_name: siuji-backend-cms-dev
+    build:
+      context: ./landingpage-cms
+      dockerfile: Dockerfile.dev  # Dockerfile khusus development
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      SERVER_URL: ${SERVER_URL}
+      NODE_ENV: development
+    volumes:
+      # Mount source code untuk hot reload
+      - ./landingpage-cms:/app
+      - /app/node_modules  # Anonymous volume untuk node_modules
+    depends_on:
+      - db
+    command: npm run dev  # Jalankan development server
+
+  # Frontend untuk Development
+  frontend:
+    container_name: siuji-frontend-vue-dev
+    build:
+      context: ./landingpage-frontend
+      dockerfile: Dockerfile.dev  # Dockerfile khusus development
+    restart: unless-stopped
+    ports:
+      - "5173:5173"  # Vite default port
+    volumes:
+      # Mount source code untuk hot reload
+      - ./landingpage-frontend:/app
+      - /app/node_modules  # Anonymous volume untuk node_modules
+    command: npm run dev  # Jalankan development server
+    depends_on:
+      - backend
+
+volumes:
+  pgdata_dev:
