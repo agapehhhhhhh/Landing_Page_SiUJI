@@ -20,30 +20,47 @@
       </div>
 
       <div class="right-images">
-        <transition-group
-          name="fade-slide"
-          tag="div"
-          class="image-stack"
-          @mouseenter="pauseSlide"
-          @mouseleave="resumeSlide"
-        >
-          <div
-            v-for="(img, index) in rotatingImages"
-            :key="img"
-            class="stack-image"
-            :style="{ zIndex: getZIndex(index) }"
-            @mouseover="hoveredIndex = index"
-            @mouseleave="hoveredIndex = -1"
-          >
-            <img :src="img" alt="stacked" />
+        <!-- Desktop: stacked images -->
+        <transition name="fade-slide-stack" mode="out-in">
+          <div :key="currentIndex" class="image-stack-wrapper desktop-only">
+            <transition-group
+              name="fade-image"
+              tag="div"
+              class="image-stack"
+              @mouseenter="pauseSlide"
+              @mouseleave="resumeSlide"
+            >
+              <div
+                v-for="(img, index) in rotatingImages"
+                :key="img"
+                class="stack-image"
+                :style="{ zIndex: getZIndex(index) }"
+                @mouseover="hoveredIndex = index"
+                @mouseleave="hoveredIndex = -1"
+              >
+                <img :src="img" alt="stacked" />
+              </div>
+            </transition-group>
           </div>
-        </transition-group>
+        </transition>
+
+        <!-- Mobile: single image only -->
+        <div class="mobile-only single-image">
+          <transition name="fade-slide" mode="out-in">
+            <img
+              :key="rotatingImages[0]"
+              :src="rotatingImages[0]"
+              alt="carousel image"
+              class="single-img"
+            />
+          </transition>
+        </div>
       </div>
     </div>
 
     <!-- Dot carousel + Arrow -->
     <div class="carousel-navigation">
-      <button @click="prevSlide" class="arrow">
+      <button @click="prevSlide" class="arrow" aria-label="Previous Slide">
         <span class="material-icons">arrow_back</span>
       </button>
 
@@ -52,7 +69,7 @@
           v-for="(_, index) in slides"
           :key="index"
           :class="{ active: currentIndex === index }"
-          @click="currentIndex = index"
+          @click="onDotClick(index)"
         ></span>
       </div>
 
@@ -135,12 +152,26 @@ function resumeSlide() {
 
 function prevSlide() {
   currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length
-  rotatingImages.value = [...slides[currentIndex.value].images] // reset gambar
+  rotatingImages.value = [...slides[currentIndex.value].images]
+  resetSlideTimer()
 }
 
 function nextSlide() {
   currentIndex.value = (currentIndex.value + 1) % slides.length
-  rotatingImages.value = [...slides[currentIndex.value].images] // reset gambar
+  rotatingImages.value = [...slides[currentIndex.value].images]
+  resetSlideTimer()
+}
+
+function resetSlideTimer() {
+  clearInterval(rotateIntervalId)
+  rotateIntervalId = window.setInterval(() => {
+    rotateImages()
+  }, 3000)
+}
+function onDotClick(index: number) {
+  currentIndex.value = index
+  rotatingImages.value = [...slides[currentIndex.value].images]
+  resetSlideTimer()
 }
 
 function getZIndex(index: number): number {
@@ -158,27 +189,28 @@ function getZIndex(index: number): number {
   color: #333;
   width: 100%; /* sebelumnya 100vw */
   background: url('@/assets/blob-haikei.svg') center/cover no-repeat;
+  box-sizing: border-box;
 }
 
 .section-title {
   background: white;
   border-radius: 20px;
-  padding: 48px 56px;
+  padding: 28px 32px;
   text-align: center;
-  max-width: 960px;
-  margin: 0 auto 80px;
+  max-width: 800px;
+  margin: 0 auto 60px; /* ↓ jarak bawah dari 80px */
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 .section-title h2 {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   margin-bottom: 20px;
 }
 
 .section-title p {
-  font-size: 18px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.6;
   color: #555;
 }
 
@@ -241,7 +273,7 @@ function getZIndex(index: number): number {
   position: relative;
   justify-content: center;
   align-items: center;
-  padding-left: 70px;
+  padding-left: 55px;
 }
 
 .stack-image {
@@ -265,6 +297,10 @@ function getZIndex(index: number): number {
   z-index: 10;
 }
 
+.stack-image:hover img {
+  transition: transform 0.4s ease 0.1s, box-shadow 0.4s ease 0.1s;
+}
+
 .stack-image img {
   border-radius: 24px;
   width: 320px;
@@ -276,7 +312,7 @@ function getZIndex(index: number): number {
 
 /* === Carousel Nav === */
 .carousel-navigation {
-  margin-top: 100px;
+  margin-top: 24px; /* atau 32px untuk lebih dekat */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -340,6 +376,28 @@ function getZIndex(index: number): number {
   transform: translateX(-20px);
 }
 
+/* Antar SLIDE: Teacher ⇄ Student */
+.fade-slide-stack-enter-active,
+.fade-slide-stack-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-slide-stack-enter-from,
+.fade-slide-stack-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Rotasi GAMBAR di dalam stack */
+.fade-image-enter-active,
+.fade-image-leave-active {
+  transition: all 0.4s ease;
+}
+.fade-image-enter-from,
+.fade-image-leave-to {
+  opacity: 0;
+  transform: translateX(15px);
+}
+
 .pulse-circle {
   position: absolute;
   bottom: 40px;
@@ -367,12 +425,21 @@ function getZIndex(index: number): number {
   z-index: -1; /* pastikan di belakang konten */
 }
 
+.desktop-only {
+  display: flex;
+}
+
+.mobile-only {
+  display: none;
+}
 
 /* === Responsive === */
 @media (max-width: 768px) {
   .section-content {
     flex-direction: column;
     align-items: center;
+    gap: 40px;
+    padding: 0 16px;
   }
 
   .left-card,
@@ -382,12 +449,57 @@ function getZIndex(index: number): number {
   }
 
   .image-stack {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: none !important; /* force hide */
   }
 
   .stack-image {
-    margin-left: -60px;
+    display: none !important;
+  }
+
+  .carousel-navigation {
+    margin-top: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .stack-image img {
+    width: 280px;
+    max-width: 85vw;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+
+  .stack-image:hover {
+    transform: none !important;
+  }
+
+    .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .single-image {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .single-img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 }
 </style>
