@@ -1,36 +1,30 @@
 <template>
   <section class="hero">
+    <!-- Background SVG -->
     <div class="shape-svg">
-      <!-- SVG Background -->
-      <svg viewBox="0 0 1440 800" preserveAspectRatio="none">
-        <path
-          d="M960,0 C1180,200 1220,600 1440,800 L1440,0 L0,0 Z"
-          fill="#4CC5BD"
-        />
+      <svg id="visual" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="none">
+        <path d="M595 600L571 566.7C547 533.3 499 466.7 505.2 400C511.3 333.3 571.7 266.7 580.5 200C589.3 133.3 546.7 66.7 525.3 33.3L504 0L900 0L900 33.3C900 66.7 900 133.3 900 200C900 266.7 900 333.3 900 400C900 466.7 900 533.3 900 566.7L900 600Z"
+              fill="#4CC5BD"
+              stroke-linecap="round"
+              stroke-linejoin="miter" />
       </svg>
     </div>
 
+    <!-- Konten Utama -->
     <div class="hero-container">
-      <!-- Kiri: Teks -->
       <div class="hero-text">
-        <h1>{{ data.heroTitle || "Headline Utama Dari Aplikasi SIUJIII" }}</h1>
-        <p>
-          {{
-            data.heroSubtitle ||
-            "Subheadline dari aplikasi yang bertujuan untuk menjelaskan lebih lanjut tentang how atau manfaatnya."
-          }}
-        </p>
-        <a class="hero-button" :href="data.ctaButtonLink || '#'">
-          {{ data.ctaButtonText || "Get Started Now" }}
+        <h1>{{ data.heroTitle }}</h1>
+        <p>{{ data.heroSubtitle }}</p>
+        <a class="hero-button" :href="data.ctaButtonLink">
+          {{ data.ctaButtonText }}
           <span>&rarr;</span>
         </a>
       </div>
 
-      <!-- Kanan: Ilustrasi & Floating -->
       <div class="hero-visual">
         <img
           class="hero-image"
-          :src="data.heroImage?.url || require('@/assets/ilustrasi-hero.png')"
+          :src="data.heroImage?.url"
           alt="Hero Illustration"
         />
         <img src="/assets/float-book.svg" class="floating book" alt="book" />
@@ -73,6 +67,7 @@ defineProps({
 .shape-svg svg {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .hero-container {
@@ -90,7 +85,6 @@ defineProps({
   flex: 1 1 50%;
   max-width: 580px;
   padding-left: 1rem;
-  padding-top: 0px;
   z-index: 3;
   margin-top: -100px;
   margin-left: 2rem;
@@ -162,19 +156,19 @@ defineProps({
 
 .book {
   top: 20%;
-  right: 10%;
+  right: 5%;
   animation-delay: 0s;
 }
 
 .pencil {
   top: 45%;
-  right: 65%;
+  right: 60%;
   animation-delay: 0.5s;
 }
 
 .file {
   bottom: 10%;
-  right: 15%;
+  right: 11%;
   animation-delay: 1s;
 }
 
@@ -191,8 +185,12 @@ defineProps({
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @media (max-width: 900px) {
@@ -221,10 +219,6 @@ defineProps({
 
   .floating {
     display: none;
-  }
-
-  .shape-svg svg path {
-    d: path("M720,0 C980,200 1020,600 1440,800 L1440,0 L0,0 Z");  
   }
 }
 </style>

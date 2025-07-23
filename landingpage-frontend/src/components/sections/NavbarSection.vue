@@ -5,18 +5,20 @@
       <div class="logo">
         <img src="@/assets/logo.svg" alt="SIUJI Logo" />
       </div>
+
       <nav class="nav-links">
         <a href="#">Product</a>
         <a href="#">About Us</a>
         <a href="#">Feature</a>
         <a href="#">Help</a>
       </nav>
-      <div class="nav-action">
-        <button class="login-button">Login</button>
-      </div>
+
+
+      <button class="login-button">Login</button>
     </div>
   </header>
 </template>
+
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
@@ -49,7 +51,7 @@ onUnmounted(() => {
 }
 
 .navbar.scrolled {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(6px);
 }
@@ -58,18 +60,22 @@ onUnmounted(() => {
   max-width: 1200px;
   margin: auto;
   padding: 0 20px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   justify-content: space-between;
 }
 
 .logo img {
-  height: 40px;
+  height: 50px;
 }
+
 
 .nav-links {
   display: flex;
   gap: 2rem;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .nav-links a {
@@ -85,6 +91,7 @@ onUnmounted(() => {
 }
 
 .login-button {
+  flex-shrink: 0;
   padding: 8px 20px;
   border: 2px solid #1c1c1c;
   border-radius: 20px;

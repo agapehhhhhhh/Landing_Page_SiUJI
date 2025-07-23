@@ -14,10 +14,14 @@ export const fetchLandingPage = async () => {
       hero: hero ?? {
         heroTitle: "Headline Utama Dari Aplikasi SIUJIII",
         heroSubtitle:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        ctaButtonText: "Get Started Nowwwwwwwww",
-        heroImage: { url: "require('@/assets/ilustrasi-hero.png')" },
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        ctaButtonText: "Get Started Now",
+        heroImage: { url: "/assets/ilustrasi-hero.png" },
       },
+      portofolio: [
+        { url: "/assets/logo1.png", alt: "Logo 1" },
+        { url: "/assets/logo2.jpeg", alt: "Logo 2" },
+      ],
     };
   } catch (e) {
     console.error("[fetchLandingPage] Error:", e);
@@ -25,8 +29,10 @@ export const fetchLandingPage = async () => {
       hero: {
         heroTitle: "Fallback Title",
         heroSubtitle: "Fallback Subtitle",
-        heroImage: { url: "" },
+        heroImage: { url: "/assets/ilustrasi-hero.png" },
       },
+      portofolio: [],
     };
   }
 };
+
