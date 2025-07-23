@@ -18,6 +18,10 @@ coverage/
 .env.local
 test.env
 
+# Uploads
+uploads/
+media/
+
 # Specific environment files (keep templates)
 # .env.dev (keep for development)
 # .env.prod (keep as template)

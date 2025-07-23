@@ -49,21 +49,28 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
       data: {
         title: 'Apa itu SIUJI?',
         subtitle: 'Solusi Pendidikan Digital Lengkap Anda',
-        description: 'SIUJI adalah platform yang memungkinkan pendidik membuat kelas online dimana mereka dapat menyimpan materi kursus secara online; mengelola tugas, kuis dan ujian; memantau tenggat waktu; menilai hasil dan memberikan umpan balik kepada siswa semuanya dalam satu tempat.',
-        targetUsers: [
-          {
-            title: 'Untuk Guru',
-            description: 'Buat, kelola, dan nilai ujian dengan mudah. Dapatkan analitik mendalam tentang kinerja siswa.'
-          },
-          {
-            title: 'Untuk Sekolah',
-            description: 'Sistem manajemen sekolah komprehensif dengan platform ujian terintegrasi untuk pendidikan modern.'
-          },
-          {
-            title: 'Untuk Siswa',
-            description: 'Antarmuka yang menarik dan ramah pengguna untuk mengikuti ujian dan mengakses materi pembelajaran.'
+        description: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                version: 1,
+                children: [
+                  {
+                    type: 'text',
+                    text: 'SIUJI adalah platform yang memungkinkan pendidik membuat kelas online dimana mereka dapat menyimpan materi kursus secara online; mengelola tugas, kuis dan ujian; memantau tenggat waktu; menilai hasil dan memberikan umpan balik kepada siswa semuanya dalam satu tempat.',
+                    version: 1
+                  }
+                ]
+              }
+            ],
+            direction: null,
+            format: '',
+            indent: 0,
+            version: 1
           }
-        ],
+        },
         isActive: true
       }
     })
@@ -102,16 +109,34 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
       data: {
         title: 'Hubungi Kami!',
         subtitle: 'Siap Mentransformasi Pendidikan Anda?',
-        description: 'Punya pertanyaan tentang SiUJI atau butuh solusi khusus? Tim kami siap membantu Anda mendigitalkan proses ujian.',
-        address: 'Jl. Raya Bandung-Sumedang KM 21, Jatinangor, Sumedang, Jawa Barat 45363',
-        phone: '+62 22 7796 8800',
-        email: 'info@siuji.id',
-        workingHours: 'Senin - Jumat: 09:00 - 18:00 WIB',
-        mapConfig: {
-          latitude: -6.9279,
-          longitude: 107.7725,
-          zoom: 15,
-          marker: 'Kantor SiUJI'
+        description: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                version: 1,
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Punya pertanyaan tentang SiUJI atau butuh solusi khusus? Tim kami siap membantu Anda mendigitalkan proses ujian.',
+                    version: 1
+                  }
+                ]
+              }
+            ],
+            direction: null,
+            format: '',
+            indent: 0,
+            version: 1
+          }
+        },
+        contactInfo: {
+          address: 'Jl. Raya Bandung-Sumedang KM 21, Jatinangor, Sumedang, Jawa Barat 45363',
+          phone: '+62 22 7796 8800',
+          email: 'info@siuji.id',
+          workingHours: 'Senin - Jumat: 09:00 - 18:00 WIB',
+          whatsappNumber: '+62 812 3456 7890'
         },
         isActive: true
       }
@@ -196,20 +221,17 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
             children: [
               {
                 type: 'paragraph',
+                version: 1,
                 children: [
                   {
                     type: 'text',
                     text: 'SiUJI adalah platform ujian online komprehensif yang dirancang untuk membantu institusi pendidikan melakukan ujian secara efisien, aman, dan terukur.',
                     version: 1
                   }
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1
+                ]
               }
             ],
-            direction: 'ltr',
+            direction: null,
             format: '',
             indent: 0,
             version: 1
@@ -227,20 +249,17 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
             children: [
               {
                 type: 'paragraph',
+                version: 1,
                 children: [
                   {
                     type: 'text',
                     text: 'Kami menggunakan kombinasi AI proctoring, penguncian browser, dan randomisasi soal untuk meminimalkan potensi kecurangan selama ujian berlangsung.',
                     version: 1
                   }
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1
+                ]
               }
             ],
-            direction: 'ltr',
+            direction: null,
             format: '',
             indent: 0,
             version: 1
@@ -258,20 +277,17 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
             children: [
               {
                 type: 'paragraph',
+                version: 1,
                 children: [
                   {
                     type: 'text',
                     text: 'Tentu. Kami menggunakan enkripsi standar industri dan praktik keamanan terbaik untuk memastikan semua data Anda, termasuk soal dan jawaban siswa, tersimpan dengan aman.',
                     version: 1
                   }
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1
+                ]
               }
             ],
-            direction: 'ltr',
+            direction: null,
             format: '',
             indent: 0,
             version: 1
@@ -301,16 +317,48 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
 
     // 10. Seed Platform Availability
     console.log('Seeding Platform Availability...')
-    const platformAvailabilityData = [
-      // NOTE: 'icon' and 'mockupImage' are omitted as they require media IDs.
-      { name: 'Aplikasi Web', slug: 'web', description: 'Akses penuh SiUJI melalui browser modern di desktop atau laptop Anda.', downloadLink: '/app', systemRequirements: [{ requirement: 'Browser Chrome, Firefox, atau Safari terbaru' }], isActive: true, order: 1 },
-      { name: 'Android', slug: 'android', description: 'Ikuti ujian dengan mudah dari perangkat Android Anda.', downloadLink: '#', systemRequirements: [{ requirement: 'Android 8.0 Oreo atau lebih baru' }], isActive: true, order: 2, isComingSoon: false },
-      { name: 'iOS', slug: 'ios', description: 'Segera hadir di perangkat iPhone dan iPad Anda.', downloadLink: '#', systemRequirements: [{ requirement: 'iOS 15 atau lebih baru' }], isActive: true, order: 3, isComingSoon: true }
-    ];
-    for (const platform of platformAvailabilityData) {
-      await payloadInstance.create({ collection: 'platform-availability', data: platform });
-    }
-    console.log(`✅ ${platformAvailabilityData.length} Platform Availabilities seeded`);
+    await payloadInstance.create({
+      collection: 'platform-availability',
+      data: {
+        sectionTitle: 'Kini SIUJI Sudah Tersedia di 3 Platform Berbeda',
+        subtitle: 'Akses ujian online dimana saja dan kapan saja sesuai kebutuhan Anda',
+        platforms: [
+          {
+            name: 'Aplikasi Web',
+            slug: 'web',
+            description: 'Akses penuh SiUJI melalui browser modern di desktop atau laptop Anda dengan pengalaman yang optimal.',
+            mockupImage: null as any, // Placeholder, can be added later via admin
+            isDefault: true,
+            order: 1
+          },
+          {
+            name: 'Android',
+            slug: 'android',
+            description: 'Ikuti ujian dengan mudah dari perangkat Android Anda kapan saja dan dimana saja.',
+            mockupImage: null as any, // Placeholder, can be added later via admin
+            isDefault: false,
+            order: 2
+          },
+          {
+            name: 'iOS',
+            slug: 'ios',
+            description: 'Segera hadir di perangkat iPhone dan iPad Anda untuk pengalaman ujian yang lebih fleksibel.',
+            mockupImage: null as any, // Placeholder, can be added later via admin
+            isDefault: false,
+            order: 3
+          }
+        ],
+        infoBanner: {
+          text: 'Dapatkan akses lengkap ke semua platform SiUJI',
+          buttonLabel: 'Mulai Sekarang',
+          buttonLink: '/register',
+          backgroundColor: '#4CC5BD'
+        },
+        isActive: true,
+        order: 0
+      }
+    });
+    console.log('✅ Platform Availability seeded');
 
     console.log('\n🎉 All collections seeded successfully!')
     console.log('\n📊 Summary:')

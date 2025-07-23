@@ -13,6 +13,7 @@ import HeroSection from './collections/HeroSection'
 import AboutSection from './collections/AboutSection'
 import WhyChooseSection from './collections/WhyChooseSection'
 import ContactSection from './collections/ContactSection'
+import PortfolioSection from './collections/PortfolioSection'
 import { Features  } from './collections/Features'
 import { Testimonials } from './collections/Testimonials'
 import { PricingPlans } from './collections/PricingPlans'
@@ -29,7 +30,27 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: '- SiUJI CMS',
+    },
+    dateFormat: 'dd/MM/yyyy',
   },
+  cors: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8080'
+  ],
+  csrf: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8080'
+  ],
   collections: [
     Users, 
     Media,
@@ -38,6 +59,7 @@ export default buildConfig({
     AboutSection,
     WhyChooseSection,
     ContactSection,
+    PortfolioSection,
     // Feature Collections
     Features, 
     Testimonials, 

@@ -4,7 +4,8 @@ export const ContactSection: CollectionConfig = {
   slug: 'contact-section',
   admin: {
     useAsTitle: 'title',
-    description: 'Contact section content',
+    description: 'Contact Us section content for landing page',
+    defaultColumns: ['title', 'isActive']
   },
   access: {
     read: () => true,
@@ -14,66 +15,97 @@ export const ContactSection: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      defaultValue: 'Get In Touch With Us!',
+      defaultValue: 'Hubungi Kami',
     },
     {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle',
+      defaultValue: 'Terhubung dengan tim kami untuk solusi ujian online terbaik',
     },
     {
       name: 'description',
-      type: 'textarea',
+      type: 'richText',
       label: 'Description',
     },
+    // Contact Form Fields Labels
     {
-      name: 'address',
-      type: 'textarea',
-      label: 'Office Address',
-    },
-    {
-      name: 'phone',
-      type: 'text',
-      label: 'Phone Number',
-    },
-    {
-      name: 'email',
-      type: 'email',
-      label: 'Email Address',
-    },
-    {
-      name: 'workingHours',
-      type: 'text',
-      label: 'Working Hours',
-    },
-    {
-      name: 'mapConfig',
+      name: 'formConfig',
       type: 'group',
-      label: 'Map Configuration',
+      label: 'Contact Form Configuration',
       fields: [
         {
-          name: 'latitude',
-          type: 'number',
-          label: 'Latitude',
-          defaultValue: -6.9175,
-        },
-        {
-          name: 'longitude',
-          type: 'number',
-          label: 'Longitude',
-          defaultValue: 107.6191,
-        },
-        {
-          name: 'zoom',
-          type: 'number',
-          label: 'Map Zoom Level',
-          defaultValue: 15,
-        },
-        {
-          name: 'marker',
+          name: 'nameLabel',
           type: 'text',
-          label: 'Marker Text',
-          defaultValue: 'SiUJI Office',
+          label: 'Name Field Label',
+          defaultValue: 'Nama',
+        },
+        {
+          name: 'whatsappLabel',
+          type: 'text',
+          label: 'WhatsApp Field Label',
+          defaultValue: 'No WhatsApp',
+        },
+        {
+          name: 'institutionLabel',
+          type: 'text',
+          label: 'Institution Field Label',
+          defaultValue: 'Instansi',
+        },
+        {
+          name: 'messageLabel',
+          type: 'text',
+          label: 'Message Field Label',
+          defaultValue: 'Pesan',
+        },
+        {
+          name: 'submitButtonText',
+          type: 'text',
+          label: 'Submit Button Text',
+          defaultValue: 'Kirim',
+        },
+        {
+          name: 'successMessage',
+          type: 'text',
+          label: 'Success Message',
+          defaultValue: 'Terima kasih! Pesan Anda telah terkirim.',
+        },
+      ],
+    },
+    // Contact Information
+    {
+      name: 'contactInfo',
+      type: 'group',
+      label: 'Contact Information',
+      fields: [
+        {
+          name: 'address',
+          type: 'textarea',
+          label: 'Office Address',
+        },
+        {
+          name: 'phone',
+          type: 'text',
+          label: 'Phone Number',
+        },
+        {
+          name: 'email',
+          type: 'email',
+          label: 'Email Address',
+        },
+        {
+          name: 'workingHours',
+          type: 'text',
+          label: 'Working Hours',
+          defaultValue: 'Senin - Jumat: 09:00 - 17:00',
+        },
+        {
+          name: 'whatsappNumber',
+          type: 'text',
+          label: 'WhatsApp Number',
+          admin: {
+            description: 'Format: +62812345678 (dengan kode negara)',
+          },
         },
       ],
     },
@@ -81,6 +113,14 @@ export const ContactSection: CollectionConfig = {
       name: 'isActive',
       type: 'checkbox',
       defaultValue: true,
+    },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        description: 'Order of appearance in landing page',
+      },
     },
   ],
 }

@@ -3,72 +3,108 @@ import type { CollectionConfig } from 'payload'
 export const PlatformAvailability: CollectionConfig = {
   slug: 'platform-availability',
   admin: {
-    useAsTitle: 'name',
-    defaultColumns: ['name', 'isActive', 'order'],
+    useAsTitle: 'sectionTitle',
+    defaultColumns: ['sectionTitle', 'isActive'],
+    description: 'Platform availability section with 3 platform showcase'
   },
   access: {
     read: () => true,
   },
   fields: [
     {
-      name: 'name',
+      name: 'sectionTitle',
       type: 'text',
       required: true,
-      label: 'Platform Name',
+      label: 'Section Headline',
+      defaultValue: 'Kini SIUJI Sudah Tersedia di 3 Platform Berbeda',
     },
     {
-      name: 'slug',
+      name: 'subtitle',
       type: 'text',
-      required: true,
-      unique: true,
-      admin: {
-        description: 'Used for platform selection (e.g., "android", "web", "ios")',
-      },
+      label: 'Section Subtitle',
     },
     {
-      name: 'icon',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Platform Icon',
-    },
-    {
-      name: 'mockupImage',
-      type: 'upload',
-      relationTo: 'media',
-      required: false,
-      label: 'Platform UI Mockup',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      label: 'Platform Description',
-    },
-    {
-      name: 'downloadLink',
-      type: 'text',
-      label: 'Download/Access Link',
-    },
-    {
-      name: 'features',
+      name: 'platforms',
       type: 'array',
-      label: 'Platform-specific Features',
+      label: 'Available Platforms',
+      minRows: 3,
+      maxRows: 3,
       fields: [
         {
-          name: 'feature',
+          name: 'name',
           type: 'text',
           required: true,
+          label: 'Platform Name',
+        },
+        {
+          name: 'slug',
+          type: 'text',
+          required: true,
+          label: 'Platform Slug',
+          admin: {
+            description: 'Used for platform selection (e.g., "Android", "Website", "IOS")',
+          },
+        },
+        {
+          name: 'mockupImage',
+          type: 'upload',
+          relationTo: 'media',
+          required: false,
+          label: 'Platform UI Mockup',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Platform Description',
+        },
+        {
+          name: 'isDefault',
+          type: 'checkbox',
+          label: 'Default Selected Platform',
+          defaultValue: false,
+          admin: {
+            description: 'Only one platform should be marked as default',
+          },
+        },
+        {
+          name: 'order',
+          type: 'number',
+          defaultValue: 0,
+          label: 'Display Order',
         },
       ],
     },
     {
-      name: 'systemRequirements',
-      type: 'array',
-      label: 'System Requirements',
+      name: 'infoBanner',
+      type: 'group',
+      label: 'Information Banner',
       fields: [
         {
-          name: 'requirement',
+          name: 'text',
           type: 'text',
-          required: true,
+          label: 'Banner Text',
+          defaultValue: 'Dapatkan akses lengkap ke semua platform SiUJI',
+        },
+        {
+          name: 'buttonLabel',
+          type: 'text',
+          label: 'Button Label',
+          defaultValue: 'Mulai Sekarang',
+        },
+        {
+          name: 'buttonLink',
+          type: 'text',
+          label: 'Button Link',
+          defaultValue: '/register',
+        },
+        {
+          name: 'backgroundColor',
+          type: 'text',
+          label: 'Banner Background Color',
+          defaultValue: '#4CC5BD',
+          admin: {
+            description: 'CSS color value (hex, rgb, etc.)',
+          },
         },
       ],
     },
@@ -82,19 +118,10 @@ export const PlatformAvailability: CollectionConfig = {
       type: 'number',
       defaultValue: 0,
       admin: {
-        description: 'Order of appearance in platform tabs',
-      },
-    },
-    {
-      name: 'isComingSoon',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        description: 'Mark platform as "Coming Soon"',
+        description: 'Order of appearance in landing page',
       },
     },
   ],
-  defaultSort: 'order',
 }
 
 export default PlatformAvailability

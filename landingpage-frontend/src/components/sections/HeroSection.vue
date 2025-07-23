@@ -11,42 +11,91 @@
     </div>
 
     <div class="hero-container">
-      <!-- Kiri: Teks -->
-      <div class="hero-text">
-        <h1>{{ data.heroTitle || "Headline Utama Dari Aplikasi SIUJIII" }}</h1>
-        <p>
-          {{
-            data.heroSubtitle ||
-            "Subheadline dari aplikasi yang bertujuan untuk menjelaskan lebih lanjut tentang how atau manfaatnya."
-          }}
-        </p>
-        <a class="hero-button" :href="data.ctaButtonLink || '#'">
-          {{ data.ctaButtonText || "Get Started Now" }}
-          <span>&rarr;</span>
-        </a>
+      <!-- Loading State -->
+      <div v-if="!data || Object.keys(data).length === 0" class="hero-loading">
+        <div class="loading-spinner"></div>
+        <p>Memuat konten...</p>
       </div>
 
-      <!-- Kanan: Ilustrasi & Floating -->
-      <div class="hero-visual">
-        <img
-          class="hero-image"
-          :src="data.heroImage?.url || require('@/assets/ilustrasi-hero.png')"
-          alt="Hero Illustration"
-        />
-        <img src="/assets/float-book.svg" class="floating book" alt="book" />
-        <img src="/assets/float-file.svg" class="floating file" alt="file" />
-        <img src="/assets/float-pencil.svg" class="floating pencil" alt="pencil" />
-        <img src="/assets/float-pencil.svg" class="floating pen" alt="pen" />
-        <img src="/assets/float-pencil.svg" class="floating monitor" alt="monitor" />
-      </div>
+      <!-- Content -->
+      <template v-else>
+        <!-- Kiri: Teks -->
+        <div class="hero-text">
+          <h1>{{ data?.title || "Headline Utama Dari Aplikasi SIUJIII" }}</h1>
+          <p>
+            {{
+              data?.subtitle || data?.description ||
+              "Subheadline dari aplikasi yang bertujuan untuk menjelaskan lebih lanjut tentang how atau manfaatnya."
+            }}
+          </p>
+          <a class="hero-button" :href="data?.ctaLink || '#'">
+            {{ data?.ctaText || "Get Started Now" }}
+            <span>&rarr;</span>
+          </a>
+        </div>
+
+        <!-- Kanan: Ilustrasi & Floating -->
+        <div class="hero-visual">
+          <img  
+            class="hero-image"
+            :src="getImageUrl(data?.heroImage)"
+            alt="Hero Illustration"
+            @error="handleImageError"
+          />
+          <img src="/assets/float-book.svg" class="floating book" alt="book" />
+          <img src="/assets/float-file.svg" class="floating file" alt="file" />
+          <img src="/assets/float-pencil.svg" class="floating pencil" alt="pencil" />
+          <img src="/assets/float-pencil.svg" class="floating pen" alt="pen" />
+          <img src="/assets/float-pencil.svg" class="floating monitor" alt="monitor" />
+        </div>
+      </template>
     </div>
   </section>
 </template>
 
 <script setup>
-defineProps({
-  data: Object,
+import { computed } from 'vue'
+
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({})
+  },
 });
+
+// Helper function to get image URL
+const getImageUrl = (imageObj) => {
+  if (!imageObj) return "/assets/ilustrasi-hero.png"; // default fallback
+  
+  // If image object has URL property (from Payload CMS)
+  if (typeof imageObj === 'object' && imageObj.url) {
+    // Check if it's a full URL or relative path
+    if (imageObj.url.startsWith('http')) {
+      return imageObj.url;
+    } else {
+      // Relative path, prepend base URL
+      return `http://localhost:3000${imageObj.url}`;
+    }
+  }
+  
+  // If it's just a string URL
+  if (typeof imageObj === 'string') {
+    return imageObj.startsWith('http') ? imageObj : `/assets/${imageObj}`;
+  }
+  
+  return "/assets/ilustrasi-hero.png"; // fallback
+};
+
+// Handle image load error
+const handleImageError = (event) => {
+  console.warn('[HeroSection] Image failed to load, using fallback');
+  event.target.src = "/assets/ilustrasi-hero.png";
+};
+
+// Debug log to see what data we're receiving
+if (props.data) {
+  console.log('[HeroSection] Received data:', props.data);
+}
 </script>
 
 <style scoped>
@@ -84,6 +133,37 @@ defineProps({
   padding: 0 4rem;
   position: relative;
   z-index: 2;
+}
+
+/* Loading State Styles */
+.hero-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: #4cc5bd;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e3f6f5;
+  border-top: 4px solid #4cc5bd;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hero-loading p {
+  font-size: 1.1rem;
+  color: #666;
 }
 
 .hero-text {
