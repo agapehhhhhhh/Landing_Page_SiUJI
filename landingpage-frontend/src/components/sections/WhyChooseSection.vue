@@ -28,7 +28,8 @@
             :title="feature.title"
             :description="feature.description"
             :active="index === activeFeatureIndex"
-            @mouseenter="setActive(index)"
+            @mouseenter="isDesktop && setActive(index)"
+            @click="!isDesktop && setActive(index)"
           />
         </div>
       </div>
@@ -69,6 +70,10 @@ const setActive = (index: number) => {
   hoveredFeatureIndex.value = index
   activeFeatureIndex.value = index
 }
+const isDesktop = ref(window.innerWidth > 640);
+window.addEventListener('resize', () => {
+  isDesktop.value = window.innerWidth > 640;
+});
 </script>
 
 <style scoped>
@@ -139,7 +144,40 @@ const setActive = (index: number) => {
   opacity: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
+  .why-choose-section {
+    padding: 2rem 0.5rem 1rem 0.5rem;
+  }
+  .container {
+    max-width: 100vw;
+    padding: 0;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .content-wrapper {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+  }
+  .visual {
+    flex: unset;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  .visual img {
+    max-width: 95vw;
+    width: 100%;
+    min-width: 0;
+    border-radius: 10px;
+  }
+  .features {
+    flex: unset;
+    width: 100%;
+    gap: 1rem;
+    text-align: left;
+  }
   .vertical-divider {
     display: none;
   }
