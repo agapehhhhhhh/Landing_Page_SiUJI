@@ -42,15 +42,21 @@
     
     <!-- Custom Navigation -->
     <div class="testimonial-nav">
-      <button @click="slidePrev" class="nav-btn">Prev</button>
+      <button @click="slidePrev" class="nav-btn">
+        <span class="arrow-icon">&#8592;</span> Prev
+      </button>
       <div class="nav-progress">
         <span
           v-for="(_, idx) in reviews"
           :key="idx"
           :class="['nav-dot', { active: idx === currentIndex }]"
+          @click="goToSlide(idx)"
+          style="cursor:pointer"
         ></span>
       </div>
-      <button @click="slideNext" class="nav-btn">Next</button>
+      <button @click="slideNext" class="nav-btn">
+        Next <span class="arrow-icon">&#8594;</span>
+      </button>
     </div>
   </section>
 </template>
@@ -102,12 +108,20 @@ export default {
       this.currentIndex = swiper.realIndex;
     },
     slidePrev() {
-      this.$refs.swiperRef.swiper.slidePrev();
+      if (this.$refs.swiperRef && this.$refs.swiperRef.$el && this.$refs.swiperRef.$el.swiper) {
+        this.$refs.swiperRef.$el.swiper.slidePrev();
+      }
     },
     slideNext() {
-      this.$refs.swiperRef.swiper.slideNext();
+      if (this.$refs.swiperRef && this.$refs.swiperRef.$el && this.$refs.swiperRef.$el.swiper) {
+        this.$refs.swiperRef.$el.swiper.slideNext();
+      }
     },
-    // ...existing code...
+    goToSlide(idx) {
+      if (this.$refs.swiperRef && this.$refs.swiperRef.$el && this.$refs.swiperRef.$el.swiper) {
+        this.$refs.swiperRef.$el.swiper.slideToLoop(idx);
+      }
+    },
   },
 };
 </script>
@@ -238,35 +252,54 @@ export default {
   gap: 16px;
 }
 .nav-btn {
-  background: #54be96;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 18px;
+  background: #fff;
+  color: #222;
+  border: 2px solid #54be96;
+  border-radius: 24px;
+  padding: 6px 24px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(84, 190, 150, 0.08);
+  transition: background 0.2s, border 0.2s;
 }
 .nav-btn:hover {
-  background: #009e7a;
+  background: #54be96;
+  color: #fff;
+  border-color: #009e7a;
 }
+.arrow-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .nav-progress {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 80px;
+  gap: 16px;
+  min-width: 120px;
   justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 16px;
+  height: 16px;
 }
+
 .nav-dot {
-  width: 12px;
   height: 12px;
-  border-radius: 50%;
-  background: #c2f2e9;
-  transition: background 0.2s;
+  border-radius: 8px;
+  background: #e0e0e0;
+  transition: all 0.3s;
+  width: 24px;
+  opacity: 0.6;
   display: inline-block;
 }
 .nav-dot.active {
+  width: 48px;
   background: #54be96;
+  opacity: 1;
 }
 
 @media (max-width: 1024px) {
