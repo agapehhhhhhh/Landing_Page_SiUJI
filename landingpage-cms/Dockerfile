@@ -22,6 +22,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install netcat untuk database health check
+RUN apk add --no-cache netcat-openbsd
+
 # Install hanya production dependencies
 COPY package*.json ./
 RUN npm ci --only=production --silent && npm cache clean --force
@@ -31,8 +34,13 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
 
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Expose port yang digunakan oleh Next.js
 EXPOSE 3000
 
-# Command untuk menjalankan aplikasi
+# Set entrypoint dan default command
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["npm", "start"]

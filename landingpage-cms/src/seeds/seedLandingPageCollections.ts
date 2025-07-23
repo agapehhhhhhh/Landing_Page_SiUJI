@@ -190,21 +190,93 @@ export const seedLandingPageCollections = async (payloadInstance: Payload) => {
       {
         question: 'Apa itu SiUJI?',
         category: 'general' as const,
-        answer: 'SiUJI adalah platform ujian online komprehensif yang dirancang untuk membantu institusi pendidikan melakukan ujian secara efisien, aman, dan terukur.',
+        answer: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'SiUJI adalah platform ujian online komprehensif yang dirancang untuk membantu institusi pendidikan melakukan ujian secara efisien, aman, dan terukur.',
+                    version: 1
+                  }
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                version: 1
+              }
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1
+          }
+        },
         isActive: true,
         order: 1
       },
       {
         question: 'Bagaimana cara kerja fitur anti-kecurangan?',
         category: 'features' as const,
-        answer: 'Kami menggunakan kombinasi AI proctoring, penguncian browser, dan randomisasi soal untuk meminimalkan potensi kecurangan selama ujian berlangsung.',
+        answer: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Kami menggunakan kombinasi AI proctoring, penguncian browser, dan randomisasi soal untuk meminimalkan potensi kecurangan selama ujian berlangsung.',
+                    version: 1
+                  }
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                version: 1
+              }
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1
+          }
+        },
         isActive: true,
         order: 2
       },
       {
         question: 'Apakah data saya aman?',
         category: 'technical' as const,
-        answer: 'Tentu. Kami menggunakan enkripsi standar industri dan praktik keamanan terbaik untuk memastikan semua data Anda, termasuk soal dan jawaban siswa, tersimpan dengan aman.',
+        answer: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Tentu. Kami menggunakan enkripsi standar industri dan praktik keamanan terbaik untuk memastikan semua data Anda, termasuk soal dan jawaban siswa, tersimpan dengan aman.',
+                    version: 1
+                  }
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                version: 1
+              }
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1
+          }
+        },
         isActive: true,
         order: 3
       }
