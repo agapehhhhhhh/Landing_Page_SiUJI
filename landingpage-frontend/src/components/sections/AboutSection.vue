@@ -435,14 +435,36 @@ function getZIndex(index: number): number {
 
 /* === Responsive === */
 @media (max-width: 768px) {
+  .about-section {
+    padding: 60px 16px 40px; /* Sesuaikan padding dengan section-title */
+  }
   .section-content {
     flex-direction: column;
     align-items: center;
     gap: 40px;
-    padding: 0 16px;
+    padding: 0;
+    margin-top: 40px; /* Jarak atas lebih kecil */
   }
 
-  .left-card,
+   .card {
+    width: 100%;
+    max-width: calc(100% - 32px); /* Sama persis dengan section-title */
+    margin: 0 auto;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .left-card {
+    width: 100%;
+    padding: 0;
+    max-width: 100%;
+  }
+    .section-title {
+    padding: 24px; /* Sesuaikan dengan card */
+    margin: 0 auto 40px; /* Jarak bawah lebih kecil */
+    max-width: calc(100% - 32px); /* Sama dengan card */
+  }
+
   .right-images {
     justify-content: center;
     max-width: 100%;
