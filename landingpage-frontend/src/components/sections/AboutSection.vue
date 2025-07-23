@@ -60,6 +60,8 @@
         <span class="material-icons">arrow_forward</span>
       </button>
     </div>
+    <div class="pulse-circle"></div>
+    <div class="rounded-block"></div>
   </section>
 </template>
 
@@ -151,79 +153,87 @@ function getZIndex(index: number): number {
 .about-section {
   position: relative;
   overflow: hidden;
-  padding: 60px 20px;
+  padding: 100px 20px 60px;
   background: linear-gradient(to bottom right, #1de9b6, #00bcd4);
   color: #333;
-  width: 100vw;
-  transform: translateX(-50%);
-  left: 50%;
+  width: 100%; /* sebelumnya 100vw */
   background: url('@/assets/blob-haikei.svg') center/cover no-repeat;
 }
 
 .section-title {
   background: white;
-  border-radius: 16px;
-  padding: 30px;
+  border-radius: 20px;
+  padding: 48px 56px;
   text-align: center;
-  max-width: 900px;
-  margin: 0 auto 40px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 960px;
+  margin: 0 auto 80px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 .section-title h2 {
-  font-size: 26px;
-  font-weight: bold;
-  margin-bottom: 16px;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 .section-title p {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.75;
+  color: #555;
 }
 
 .section-content {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
+  flex-direction: row; /* pastikan baris horizontal */
+  flex-wrap: nowrap;   /* paksa satu baris */
+  justify-content: center;
   align-items: flex-start;
-  margin-top: 100px;
-  padding-left: 100px; /* tambahkan padding di container */
-
+  max-width: 1200px;
+  margin: 100px auto 0;
+  padding: 0 20px;
+  gap: 60px;
 }
 
+
 .left-card {
-  flex: 1 1 40%;
-  max-width: 420px;
+  flex: 1;
+  max-width: 480px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .card {
   background: white;
-  padding: 20px 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 32px 36px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  transition: transform 0.3s ease;
 }
-
+.card:hover {
+  transform: translateY(-6px);
+}
 .card h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   border-bottom: 1px solid #ccc;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
   text-align: center;
 }
-
 .card p {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
 }
 
 /* === Overlapping Image Stack === */
+
 .right-images {
-  flex: 1 1 55%;
+  flex: 1;
+  max-width: 560px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
 }
 
 .image-stack {
@@ -231,11 +241,12 @@ function getZIndex(index: number): number {
   position: relative;
   justify-content: center;
   align-items: center;
+  padding-left: 70px;
 }
 
 .stack-image {
   position: relative;
-  margin-left: -160px;
+  margin-left: -240px;
   transition: transform 0.3s ease, z-index 0.3s ease;
   cursor: pointer;
 }
@@ -250,26 +261,26 @@ function getZIndex(index: number): number {
 }
 
 .stack-image:hover {
-  transform: scale(1.8);
+  transform: scale(1.7);
   z-index: 10;
 }
 
 .stack-image img {
-  border-radius: 16px;
-  width: 260px;
-  height: 170px;
+  border-radius: 24px;
+  width: 320px;
+  height: 200px;
   object-fit: cover;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* === Carousel Nav === */
 .carousel-navigation {
-  margin-top: 90px;
+  margin-top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .arrow {
@@ -329,15 +340,45 @@ function getZIndex(index: number): number {
   transform: translateX(-20px);
 }
 
+.pulse-circle {
+  position: absolute;
+  bottom: 40px;
+  right: 60px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #a1f0e8; /* Lingkaran inti */
+
+  box-shadow:
+    0 0 0 20px rgba(161, 240, 232, 0.2),
+    0 0 0 40px rgba(161, 240, 232, 0.1);
+}
+
+.rounded-block {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  width: 60px;
+  height: 90px;
+  border-radius: 16px;
+  background-color: rgba(0, 128, 128, 0.3); /* teal transparan */
+  backdrop-filter: blur(2px); /* opsional efek kabut */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* opsional bayangan halus */
+  z-index: -1; /* pastikan di belakang konten */
+}
+
+
 /* === Responsive === */
 @media (max-width: 768px) {
   .section-content {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
+  .left-card,
   .right-images {
-    align-items: center;
+    justify-content: center;
+    max-width: 100%;
   }
 
   .image-stack {
