@@ -190,6 +190,8 @@ function getZIndex(index: number): number {
   width: 100%; /* sebelumnya 100vw */
   background: url('@/assets/blob-haikei.svg') center/cover no-repeat;
   box-sizing: border-box;
+  margin-top: 0;
+  border-top: none;
 }
 
 .section-title {
@@ -435,6 +437,12 @@ function getZIndex(index: number): number {
 
 /* === Responsive === */
 @media (max-width: 768px) {
+  .about-section {
+    margin-top: 0;
+    padding-top: 80px;
+    border-top: none;
+  }
+
   .section-content {
     flex-direction: column;
     align-items: center;

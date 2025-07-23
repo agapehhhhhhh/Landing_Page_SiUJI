@@ -19,6 +19,7 @@ const { pageData, isLoading } = useLandingPageData()
       <HeroSection :data="pageData.hero" />
       <AboutSection />
       <WhyChooseSection />
+      <PortofolioSection :logos="pageData.portofolio" />
     </div>
   </main>
 </template>
