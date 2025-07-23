@@ -184,8 +184,54 @@ const bannerButtonLink = computed(() => {
 }
 
 @media (max-width: 640px) {
+  .available-section {
+    padding: 1rem 0.5rem;
+    max-width: 100vw;
+  }
+  .headline {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .platform-toggle {
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
   .mockup-container {
-    min-height: 300px;
+    min-height: 180px;
+    margin-bottom: 1.2rem;
+  }
+  .mockup-image {
+    max-width: 95vw;
+    border-radius: 10px;
+  }
+  .info-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    padding: 1rem 0.7rem;
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .info-text {
+    font-size: 0.9rem;
+    flex: unset;
+    margin-bottom: 0.5rem;
+  }
+  .info-button {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 0.6rem 0.5rem;
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }
 </style>

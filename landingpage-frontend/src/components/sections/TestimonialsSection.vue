@@ -160,7 +160,7 @@ export default {
 
 .testimonial-section {
   padding: 60px 0;
-  background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+background: radial-gradient(circle at 50% 100%, #54be96 0%, #e0f7fa 60%, #ffffff 100%);
   font-family: Arial, sans-serif;
   text-align: center;
   overflow: visible;
@@ -316,15 +316,61 @@ export default {
 }
 
 @media (max-width: 600px) {
-  .testimonial-card {
-    flex: 0 0 100%; /* 1 card per view di HP */
+  .testimonial-section {
+    padding: 32px 0;
+    min-height: 0;
   }
   .swiper-container {
-    padding: 0 30px;
+    padding: 0 8px;
+    max-width: 100vw;
   }
-  
+  .testimonial-header h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .testimonial-header p {
+    font-size: 13px;
+    margin-bottom: 24px;
+    max-width: 95vw;
+  }
+  .testimonial-card {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    /* Hilangkan efek diperbesar di mobile */
+    transform: none !important;
+  }
   .swiper-slide-next .testimonial-card {
-    transform: scale(1.05);
+    /* Hilangkan efek diperbesar di mobile */
+    transform: none !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  .testimonial-nav {
+    flex-direction: row; /* Tetap horizontal di mobile */
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .nav-btn {
+    padding: 5px 16px;
+    font-size: 14px;
+  }
+  .nav-progress {
+    gap: 10px;
+    padding: 0 8px;
+    min-width: 80px;
+    height: 14px;
+  }
+  .nav-dot {
+    width: 18px;
+    height: 10px;
+  }
+  .nav-dot.active {
+    width: 32px;
   }
 }
 </style>
