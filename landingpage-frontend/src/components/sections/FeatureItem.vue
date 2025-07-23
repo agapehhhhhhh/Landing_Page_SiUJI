@@ -1,61 +1,83 @@
 <template>
-  <div class="feature-item">
-    <div class="emoji-wrapper">
-      <span class="emoji">{{ emoji }}</span>
-    </div>
-    <div class="text">
-      <h3 class="title">{{ title }}</h3>
-      <p class="description">{{ description }}</p>
-    </div>
+  <div class="feature-item" :class="{ active }">
+    <span class="emoji">{{ emoji }}</span>
+    <h3 class="title">{{ title }}</h3>
+    <p class="description">{{ description }}</p>
   </div>
 </template>
+
 
 <script setup lang="ts">
 defineProps<{
   emoji: string
   title: string
   description: string
+  active?: boolean
 }>()
 </script>
 
 <style scoped>
 .feature-item {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
 }
 
-.emoji-wrapper {
-  display: flex;
-  align-items: center; /* center emoji secara vertikal terhadap .title */
-  height: 1.5rem; /* sesuaikan agar tengah tepat dengan title */
-  margin-top: 0.15rem; /* offset halus agar presisi */
+/* hover & active */
+.feature-item:hover {
+  background-color: #f0faf5;
+}
+.feature-item.active {
+  background-color: #6BC2A1;
+  color: white;
+}
+.feature-item.active .emoji {
+  background-color: white;
+  color: #6BC2A1;
+}
+.feature-item.active .title,
+.feature-item.active .description {
+  color: white;
 }
 
+/* layout spesifik */
 .emoji {
-  font-size: 1.3rem;
-  display: inline-block;
-  padding: 0.3rem;
+  grid-row: 1;
+  grid-column: 1;
+  font-size: 1.4rem;
   background-color: #f0f8ff;
-  border-radius: 6px;
-  width: 2rem;
-  height: 2rem;
-  text-align: center;
-  line-height: 1.3rem;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.text {
-  display: flex;
-  flex-direction: column;
-}
 .title {
-  font-weight: 600;
+  grid-row: 1;
+  grid-column: 2;
   font-size: 1.1rem;
-  line-height: 1.5;
+  font-weight: 600;
   margin: 0;
 }
+
 .description {
-  margin: 0.2rem 0 0 0;
+  grid-row: 2;
+  grid-column: 1 / span 2; /* lebar penuh, mulai dari icon */
+  margin: 0;
+  font-size: 0.95rem;
   color: #555;
+  line-height: 1.5;
+  padding-left: 5px;
 }
+
 </style>

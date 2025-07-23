@@ -1,29 +1,34 @@
 <template>
   <section class="why-choose-section">
+    <img src="@/assets/wavesOpacity.svg" alt="Wave Top" class="wave-top" />
     <div class="container">
       <h2 class="section-title">Why Choose Us?</h2>
       <div class="content-wrapper">
-        <!-- Gambar / Ilustrasi Kiri -->
+        <!-- Gambar Kiri -->
         <div class="visual">
-          <img src="@/assets/blob-haikei.svg" alt="Why Choose Visual" />
+          <transition name="fade" mode="out-in">
+            <img
+              :key="features[hoveredFeatureIndex].image"
+              :src="features[hoveredFeatureIndex].image"
+              alt="Feature Visual"
+            />
+          </transition>
         </div>
 
-        <!-- Fitur / Value Proposition Kanan -->
+        <!-- Garis Pemisah -->
+        <div class="vertical-divider"></div>
+
+        
+        <!-- Fitur -->
         <div class="features">
           <FeatureItem
-            emoji="📡"
-            title="Real-Time Monitoring"
-            description="Embrace the power of real-time monitoring and take control of your learning journey with us."
-          />
-          <FeatureItem
-            emoji="♾️"
-            title="Lifetime Access"
-            description="Your education is not bound by time; it's a lifelong pursuit, and we're here to support your journey every step of the way."
-          />
-          <FeatureItem
-            emoji="👥"
-            title="Big Community"
-            description="Connect, collaborate, and share with a diverse group of peers, making your learning journey enriching and interactive."
+            v-for="(feature, index) in features"
+            :key="index"
+            :emoji="feature.emoji"
+            :title="feature.title"
+            :description="feature.description"
+            :active="index === activeFeatureIndex"
+            @mouseenter="setActive(index)"
           />
         </div>
       </div>
@@ -32,15 +37,60 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import FeatureItem from '@/components/sections/FeatureItem.vue'
+// reactive state untuk index fitur yang di-hover (default: 0)
+const hoveredFeatureIndex = ref(0)
+
+const features = [
+  {
+    emoji: '📡',
+    title: 'Real-Time Monitoring',
+    description: 'Embrace the power of real-time monitoring and take control of your learning journey with us.',
+    image: new URL('@/assets/someah-logo.svg', import.meta.url).href
+  },
+  {
+    emoji: '♾️',
+    title: 'Lifetime Access',
+    description: 'Your education is not bound by time; it\'s a lifelong pursuit, and we\'re here to support your journey every step of the way.',
+    image: new URL('@/assets/blob-haikei.svg', import.meta.url).href
+  },
+  {
+    emoji: '👥',
+    title: 'Big Community',
+    description: 'Connect, collaborate, and share with a diverse group of peers, making your learning journey enriching and interactive.',
+    image: new URL('@/assets/wavesOpacity.svg', import.meta.url).href
+  }
+]
+
+const activeFeatureIndex = ref(0)
+
+const setActive = (index: number) => {
+  hoveredFeatureIndex.value = index
+  activeFeatureIndex.value = index
+}
 </script>
 
 <style scoped>
 .why-choose-section {
-  padding: 4rem 1rem;
-  background: linear-gradient(to right, #f4fdfc, #e9f7f2);
+  position: relative;
+  padding: 4rem 1rem 1rem 1rem;
+  background: linear-gradient(to right, #ffffff 50%, #6BC2A1 200%);
+  overflow: hidden;
+}
+.wave-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5; /* Atur transparansi di sini (0 = transparan, 1 = solid) */
 }
 .container {
+  position: relative;
+  z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
@@ -55,7 +105,7 @@ import FeatureItem from '@/components/sections/FeatureItem.vue'
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
-  align-items: center;
+  align-items: stretch; /* ⬅️ ini penting */
 }
 .visual {
   flex: 1 1 400px;
@@ -75,4 +125,24 @@ import FeatureItem from '@/components/sections/FeatureItem.vue'
   gap: 1.5rem;
   text-align: left;
 }
+.vertical-divider {
+  width: 1px;
+  background-color: #000000;
+  margin: 0 1.5rem;
+  border-radius: 1px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .vertical-divider {
+    display: none;
+  }
+}
+
 </style>

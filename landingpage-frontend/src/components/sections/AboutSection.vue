@@ -153,12 +153,10 @@ function getZIndex(index: number): number {
 .about-section {
   position: relative;
   overflow: hidden;
-  padding: 100px 20px 80px; /* scale up spacing */
+  padding: 100px 20px 60px;
   background: linear-gradient(to bottom right, #1de9b6, #00bcd4);
   color: #333;
-  width: 100vw;
-  transform: translateX(-50%);
-  left: 50%;
+  width: 100%; /* sebelumnya 100vw */
   background: url('@/assets/blob-haikei.svg') center/cover no-repeat;
 }
 
@@ -263,7 +261,7 @@ function getZIndex(index: number): number {
 }
 
 .stack-image:hover {
-  transform: scale(1.8);
+  transform: scale(1.7);
   z-index: 10;
 }
 
