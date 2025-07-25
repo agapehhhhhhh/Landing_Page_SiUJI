@@ -10,12 +10,28 @@ export const fetchLandingPage = async () => {
         .get(`${API_BASE_URL}/hero-section`)
         .then((res) => res.data.docs?.[0]),
     ]);
+    
+    // Process hero data from API
+    let processedHero = null;
+    if (hero) {
+      processedHero = {
+        ...hero,
+        // Fix hero image URL - add base URL if it's relative
+        heroImage: hero.heroImage ? {
+          ...hero.heroImage,
+          url: hero.heroImage.url.startsWith('http') 
+            ? hero.heroImage.url 
+            : `${API_BASE_URL.replace('/api', '')}${hero.heroImage.url}`
+        } : { url: "/assets/ilustrasi-hero.png" }
+      };
+    }
+    
     return {
-      hero: hero ?? {
-        heroTitle: "Headline Utama Dari Aplikasi SIUJIII",
-        heroSubtitle:
+      hero: processedHero ?? {
+        title: "Headline Utama Dari Aplikasi SIUJIII",
+        subtitle:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        ctaButtonText: "Get Started Now",
+        ctaText: "Get Started Now",
         heroImage: { url: "/assets/ilustrasi-hero.png" },
       },
       portofolio: [
@@ -27,8 +43,8 @@ export const fetchLandingPage = async () => {
     console.error("[fetchLandingPage] Error:", e);
     return {
       hero: {
-        heroTitle: "Fallback Title",
-        heroSubtitle: "Fallback Subtitle",
+        title: "Fallback Title",
+        subtitle: "Fallback Subtitle",
         heroImage: { url: "/assets/ilustrasi-hero.png" },
       },
       portofolio: [],

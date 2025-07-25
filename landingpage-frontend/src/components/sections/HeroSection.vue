@@ -21,14 +21,14 @@
     <!-- Konten Utama -->
     <div class="hero-container">
       <div class="hero-text">
-        <h1>{{ data.heroTitle }}</h1>
-        <p>{{ data.heroSubtitle }}</p>
+        <h1>{{ data?.title || 'Default Title' }}</h1>
+        <p>{{ data?.subtitle || 'Default Subtitle' }}</p>
 
         <!-- Gambar untuk mobile (akan ditampilkan hanya pada mobile) -->
         <div class="hero-visual-mobile">
           <img
             class="hero-image-mobile"
-            :src="data.heroImage?.url"
+            :src="data?.heroImage?.url || '/assets/ilustrasi-hero.png'"
             alt="Hero Illustration"
           />
           <!-- Floating elements untuk mobile -->
@@ -54,8 +54,8 @@
           />
         </div>
 
-        <a class="hero-button" :href="data.ctaButtonLink">
-          {{ data.ctaButtonText }}
+        <a class="hero-button" :href="data?.ctaLink || '#'">
+          {{ data?.ctaText || 'Get Started' }}
           <span>&rarr;</span>
         </a>
       </div>
@@ -64,7 +64,7 @@
       <div class="hero-visual">
         <img
           class="hero-image"
-          :src="data.heroImage?.url"
+          :src="data?.heroImage?.url || '/assets/ilustrasi-hero.png'"
           alt="Hero Illustration"
         />
         <img src="/assets/float-book.svg" class="floating book" alt="book" />
