@@ -4,6 +4,8 @@ import HeroSection from '@/components/sections/HeroSection.vue'
 import AboutSection from '@/components/sections/AboutSection.vue'
 import WhyChooseSection from '@/components/sections/WhyChooseSection.vue'
 import AvailableSection from '@/components/sections/AvailableSection.vue'
+import TestimonialsSection from '@/components/sections/TestimonialsSection.vue'
+import ContactUsSection from '@/components/sections/ContactUsSection.vue'
 import FooterSection from '@/components/sections/FooterSection.vue'
 import PortofolioSection from '@/components/sections/PortofolioSection.vue'
 import FaqSection from '@/components/sections/FAQSection.vue'
@@ -53,6 +55,10 @@ const { pageData, isLoading } = useLandingPageData()
       
       <PortofolioSection :logos="pageData.portofolio" />
       <FaqSection :faqs="pageData.faqs" />
+      <AvailableSection />
+      <TestimonialsSection />
+      <ContactUsSection />
+      <FooterSection />
     </div>
   </main>
 </template>
