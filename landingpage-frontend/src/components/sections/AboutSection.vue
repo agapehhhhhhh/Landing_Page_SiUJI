@@ -185,7 +185,6 @@ function getZIndex(index: number): number {
   position: relative;
   overflow: hidden;
   padding: 100px 20px 60px;
-  background: linear-gradient(to bottom right, #1de9b6, #00bcd4);
   color: #333;
   width: 100%; /* sebelumnya 100vw */
   background: url('@/assets/blob-haikei.svg') center/cover no-repeat;
@@ -200,6 +199,8 @@ function getZIndex(index: number): number {
   max-width: 800px;
   margin: 0 auto 60px; /* ↓ jarak bawah dari 80px */
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 2; /* pastikan di atas gambar */
 }
 
 .section-title h2 {
@@ -422,7 +423,7 @@ function getZIndex(index: number): number {
   background-color: rgba(0, 128, 128, 0.3); /* teal transparan */
   backdrop-filter: blur(2px); /* opsional efek kabut */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* opsional bayangan halus */
-  z-index: -1; /* pastikan di belakang konten */
+  z-index: 1; /* pastikan di belakang konten */
 }
 
 .desktop-only {
