@@ -175,6 +175,8 @@ const icons = [
   border-radius: 20px;
   font-size: 13px;
   cursor: pointer;
+  display: flex;               /* Tambahkan ini */
+  align-items: center;         /* Tambahkan ini */
 }
 
 .footer-icons {
@@ -207,6 +209,7 @@ const icons = [
 .footer-contact address,
 .footer-contact p {
   margin: 4px 0;
+  font-style: normal;
 }
 
 .google-play-btn .icon {

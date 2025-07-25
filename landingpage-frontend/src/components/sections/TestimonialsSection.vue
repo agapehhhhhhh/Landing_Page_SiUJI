@@ -160,7 +160,7 @@ export default {
 
 .testimonial-section {
   padding: 60px 0;
-background: radial-gradient(circle at 50% 100%, #54be96 0%, #e0f7fa 60%, #ffffff 100%);
+  background: radial-gradient(circle at 50% 100%, #54be96 0%, #e0f7fa 60%, #ffffff 100%);
   font-family: Arial, sans-serif;
   text-align: center;
   overflow: visible;
@@ -317,12 +317,14 @@ background: radial-gradient(circle at 50% 100%, #54be96 0%, #e0f7fa 60%, #ffffff
 
 @media (max-width: 600px) {
   .testimonial-section {
-    padding: 32px 0;
+    padding: 16px 0;
     min-height: 0;
+    overflow: hidden;
   }
   .swiper-container {
-    padding: 0 8px;
+    padding: 0;
     max-width: 100vw;
+    overflow: visible;
   }
   .testimonial-header h2 {
     font-size: 22px;
@@ -334,19 +336,22 @@ background: radial-gradient(circle at 50% 100%, #54be96 0%, #e0f7fa 60%, #ffffff
     max-width: 95vw;
   }
   .testimonial-card {
-    width: 100%;
-    max-width: 340px;
     margin: 0 auto;
-    padding: 16px;
+    /* Pastikan tidak ada transform, margin, atau padding aneh */
+    transform: none !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border-radius: 10px;
-    /* Hilangkan efek diperbesar di mobile */
-    transform: none !important;
+    width: 100%;
+    max-width: 340px;
+    min-height: 0;
   }
   .swiper-slide-next .testimonial-card {
-    /* Hilangkan efek diperbesar di mobile */
     transform: none !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  .swiper {
+    padding: 0 !important;
+    overflow: visible;
   }
   .testimonial-nav {
     flex-direction: row; /* Tetap horizontal di mobile */
