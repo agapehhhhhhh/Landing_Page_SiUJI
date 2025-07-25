@@ -82,7 +82,7 @@ window.addEventListener('resize', () => {
 <style scoped>
 .why-choose-section {
   position: relative;
-  padding: 4rem 1rem 2.5rem 1rem;
+  padding: 4rem 1rem 6rem 1rem;
   background: linear-gradient(to right, #ffffff 50%, #6BC2A1 200%);
   overflow: hidden;
 }
