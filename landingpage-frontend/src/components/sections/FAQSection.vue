@@ -1,26 +1,486 @@
 <template>
-  <section class="py-20 px-6 bg-gray-50">
-    <h2 class="text-2xl font-bold text-center mb-10">{{ content.title }}</h2>
-    <div class="max-w-2xl mx-auto">
-      <div v-for="(faq, index) in content.faqs" :key="index" class="mb-4">
-        <button @click="toggle(index)" class="w-full text-left font-semibold text-blue-600">
-          {{ faq.question }}
+  <section class="faq-section">
+    <!-- Header with title -->
+    <div class="faq-header">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <!-- Category navigation -->
+    <div class="category-container">
+      <div class="category-tabs">
+        <button
+          v-for="category in faqData.categories"
+          :key="category.id"
+          :class="{ active: activeCategory === category.id }"
+          @click="selectCategory(category.id)"
+          class="category-btn"
+        >
+          {{ category.name }}
         </button>
-        <div v-if="activeIndex === index" class="text-gray-600 mt-2">
-          {{ faq.answer }}
+      </div>
+    </div>
+
+    <!-- FAQ Items Container -->
+    <div class="faq-container" :class="{ expanded: showAllFaqs }">
+      <div class="faq-items" ref="faqItems">
+        <div
+          v-for="(faq, index) in displayedFaqs"
+          :key="faq.id"
+          class="faq-item"
+          :class="{
+            active: faq.isOpen,
+            blurred: shouldBlurItem(index),
+            'fade-out': index >= 6 && !showAllFaqs,
+          }"
+          @click="toggleFaq(faq.id)"
+        >
+          <div class="faq-question">
+            <span>{{ faq.question }}</span>
+            <div class="faq-toggle" :class="{ open: faq.isOpen }">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 5V19M5 12H19"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <transition name="expand">
+            <div v-if="faq.isOpen" class="faq-answer">
+              <div class="answer-divider"></div>
+              <p>{{ faq.answer }}</p>
+            </div>
+          </transition>
         </div>
+      </div>
+
+      <!-- Read More Button -->
+      <div v-if="shouldShowReadMore" class="read-more-container">
+        <button @click="toggleReadMore" class="read-more-btn">
+          {{ showAllFaqs ? "Show Less" : "Read More" }}
+        </button>
       </div>
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
+<script>
+import { fetchFAQData } from "@/services/payloadService.js";
 
-defineProps<{ content: { title: string; faqs: { question: string; answer: string }[] } }>()
-
-const activeIndex = ref<number | null>(null)
-const toggle = (index: number) => {
-  activeIndex.value = activeIndex.value === index ? null : index
-}
+export default {
+  data() {
+    return {
+      faqData: {
+        categories: [],
+        faqs: [],
+      },
+      activeCategory: "feature",
+      showAllFaqs: false,
+    };
+  },
+  computed: {
+    currentCategoryFaqs() {
+      if (this.activeCategory === "all") {
+        return this.faqData.faqs;
+      }
+      return this.faqData.faqs.filter(
+        (faq) => faq.categoryId === this.activeCategory
+      );
+    },
+    displayedFaqs() {
+      if (this.showAllFaqs) {
+        return this.currentCategoryFaqs;
+      }
+      // Show 6 FAQs so the 6th one can be blurred, but limit to available FAQs
+      return this.currentCategoryFaqs.slice(
+        0,
+        Math.min(6, this.currentCategoryFaqs.length)
+      );
+    },
+    shouldShowReadMore() {
+      return this.currentCategoryFaqs.length > 5;
+    },
+  },
+  methods: {
+    async loadFAQData() {
+      try {
+        this.faqData = await fetchFAQData();
+        if (this.faqData.categories.length > 0) {
+          this.activeCategory = this.faqData.categories[0].id;
+        }
+      } catch (error) {
+        console.error("Error loading FAQ data:", error);
+      }
+    },
+    selectCategory(categoryId) {
+      this.activeCategory = categoryId;
+      this.showAllFaqs = false;
+      this.resetFaqStates();
+    },
+    toggleFaq(faqId) {
+      const faq = this.faqData.faqs.find((f) => f.id === faqId);
+      if (faq) {
+        faq.isOpen = !faq.isOpen;
+      }
+    },
+    toggleReadMore() {
+      this.showAllFaqs = !this.showAllFaqs;
+      if (this.showAllFaqs) {
+        this.$nextTick(() => {
+          this.$refs.faqItems.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+      }
+    },
+    shouldBlurItem(index) {
+      return (
+        index >= 5 && this.currentCategoryFaqs.length > 5 && !this.showAllFaqs
+      );
+    },
+    resetFaqStates() {
+      this.faqData.faqs.forEach((faq) => {
+        faq.isOpen = false;
+      });
+    },
+  },
+  mounted() {
+    this.loadFAQData();
+  },
+};
 </script>
+
+<style scoped>
+.faq-section {
+  position: relative;
+  padding: 80px 20px 100px;
+  background: linear-gradient(135deg, #6bc2a1 0%, #7dd3b0 50%, #8ee4bf 100%);
+  overflow: hidden;
+  min-height: 600px;
+}
+
+/* Header */
+.faq-header {
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 2;
+}
+
+.faq-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+}
+
+/* Category Navigation */
+.category-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+.category-tabs {
+  background: white;
+  border-radius: 50px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+}
+
+.category-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: transparent;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  flex: 0 1 auto;
+  min-width: fit-content;
+  font-size: 0.95rem;
+}
+
+.category-btn:hover {
+  color: #6bc2a1;
+  background: rgba(107, 194, 161, 0.1);
+  transform: translateY(-1px);
+}
+
+.category-btn.active {
+  background: #6bc2a1;
+  color: white;
+  box-shadow: 0 4px 15px rgba(107, 194, 161, 0.3);
+  transform: translateY(-1px);
+}
+
+/* FAQ Container */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.faq-items {
+  max-height: none;
+  transition: max-height 0.3s ease;
+}
+
+.faq-container.expanded .faq-items {
+  max-height: 600px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.faq-container.expanded .faq-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.faq-container.expanded .faq-items::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.faq-container.expanded .faq-items::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+/* FAQ Items */
+.faq-item {
+  background: white;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(0, 0, 0, 0.2);
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(107, 194, 161, 0.3);
+}
+
+.faq-item.active {
+  border-color: #6bc2a1;
+  box-shadow: 0 8px 30px rgba(107, 194, 161, 0.2);
+}
+
+.faq-item.blurred {
+  filter: blur(3px);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.faq-item.fade-out {
+  opacity: 0.3;
+}
+
+.faq-question {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #2d3748;
+  line-height: 1.4;
+}
+
+.faq-toggle {
+  width: 32px;
+  height: 32px;
+  background: #6bc2a1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.faq-toggle.open {
+  background: #ff6b6b;
+  transform: rotate(45deg);
+}
+
+.faq-toggle svg {
+  width: 16px;
+  height: 16px;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.faq-answer {
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.answer-divider {
+  height: 2px;
+  background: #333;
+  margin: 0 24px 20px 24px;
+  opacity: 0.3;
+}
+
+.faq-answer p {
+  padding: 0 24px 24px;
+  margin: 0;
+}
+
+/* Expand Animation */
+.expand-enter-active,
+.expand-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.expand-enter-from,
+.expand-leave-to {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.expand-enter-to,
+.expand-leave-from {
+  max-height: 200px;
+  opacity: 1;
+}
+
+/* Read More Button */
+.read-more-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.read-more-btn {
+  background: white;
+  color: #6bc2a1;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  padding: 14px 32px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.read-more-btn:hover {
+  background: transparent;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 60px 16px 80px;
+  }
+
+  .faq-header h2 {
+    font-size: 2rem;
+  }
+
+  .category-container {
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+
+  .category-tabs {
+    gap: 6px;
+    padding: 6px;
+    max-width: 95%;
+  }
+
+  .category-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    min-width: auto;
+  }
+
+  .faq-question {
+    padding: 20px;
+    font-size: 1rem;
+  }
+
+  .faq-answer p {
+    padding: 0 20px 20px;
+    font-size: 0.95rem;
+  }
+
+  .answer-divider {
+    margin: 0 20px 20px 20px;
+  }
+
+  .faq-toggle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .faq-toggle svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-tabs {
+    gap: 4px;
+    padding: 4px;
+    max-width: 100%;
+  }
+
+  .category-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    min-width: auto;
+  }
+
+  .faq-question {
+    padding: 16px;
+  }
+
+  .faq-answer p {
+    padding: 0 16px 16px;
+  }
+
+  .answer-divider {
+    margin: 0 16px 16px 16px;
+  }
+}
+</style>
