@@ -53,7 +53,10 @@ const { pageData, isLoading } = useLandingPageData()
         :show-header="false"
       />
       
-      <PortofolioSection :logos="pageData.portofolio" />
+      <PortofolioSection 
+        :title="pageData.portfolioTitle" 
+        :logos="pageData.portofolio" 
+      />
       <FaqSection :faqs="pageData.faqs" />
       <AvailableSection />
       <TestimonialsSection />

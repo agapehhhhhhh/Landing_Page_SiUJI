@@ -3,11 +3,40 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:3000/api";
 
+// Helper function to extract plain text from Payload's rich text format
+const extractPlainText = (richTextContent) => {
+  if (typeof richTextContent === 'string') {
+    return richTextContent;
+  }
+  
+  if (richTextContent?.root?.children) {
+    let text = '';
+    
+    const extractFromChildren = (children) => {
+      children.forEach(child => {
+        if (child.type === 'text' && child.text) {
+          text += child.text;
+        } else if (child.children) {
+          extractFromChildren(child.children);
+        }
+      });
+    };
+    
+    extractFromChildren(richTextContent.root.children);
+    return text || 'No answer provided';
+  }
+  
+  return 'No answer provided';
+};
+
 export const fetchLandingPage = async () => {
   try {
-    const [hero] = await Promise.all([
+    const [hero, portfolio] = await Promise.all([
       axios
         .get(`${API_BASE_URL}/hero-section`)
+        .then((res) => res.data.docs?.[0]),
+      axios
+        .get(`${API_BASE_URL}/portfolio-section`)
         .then((res) => res.data.docs?.[0]),
     ]);
     
@@ -25,6 +54,21 @@ export const fetchLandingPage = async () => {
         } : { url: "/assets/ilustrasi-hero.png" }
       };
     }
+
+    // Process portfolio data from API
+    let processedPortfolio = [];
+    let portfolioTitle = "Trusted by 1.234 Companies Worldwide";
+    
+    if (portfolio && portfolio.logos) {
+      portfolioTitle = portfolio.title || "Trusted by 1.234 Companies Worldwide";
+      processedPortfolio = portfolio.logos.map(logoItem => ({
+        url: logoItem.logo?.url.startsWith('http') 
+          ? logoItem.logo.url 
+          : `${API_BASE_URL.replace('/api', '')}${logoItem.logo?.url}`,
+        name: logoItem.name,
+        website: logoItem.url || null
+      }));
+    }
     
     return {
       hero: processedHero ?? {
@@ -34,10 +78,11 @@ export const fetchLandingPage = async () => {
         ctaText: "Get Started Now",
         heroImage: { url: "/assets/ilustrasi-hero.png" },
       },
-      portofolio: [
-        { url: "/assets/logo1.png", alt: "Logo 1" },
-        { url: "/assets/logo2.jpeg", alt: "Logo 2" },
+      portofolio: processedPortfolio.length > 0 ? processedPortfolio : [
+        { url: "/assets/logo1.png", name: "Partner 1" },
+        { url: "/assets/logo2.jpeg", name: "Partner 2" },
       ],
+      portfolioTitle: portfolioTitle,
     };
   } catch (e) {
     console.error("[fetchLandingPage] Error:", e);
@@ -48,196 +93,192 @@ export const fetchLandingPage = async () => {
         heroImage: { url: "/assets/ilustrasi-hero.png" },
       },
       portofolio: [],
+      portfolioTitle: "Trusted by Companies Worldwide",
+    };
+  }
+};
+
+// Function to fetch Portfolio/Partners data
+export const fetchPortfolioData = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/portfolio-section?limit=100`);
+    const portfolioData = response.data;
+
+    // Get the first active portfolio section
+    const activePortfolio = portfolioData.docs.find(item => item.isActive !== false);
+    
+    if (!activePortfolio || !activePortfolio.logos) {
+      return {
+        title: "Trusted by Companies Worldwide",
+        logos: []
+      };
+    }
+
+    // Process logos data
+    const processedLogos = activePortfolio.logos.map(logoItem => ({
+      url: logoItem.logo?.url ? (
+        logoItem.logo.url.startsWith('http') 
+          ? logoItem.logo.url 
+          : `${API_BASE_URL.replace('/api', '')}${logoItem.logo.url}`
+      ) : '/assets/default-logo.png',
+      name: logoItem.name || 'Partner Logo',
+      website: logoItem.url || null,
+      alt: logoItem.name || 'Partner Logo'
+    }));
+
+    return {
+      title: activePortfolio.title || "Trusted by Companies Worldwide",
+      logos: processedLogos
+    };
+  } catch (error) {
+    console.error("[fetchPortfolioData] Error:", error);
+    
+    // Fallback data
+    return {
+      title: "Trusted by Companies Worldwide",
+      logos: [
+        { url: "/assets/logo1.png", name: "Partner 1", alt: "Partner 1" },
+        { url: "/assets/logo2.jpeg", name: "Partner 2", alt: "Partner 2" },
+      ]
     };
   }
 };
 
 export const fetchFAQData = async () => {
   try {
-    // Sementara menggunakan data statis, nanti bisa diganti dengan API call
-    // const response = await axios.get(`${API_BASE_URL}/faq`);
-    // return response.data;
+    // Fetch FAQ data from API (removed sort=order since field might not exist)
+    const response = await axios.get(`${API_BASE_URL}/faq?limit=100`);
+    const faqData = response.data;
+
+    // Extract unique categories from the fetched data
+    const uniqueCategories = [...new Set(faqData.docs.map(faq => faq.category))];
+    
+    // Create categories array with "all" option
+    const categories = [
+      { id: "all", name: "All Questions" },
+      ...uniqueCategories.map(category => ({
+        id: category,
+        name: category.charAt(0).toUpperCase() + category.slice(1)
+      }))
+    ];
+
+    // Process FAQ data to match the expected format
+    const processedFAQs = faqData.docs
+      .filter(faq => faq.isActive !== false) // Only include active FAQs (default true if not set)
+      .map((faq, index) => ({
+        id: faq.id,
+        categoryId: faq.category,
+        question: faq.question,
+        answer: extractPlainText(faq.answer),
+        isOpen: false,
+        order: faq.order !== undefined ? faq.order : index, // Use index as fallback order
+        isFeatured: faq.isFeatured || false,
+        tags: faq.tags?.map(tag => tag.tag) || [],
+        helpfulCount: faq.helpfulCount || 0 // Default to 0 if field doesn't exist
+      }))
+      .sort((a, b) => a.order - b.order); // Sort by order
 
     return {
-      categories: [
-        { id: "all", name: "All Questions" },
-        { id: "feature", name: "Feature" },
-        { id: "general", name: "General" },
-        { id: "business", name: "Business" },
-        { id: "technical", name: "Technical" },
-        { id: "technical", name: "Technical" },
-        { id: "technical", name: "Technical" },
-      ],
-      faqs: [
-        // Feature FAQs
-        {
-          id: 1,
-          categoryId: "feature",
-          question: "Apa saja fitur utama yang tersedia di SiUJI?",
-          answer:
-            "SiUJI menyediakan berbagai fitur unggulan seperti sistem manajemen ujian online, monitoring real-time, analisis hasil ujian otomatis, bank soal yang dapat disesuaikan, dan sistem keamanan berlapis untuk memastikan integritas ujian.",
-          isOpen: false,
-        },
-        {
-          id: 2,
-          categoryId: "feature",
-          question: "Apakah SiUJI mendukung berbagai jenis soal?",
-          answer:
-            "Ya, SiUJI mendukung multiple choice, essay, true/false, matching, dan berbagai format soal lainnya untuk memenuhi kebutuhan ujian yang beragam.",
-          isOpen: false,
-        },
-        {
-          id: 3,
-          categoryId: "feature",
-          question: "Bisakah membuat laporan hasil ujian secara otomatis?",
-          answer:
-            "SiUJI dapat menghasilkan laporan komprehensif secara otomatis dengan analisis statistik, grafik performa, dan insights yang membantu evaluasi pembelajaran.",
-          isOpen: false,
-        },
-        {
-          id: 4,
-          categoryId: "feature",
-          question: "Apakah ada fitur anti-cheating di SiUJI?",
-          answer:
-            "Ya, SiUJI dilengkapi dengan sistem anti-cheating canggih termasuk browser lockdown, face recognition, screen monitoring, dan deteksi perilaku mencurigakan secara real-time.",
-          isOpen: false,
-        },
-        {
-          id: 5,
-          categoryId: "feature",
-          question: "Bagaimana sistem penilaian otomatis bekerja?",
-          answer:
-            "Sistem penilaian otomatis SiUJI menggunakan algoritma cerdas untuk mengoreksi jawaban, memberikan feedback instant, dan menghitung skor dengan akurasi tinggi.",
-          isOpen: false,
-        },
-
-        // General FAQs
-        {
-          id: 6,
-          categoryId: "general",
-          question: "Bagaimana cara memulai menggunakan SiUJI?",
-          answer:
-            "Untuk memulai menggunakan SiUJI, Anda dapat mendaftar akun melalui website resmi kami, kemudian melakukan verifikasi email, dan mengikuti tutorial setup yang telah disediakan.",
-          isOpen: false,
-        },
-        {
-          id: 7,
-          categoryId: "general",
-          question: "Apakah SiUJI dapat digunakan untuk ujian berskala besar?",
-          answer:
-            "Tentu saja! SiUJI dirancang untuk menangani ujian dengan ribuan peserta secara bersamaan dengan performa yang stabil dan reliabel.",
-          isOpen: false,
-        },
-        {
-          id: 8,
-          categoryId: "general",
-          question: "Bagaimana cara membuat soal ujian di SiUJI?",
-          answer:
-            "Anda dapat membuat soal melalui dashboard admin dengan mudah. Sistem kami menyediakan editor yang user-friendly untuk berbagai jenis soal.",
-          isOpen: false,
-        },
-        {
-          id: 9,
-          categoryId: "general",
-          question: "Apakah SiUJI mendukung ujian offline?",
-          answer:
-            "SiUJI memiliki fitur offline mode yang memungkinkan peserta tetap mengerjakan ujian meski koneksi internet terputus, dan data akan tersinkronisasi otomatis saat koneksi pulih.",
-          isOpen: false,
-        },
-        {
-          id: 10,
-          categoryId: "general",
-          question: "Bagaimana cara mengunduh hasil ujian?",
-          answer:
-            "Hasil ujian dapat diunduh dalam berbagai format seperti PDF, Excel, atau CSV melalui dashboard admin dengan sekali klik.",
-          isOpen: false,
-        },
-
-        // Business FAQs
-        {
-          id: 11,
-          categoryId: "business",
-          question: "Apakah data ujian akan aman tersimpan?",
-          answer:
-            "SiUJI menggunakan enkripsi tingkat enterprise dan mematuhi standar keamanan internasional untuk memastikan data ujian dan peserta terlindungi dengan baik.",
-          isOpen: false,
-        },
-        {
-          id: 12,
-          categoryId: "business",
-          question: "Apakah tersedia support 24/7?",
-          answer:
-            "Ya, kami menyediakan layanan customer support 24/7 melalui berbagai channel komunikasi untuk memastikan kelancaran ujian Anda.",
-          isOpen: false,
-        },
-        {
-          id: 13,
-          categoryId: "business",
-          question: "Bagaimana SLA yang ditawarkan SiUJI?",
-          answer:
-            "Kami menjamin uptime 99.9% untuk pelanggan enterprise dengan monitoring 24/7 dan dukungan teknis yang responsif.",
-          isOpen: false,
-        },
-
-        // Technical FAQs
-        {
-          id: 14,
-          categoryId: "technical",
-          question:
-            "Apakah SiUJI dapat diintegrasikan dengan sistem LMS yang sudah ada?",
-          answer:
-            "Ya, SiUJI mendukung integrasi dengan berbagai platform LMS populer seperti Moodle, Canvas, dan Blackboard melalui API yang telah disediakan.",
-          isOpen: false,
-        },
-        {
-          id: 15,
-          categoryId: "technical",
-          question: "Apa saja persyaratan sistem untuk menggunakan SiUJI?",
-          answer:
-            "Persyaratan minimum meliputi RAM 4GB, browser modern (Chrome, Firefox, Safari, Edge), dan koneksi internet yang stabil.",
-          isOpen: false,
-        },
-        {
-          id: 16,
-          categoryId: "technical",
-          question: "Bagaimana mengatasi masalah koneksi saat ujian?",
-          answer:
-            "Periksa koneksi internet Anda, bersihkan cache browser, atau coba gunakan browser yang berbeda. Tim support kami siap membantu jika masalah berlanjut.",
-          isOpen: false,
-        },
-
-        // Pricing FAQs
-        {
-          id: 17,
-          categoryId: "pricing",
-          question: "Berapa biaya berlangganan SiUJI?",
-          answer:
-            "SiUJI menawarkan berbagai paket berlangganan mulai dari paket basic hingga enterprise. Silakan hubungi tim sales kami untuk mendapatkan penawaran yang sesuai dengan kebutuhan institusi Anda.",
-          isOpen: false,
-        },
-        {
-          id: 18,
-          categoryId: "pricing",
-          question: "Apakah ada trial gratis untuk mencoba SiUJI?",
-          answer:
-            "Ya, kami menyediakan trial gratis selama 14 hari dengan akses penuh ke semua fitur premium untuk membantu Anda mengevaluasi platform kami.",
-          isOpen: false,
-        },
-      ],
+      categories,
+      faqs: processedFAQs,
     };
   } catch (error) {
     console.error("[fetchFAQData] Error:", error);
+    
+    // Fallback data in case API is not available
     return {
-      categories: [{ id: "general", name: "General" }],
+      categories: [
+        { id: "all", name: "All Questions" },
+        { id: "general", name: "General" },
+        { id: "features", name: "Features" },
+        { id: "technical", name: "Technical" },
+        { id: "pricing", name: "Pricing" }
+      ],
       faqs: [
         {
           id: 1,
           categoryId: "general",
-          question: "How can we help you?",
-          answer: "Please contact our support team for assistance.",
+          question: "Bagaimana cara memulai menggunakan SiUJI?",
+          answer: "Untuk memulai menggunakan SiUJI, Anda dapat mendaftar akun melalui website resmi kami, kemudian melakukan verifikasi email, dan mengikuti tutorial setup yang telah disediakan.",
           isOpen: false,
+          order: 0,
+          isFeatured: false
         },
+        {
+          id: 2,
+          categoryId: "features",
+          question: "Apa saja fitur utama yang tersedia di SiUJI?",
+          answer: "SiUJI menyediakan berbagai fitur unggulan seperti sistem manajemen ujian online, monitoring real-time, analisis hasil ujian otomatis, bank soal yang dapat disesuaikan, dan sistem keamanan berlapis untuk memastikan integritas ujian.",
+          isOpen: false,
+          order: 1,
+          isFeatured: true
+        }
       ],
     };
+  }
+};
+
+// Function to fetch FAQ by specific category
+export const fetchFAQByCategory = async (category = 'all') => {
+  try {
+    // Remove sort=order since order field might not exist
+    let url = `${API_BASE_URL}/faq?limit=100`;
+    
+    // Add category filter if not 'all'
+    if (category !== 'all') {
+      url += `&where[category][equals]=${category}`;
+    }
+    
+    const response = await axios.get(url);
+    const faqData = response.data;
+
+    const processedFAQs = faqData.docs
+      .filter(faq => faq.isActive !== false)
+      .map((faq, index) => ({
+        id: faq.id,
+        categoryId: faq.category,
+        question: faq.question,
+        answer: extractPlainText(faq.answer),
+        isOpen: false,
+        order: faq.order !== undefined ? faq.order : index,
+        isFeatured: faq.isFeatured || false,
+        tags: faq.tags?.map(tag => tag.tag) || [],
+        helpfulCount: faq.helpfulCount || 0
+      }))
+      .sort((a, b) => a.order - b.order);
+
+    return processedFAQs;
+  } catch (error) {
+    console.error("[fetchFAQByCategory] Error:", error);
+    return [];
+  }
+};
+
+// Function to search FAQ by keyword
+export const searchFAQ = async (keyword) => {
+  try {
+    // Remove sort=order since order field might not exist
+    const url = `${API_BASE_URL}/faq?limit=100&where[or][0][question][contains]=${keyword}&where[or][1][tags.tag][contains]=${keyword}&where[isActive][equals]=true`;
+    
+    const response = await axios.get(url);
+    const faqData = response.data;
+
+    const processedFAQs = faqData.docs.map((faq, index) => ({
+      id: faq.id,
+      categoryId: faq.category,
+      question: faq.question,
+      answer: extractPlainText(faq.answer),
+      isOpen: false,
+      order: faq.order !== undefined ? faq.order : index,
+      isFeatured: faq.isFeatured || false,
+      tags: faq.tags?.map(tag => tag.tag) || [],
+      helpfulCount: faq.helpfulCount || 0
+    }))
+    .sort((a, b) => a.order - b.order);
+
+    return processedFAQs;
+  } catch (error) {
+    console.error("[searchFAQ] Error:", error);
+    return [];
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <section class="portfolio">
-    <h2 class="portfolio-title">Trusted by 1.234 Companies Worldwide</h2>
+    <h2 class="portfolio-title">{{ title }}</h2>
     <div class="portfolio-slider">
       <div ref="track" class="portfolio-track">
         <div
@@ -19,6 +19,10 @@
 import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
+  title: {
+    type: String,
+    default: 'Trusted by 1.234 Companies Worldwide',
+  },
   logos: {
     type: Array,
     required: true,
