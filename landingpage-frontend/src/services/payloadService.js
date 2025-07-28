@@ -371,3 +371,88 @@ export const fetchTestimonialsData = async () => {
     ];
   }
 };
+
+// Function to fetch Features data
+export const fetchFeaturesData = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/features?limit=100&where[isActive][equals]=true&sort=order`);
+    const featuresData = response.data;
+
+    const processedFeatures = featuresData.docs.map((feature, index) => ({
+      id: feature.id,
+      title: feature.title,
+      description: feature.description,
+      image: feature.image ? {
+        url: feature.image.url.startsWith('http') 
+          ? feature.image.url 
+          : `${API_BASE_URL.replace('/api', '')}${feature.image.url}`,
+        alt: feature.image.alt || feature.title
+      } : null,
+      position: feature.position || 'left', // 'left' or 'right'
+      layout: feature.position || 'left', // For component compatibility
+      order: feature.order !== undefined ? feature.order : index,
+      isActive: feature.isActive !== false
+    }))
+    .sort((a, b) => a.order - b.order);
+
+    return processedFeatures;
+  } catch (error) {
+    console.error("[fetchFeaturesData] Error:", error);
+    
+    // Fallback data in case API is not available
+    return [
+      {
+        id: 1,
+        title: "Sistem Ujian Cerdas",
+        description: "Platform ujian online yang dilengkapi dengan teknologi anti-kecurangan dan monitoring real-time untuk memastikan integritas ujian yang maksimal.",
+        image: {
+          url: "/assets/ilustrasi-hero.png",
+          alt: "Sistem Ujian Cerdas"
+        },
+        position: "left",
+        layout: "left",
+        order: 0,
+        isActive: true
+      },
+      {
+        id: 2,
+        title: "Analitik Komprehensif",
+        description: "Dashboard analitik yang memberikan insight mendalam tentang performa siswa, statistik ujian, dan laporan yang dapat disesuaikan untuk kebutuhan institusi.",
+        image: {
+          url: "/assets/ilustrasi-hero.png",
+          alt: "Analitik Komprehensif"
+        },
+        position: "right",
+        layout: "right",
+        order: 1,
+        isActive: true
+      },
+      {
+        id: 3,
+        title: "Keamanan Berlapis",
+        description: "Sistem keamanan multi-layer dengan enkripsi end-to-end, biometric verification, dan secure browser untuk melindungi data dan menjaga kredibilitas ujian.",
+        image: {
+          url: "/assets/ilustrasi-hero.png",
+          alt: "Keamanan Berlapis"
+        },
+        position: "left",
+        layout: "left",
+        order: 2,
+        isActive: true
+      },
+      {
+        id: 4,
+        title: "Interface Ramah Pengguna",
+        description: "Desain yang intuitif dan user-friendly memungkinkan siswa dan pengajar untuk menggunakan platform dengan mudah tanpa memerlukan training yang kompleks.",
+        image: {
+          url: "/assets/ilustrasi-hero.png",
+          alt: "Interface Ramah Pengguna"
+        },
+        position: "right",
+        layout: "right",
+        order: 3,
+        isActive: true
+      }
+    ];
+  }
+};
