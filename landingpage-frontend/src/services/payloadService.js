@@ -296,7 +296,6 @@ export const fetchTestimonialsData = async () => {
       school: testimonial.school || '',
       content: testimonial.content,
       title: testimonial.testimonialTitle || '',
-      rating: testimonial.rating || 5,
       avatar: testimonial.avatar ? {
         url: testimonial.avatar.url.startsWith('http') 
           ? testimonial.avatar.url 
@@ -323,7 +322,6 @@ export const fetchTestimonialsData = async () => {
         school: "Jakarta International School",
         content: "SiUJI telah mengubah cara kami melakukan ujian. Fitur pemantauan real-time memberi saya kepercayaan dalam menjaga integritas akademik.",
         title: "Transformasi Digital yang Luar Biasa",
-        rating: 5,
         avatar: null,
         order: 1,
         isFeatured: true,
@@ -336,7 +334,6 @@ export const fetchTestimonialsData = async () => {
         school: "SMA Negeri 1 Bandung",
         content: "Platform ini sangat ramah pengguna dan analitik membantu kami memahami kinerja siswa lebih baik dari sebelumnya.",
         title: "Solusi Terbaik untuk Institusi Pendidikan",
-        rating: 5,
         avatar: null,
         order: 2,
         isFeatured: false,
@@ -349,7 +346,6 @@ export const fetchTestimonialsData = async () => {
         school: "Universitas Teknologi Indonesia",
         content: "Implementasi SiUJI di universitas kami sangat sukses. Mahasiswa dan dosen sama-sama puas dengan kemudahan penggunaannya.",
         title: "Efisiensi Ujian Tingkat Universitas",
-        rating: 5,
         avatar: null,
         order: 3,
         isFeatured: true,
@@ -362,7 +358,6 @@ export const fetchTestimonialsData = async () => {
         school: "SMK Informatika Nusantara",
         content: "Dengan SiUJI, proses ujian menjadi lebih terorganisir dan hasil analisis membantu kami meningkatkan kualitas pembelajaran.",
         title: "Revolusi Sistem Ujian Sekolah",
-        rating: 5,
         avatar: null,
         order: 4,
         isFeatured: false,
