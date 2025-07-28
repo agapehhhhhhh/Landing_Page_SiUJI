@@ -162,6 +162,11 @@ onUnmounted(() => {
   position: relative;
 }
 
+.logo {
+  margin-left: 0px;
+  transform: translateX(-180px);
+}
+
 .logo img {
   height: 50px;
 }
@@ -196,6 +201,7 @@ onUnmounted(() => {
   border: 2px solid #000;
   cursor: pointer;
   color: #1c1c1c;
+  transform: translateX(180px);
 }
 
 .desktop-login:hover {
