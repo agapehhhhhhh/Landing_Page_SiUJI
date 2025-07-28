@@ -35,12 +35,12 @@ defineProps<{
   background-color: #f0faf5;
 }
 .feature-item.active {
-  background-color: #6BC2A1;
+  background-color: #4CC5BD;
   color: white;
 }
 .feature-item.active .emoji {
   background-color: white;
-  color: #6BC2A1;
+  color: #4CC5BD;
 }
 .feature-item.active .title,
 .feature-item.active .description {

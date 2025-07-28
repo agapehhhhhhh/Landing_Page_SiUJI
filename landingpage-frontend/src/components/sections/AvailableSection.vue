@@ -152,8 +152,8 @@ const bannerButtonLink = computed(() => {
   margin-top: 2.5rem;
   padding: 1.25rem 1.5rem;
   border-radius: 14px;
-  border: 1px solid #000;
-  background: linear-gradient(90deg, #1abc9c, #48c9b0);
+  border: 1px solid #555555;
+  background: linear-gradient(90deg, #5ec7c0, #4CC5BD);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -170,7 +170,7 @@ const bannerButtonLink = computed(() => {
 .info-button {
   background-color: white;
   color: black;
-  border: 1px solid #000;
+  border: 1px solid #555555;
   border-radius: 9999px;
   padding: 0.5rem 1rem;
   font-weight: 500;

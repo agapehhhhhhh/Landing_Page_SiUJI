@@ -30,9 +30,14 @@
             <p class="copyright">© 2021 All Rights Reserved</p>
           </div>
           <div class="footer-contact">
+            <p style="font-weight: bold;">Office</p>
             <address>
-              Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,<br />
+              Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,
               Kota Bandung, Jawa Barat 40112
+            </address>
+            <p style="font-weight: bold;">Workshop</p>
+            <address>
+              Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
             </address>
             <p>info@somerah.id</p>
             <p>+62 851 1724 2221</p>
@@ -175,8 +180,27 @@ const icons = [
   border-radius: 20px;
   font-size: 13px;
   cursor: pointer;
-  display: flex;               /* Tambahkan ini */
-  align-items: center;         /* Tambahkan ini */
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center; 
+  gap: 8px;
+  min-width: 140px;
+  text-align: center; 
+}
+
+.footer-buttons button .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.footer-buttons button svg {
+  display: block;
+  height: 22px;
+  width: 22px;
 }
 
 .footer-icons {
@@ -210,40 +234,6 @@ const icons = [
 .footer-contact p {
   margin: 4px 0;
   font-style: normal;
-}
-
-.google-play-btn .icon {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  height: 22px;
-}
-.google-play-btn svg {
-  display: block;
-  height: 22px;
-  width: 22px;
-}
-.app-store-btn .icon {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  height: 22px;
-}
-.app-store-btn svg {
-  display: block;
-  height: 22px;
-  width: 20px;
-}
-.web-btn .icon {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  height: 22px;
-}
-.web-btn svg {
-  display: block;
-  height: 22px;
-  width: 25px;
 }
 
 @media (min-width: 768px) {

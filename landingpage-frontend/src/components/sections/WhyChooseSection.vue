@@ -83,7 +83,7 @@ window.addEventListener('resize', () => {
 .why-choose-section {
   position: relative;
   padding: 4rem 1rem 6rem 1rem;
-  background: linear-gradient(to right, #ffffff 50%, #6BC2A1 200%);
+  background: linear-gradient(to right, #ffffff 50%, #4CC5BD 200%);
   overflow: hidden;
 }
 .why-bg-svg {

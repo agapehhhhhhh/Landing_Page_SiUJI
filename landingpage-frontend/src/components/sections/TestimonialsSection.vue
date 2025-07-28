@@ -17,8 +17,7 @@
         :autoplay="{ delay: 3000, disableOnInteraction: false }"
         :breakpoints="{
           0: { slidesPerView: 1 },
-          600: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 }
+          601: { slidesPerView: 3 }
         }"
         @slideChange="onSlideChange"
         ref="swiperRef"
@@ -137,7 +136,7 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 60px; /* Tambahkan padding lebih besar di kiri-kanan */
-  overflow: visible; /* Pastikan overflow visible */
+  overflow: hidden; /* Pastikan overflow visible */
 }
 
 /* Pastikan card testimonial yang di-scale tidak terpotong */
@@ -241,7 +240,7 @@ export default {
 
 .swiper {
   padding: 30px 0; /* Beri padding atas-bawah untuk card yang di-scale */
-  overflow: visible;
+  overflow: hidden;
 }
 
 .testimonial-nav {
@@ -300,19 +299,6 @@ export default {
   width: 48px;
   background: #54be96;
   opacity: 1;
-}
-
-@media (max-width: 1024px) {
-  .testimonial-card {
-    flex: 0 0 calc(100% / 2 - 20px); /* 2 card per view di tablet */
-  }
-  .swiper-container {
-    padding: 0 40px;
-  }
-  
-  .swiper-slide-next .testimonial-card {
-    transform: scale(1.1);
-  }
 }
 
 @media (max-width: 600px) {
