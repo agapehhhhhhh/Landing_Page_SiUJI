@@ -99,6 +99,8 @@ function handleSubmit() {
   font-weight: bold;
   margin-bottom: 20px;
   margin-top: 0;
+  -webkit-text-stroke: 1px #000000; /* Outline hitam */
+  text-stroke: 1px #222;         /* Untuk browser lain */
 }
 
 .section-description {
@@ -122,7 +124,7 @@ function handleSubmit() {
   padding: 12px 16px;
   margin-bottom: 16px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #555555;
   outline: none;
   font-size: 1rem;
   box-sizing: border-box;
@@ -140,7 +142,7 @@ function handleSubmit() {
   color: #38b2ac;
   padding: 12px 16px;
   font-weight: bold;
-  border: none;
+  border: 1px solid #555555;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;

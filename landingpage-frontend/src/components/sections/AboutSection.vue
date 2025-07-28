@@ -453,9 +453,9 @@ function getZIndex(index: number): number {
     padding: 0;
     max-width: 100%;
   }
-    .section-title {
+  .section-title {
     padding: 24px; /* Sesuaikan dengan card */
-    margin: 0 auto 40px; /* Jarak bawah lebih kecil */
+    margin: 0 auto 0; /* Jarak bawah lebih kecil */
     max-width: calc(100% - 32px); /* Sama dengan card */
   }
 

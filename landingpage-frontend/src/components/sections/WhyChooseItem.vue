@@ -28,7 +28,7 @@ defineProps<{
   background-color: #fff;
   transition: background-color 0.3s, transform 0.3s;
   font-size: clamp(0.95rem, 1vw, 1.1rem);
-
+  border: 1px solid #4CC5BD;
 }
 
 /* hover & active */

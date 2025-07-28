@@ -6,7 +6,7 @@
     </svg>
     <div class="container">
       <h2 class="section-title">Why Choose Us?</h2>
-      <div class="content-wrapper">
+      <div class="content-wrapper" v-if="isDesktop">
         <!-- Gambar Kiri -->
         <div class="visual">
           <transition name="fade" mode="out-in">
@@ -34,6 +34,25 @@
             @mouseenter="isDesktop && setActive(index)"
             @click="!isDesktop && setActive(index)"
           />
+        </div>
+      </div>
+      <div class="mobile-carousel" v-else>
+        <div class="visual">
+          <img
+            :src="features[activeFeatureIndex].image"
+            :alt="features[activeFeatureIndex].title"
+          />
+        </div>
+        <FeatureItem
+          :emoji="features[activeFeatureIndex].emoji"
+          :title="features[activeFeatureIndex].title"
+          :description="features[activeFeatureIndex].description"
+          :active="true"
+        />
+        <div class="carousel-nav">
+          <button @click="prevFeature">←</button>
+          <span>{{ activeFeatureIndex + 1 }} / {{ features.length }}</span>
+          <button @click="nextFeature">→</button>
         </div>
       </div>
     </div>
@@ -76,7 +95,13 @@ const setActive = (index: number) => {
 const isDesktop = ref(window.innerWidth > 640);
 window.addEventListener('resize', () => {
   isDesktop.value = window.innerWidth > 640;
-});
+})
+function nextFeature() {
+  activeFeatureIndex.value = (activeFeatureIndex.value + 1) % features.length;
+}
+function prevFeature() {
+  activeFeatureIndex.value = (activeFeatureIndex.value - 1 + features.length) % features.length;
+}
 </script>
 
 <style scoped>
@@ -86,7 +111,7 @@ window.addEventListener('resize', () => {
   background: linear-gradient(to right, #ffffff 50%, #4CC5BD 200%);
   overflow: hidden;
   /* ⬇️ Tambahan penting */
-  height: calc(100vh - 80px); /* <--- UBAH dari min-height */
+  min-height: calc(100vh - 80px); /* <--- UBAH dari min-height */
   display: flex;
   align-items: center;
   box-sizing: border-box; /* penting supaya padding dihitung ke height */
@@ -160,40 +185,92 @@ window.addEventListener('resize', () => {
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
-
+@media (min-width: 641px) {
+  .mobile-carousel { display: none; }
+}
 @media (max-width: 640px) {
+  .content-wrapper { display: none; }
+  .mobile-carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 0.5rem; /* Tambahkan padding di container utama */
+    box-sizing: border-box;
+  }
   .why-choose-section {
-    padding: 2rem 0.5rem 2rem 0.5rem;
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
   }
   .container {
     max-width: 100vw;
-    padding: 0;
+    padding: 0 0.5rem;
+    text-align: center;
   }
   .section-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
   }
   .content-wrapper {
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 0.7rem;
     align-items: center;
   }
   .visual {
-    flex: unset;
     width: 100%;
+    display: flex;
+    justify-content: center;
     margin-bottom: 1rem;
+    padding: 0; /* Hapus padding di visual karena sudah ada di parent */
   }
   .visual img {
-    max-width: 98vw;
     width: 100%;
-    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
     border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
   }
   .features {
     flex: unset;
     width: 100%;
-    gap: 1rem;
+    gap: 0.7rem;
     text-align: left;
+  }
+  .FeatureItem {
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    padding: 1rem; /* Sesuaikan padding dengan kebutuhan desain */
+    box-sizing: border-box;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .carousel-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 0.5rem;
+  }
+  .carousel-nav button {
+    background: #4CC5BD;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .carousel-nav button:active {
+    background: #319e8c;
+  }
+  .carousel-nav span {
+    font-size: 1rem;
+    color: #333;
+    min-width: 48px;
+    text-align: center;
   }
   .vertical-divider {
     display: none;

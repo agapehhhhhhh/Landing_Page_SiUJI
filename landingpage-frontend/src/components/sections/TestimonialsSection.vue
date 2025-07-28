@@ -347,18 +347,16 @@ export default {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #c2c2c2;
   transition: all 0.3s;
   opacity: 1;
   display: inline-block;
-  border: 1px solid #555555;
 }
 .nav-dot.active {
   width: 48px;
   border-radius: 5px;
   background: #6BC2A1;
   opacity: 1;
-  border: 1px solid #555555;
 }
 
 @media (max-width: 600px) {
