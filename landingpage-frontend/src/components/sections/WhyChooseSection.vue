@@ -82,14 +82,19 @@ window.addEventListener('resize', () => {
 <style scoped>
 .why-choose-section {
   position: relative;
-  padding: 4rem 1rem 6rem 1rem;
+  padding: clamp(2rem, 5vh, 4rem) 1rem;
   background: linear-gradient(to right, #ffffff 50%, #4CC5BD 200%);
   overflow: hidden;
+  /* ⬇️ Tambahan penting */
+  height: calc(100vh - 80px); /* <--- UBAH dari min-height */
+  display: flex;
+  align-items: center;
+  box-sizing: border-box; /* penting supaya padding dihitung ke height */
 }
 .why-bg-svg {
   position: absolute;
   top: -5px;
-  left: -235px;
+  left: -400px;
   width: 100%;
   height: auto;
   min-height: 400px;
@@ -100,39 +105,47 @@ window.addEventListener('resize', () => {
 .container {
   position: relative;
   z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: clamp(960px, 90vw, 1300px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 5vw, 3rem); /* otomatis menyesuaikan layar */
   text-align: center;
 }
 .section-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 2.5vw + 1rem, 2.5rem);
   font-weight: 700;
   margin-bottom: 2rem;
 }
 .content-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: clamp(1rem, 4vw, 3rem);
   justify-content: center;
   align-items: stretch; /* ⬅️ ini penting */
 }
 .visual {
-  flex: 1 1 400px;
+  flex: 1 1 0;
+  max-width: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .visual img {
   width: 100%;
-  max-width: 540px;
+  height: auto;
+  aspect-ratio: 16 / 9; /* 💡 atur rasio tetap */
+  object-fit: contain;
+  max-width: clamp(300px, 90%, 500px);
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 .features {
-  flex: 1 1 400px;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: clamp(1rem, 2vw, 2rem);
   text-align: left;
+  max-width: 50%;
 }
 .vertical-divider {
   width: 1px;

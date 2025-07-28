@@ -39,7 +39,7 @@
             <address>
               Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
             </address>
-            <p>info@somerah.id</p>
+            <p>info@someah.id</p>
             <p>+62 851 1724 2221</p>
           </div>
         </div>
@@ -116,14 +116,17 @@ const icons = [
 .footer-top {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: center;
+  gap: 110px;            /* Lebih besar agar antar kolom tidak terlalu rapat */
   margin-bottom: 20px;
+  max-width: 900px;     /* Batasi lebar maksimal agar tidak terlalu melebar */
+  margin: 0 auto 20px;  /* Tengah secara horizontal */
+  width: 100%;
 }
 
 .footer-column {
   min-width: 140px;
-  flex: 1;
+  text-align: left;
 }
 
 .footer-column h4 {
@@ -177,7 +180,7 @@ const icons = [
   color: black;
   border: none;
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 13px;
   cursor: pointer;
   display: inline-flex; 

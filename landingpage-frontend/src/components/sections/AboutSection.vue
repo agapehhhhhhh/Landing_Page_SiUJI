@@ -342,7 +342,7 @@ function getZIndex(index: number): number {
 }
 .material-icons {
   font-size: 32px;
-  color: #4CC5BD;
+  color: #555555;
   transition: transform 0.2s ease;
 }
 .arrow:hover .material-icons {

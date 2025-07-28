@@ -23,11 +23,12 @@ defineProps<{
   grid-template-rows: auto auto;
   gap: 0.5rem 1rem;
   align-items: center;
-  padding: 1rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
   border-radius: 8px;
   background-color: #fff;
   transition: background-color 0.3s, transform 0.3s;
-  cursor: pointer;
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+
 }
 
 /* hover & active */
@@ -65,7 +66,7 @@ defineProps<{
 .title {
   grid-row: 1;
   grid-column: 2;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
   font-weight: 600;
   margin: 0;
 }
@@ -74,7 +75,7 @@ defineProps<{
   grid-row: 2;
   grid-column: 1 / span 2; /* lebar penuh, mulai dari icon */
   margin: 0;
-  font-size: 0.95rem;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   color: #555;
   line-height: 1.5;
   padding-left: 5px;
