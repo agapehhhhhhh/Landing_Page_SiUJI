@@ -282,3 +282,92 @@ export const searchFAQ = async (keyword) => {
     return [];
   }
 };
+
+// Function to fetch Testimonials data
+export const fetchTestimonialsData = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/testimonials?limit=100&where[isActive][equals]=true&sort=order`);
+    const testimonialsData = response.data;
+
+    const processedTestimonials = testimonialsData.docs.map((testimonial, index) => ({
+      id: testimonial.id,
+      name: testimonial.name,
+      position: testimonial.position,
+      school: testimonial.school || '',
+      content: testimonial.content,
+      title: testimonial.testimonialTitle || '',
+      rating: testimonial.rating || 5,
+      avatar: testimonial.avatar ? {
+        url: testimonial.avatar.url.startsWith('http') 
+          ? testimonial.avatar.url 
+          : `${API_BASE_URL.replace('/api', '')}${testimonial.avatar.url}`,
+        alt: testimonial.avatar.alt || testimonial.name
+      } : null,
+      order: testimonial.order !== undefined ? testimonial.order : index,
+      isFeatured: testimonial.isFeatured || false,
+      // For compatibility with existing component
+      job: testimonial.position
+    }))
+    .sort((a, b) => a.order - b.order);
+
+    return processedTestimonials;
+  } catch (error) {
+    console.error("[fetchTestimonialsData] Error:", error);
+    
+    // Fallback data in case API is not available
+    return [
+      {
+        id: 1,
+        name: "Dr. Sarah Johnson",
+        position: "Guru Matematika",
+        school: "Jakarta International School",
+        content: "SiUJI telah mengubah cara kami melakukan ujian. Fitur pemantauan real-time memberi saya kepercayaan dalam menjaga integritas akademik.",
+        title: "Transformasi Digital yang Luar Biasa",
+        rating: 5,
+        avatar: null,
+        order: 1,
+        isFeatured: true,
+        job: "Guru Matematika"
+      },
+      {
+        id: 2,
+        name: "Ahmad Rizki",
+        position: "Koordinator IT",
+        school: "SMA Negeri 1 Bandung",
+        content: "Platform ini sangat ramah pengguna dan analitik membantu kami memahami kinerja siswa lebih baik dari sebelumnya.",
+        title: "Solusi Terbaik untuk Institusi Pendidikan",
+        rating: 5,
+        avatar: null,
+        order: 2,
+        isFeatured: false,
+        job: "Koordinator IT"
+      },
+      {
+        id: 3,
+        name: "Prof. Maria Santos",
+        position: "Dekan Fakultas",
+        school: "Universitas Teknologi Indonesia",
+        content: "Implementasi SiUJI di universitas kami sangat sukses. Mahasiswa dan dosen sama-sama puas dengan kemudahan penggunaannya.",
+        title: "Efisiensi Ujian Tingkat Universitas",
+        rating: 5,
+        avatar: null,
+        order: 3,
+        isFeatured: true,
+        job: "Dekan Fakultas"
+      },
+      {
+        id: 4,
+        name: "Budi Santoso",
+        position: "Kepala Sekolah",
+        school: "SMK Informatika Nusantara",
+        content: "Dengan SiUJI, proses ujian menjadi lebih terorganisir dan hasil analisis membantu kami meningkatkan kualitas pembelajaran.",
+        title: "Revolusi Sistem Ujian Sekolah",
+        rating: 5,
+        avatar: null,
+        order: 4,
+        isFeatured: false,
+        job: "Kepala Sekolah"
+      }
+    ];
+  }
+};
