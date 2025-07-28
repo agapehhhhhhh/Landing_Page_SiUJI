@@ -52,11 +52,7 @@
             <p class="reviewer-name">{{ review.name }}</p>
             <p class="reviewer-job">{{ review.job || review.position }}</p>
             <p v-if="review.school" class="reviewer-school">{{ review.school }}</p>
-            
-            <!-- Rating Stars (optional) -->
-            <div v-if="review.rating" class="rating-stars">
-              <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.rating }">★</span>
-            </div>
+          
           </div>
         </SwiperSlide>
       </Swiper>
@@ -405,22 +401,6 @@ export default {
   padding: 60px 20px;
   color: #888;
   font-style: italic;
-}
-
-/* Rating Stars */
-.rating-stars {
-  margin-top: 12px;
-  text-align: center;
-}
-
-.star {
-  color: #ddd;
-  font-size: 16px;
-  margin: 0 2px;
-}
-
-.star.filled {
-  color: #ffd700;
 }
 
 /* School Name */
