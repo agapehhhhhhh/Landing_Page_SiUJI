@@ -160,7 +160,7 @@ function prevFeature() {
   height: auto;
   aspect-ratio: 16 / 9; /* 💡 atur rasio tetap */
   object-fit: contain;
-  max-width: clamp(300px, 90%, 500px);
+  max-width: clamp(600px, 80vw, 700px);
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
@@ -224,13 +224,21 @@ function prevFeature() {
     padding: 0; /* Hapus padding di visual karena sudah ada di parent */
   }
   .visual img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 320px;
+    max-width: 320px;
     width: 100%;
-    max-width: 100%;
+    box-sizing: border-box;
+    padding: 1rem; /* Samakan dengan .FeatureItem */
+    border-radius: 12px; /* Samakan dengan .FeatureItem */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06); /* Samakan dengan .FeatureItem */
+    background: #fff; /* Jika ingin sama persis, tambahkan background */
+    margin-bottom: 0.5rem;
     height: auto;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: unset;
     object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
   }
   .features {
     flex: unset;
@@ -239,12 +247,14 @@ function prevFeature() {
     text-align: left;
   }
   .FeatureItem {
+    max-width: 320px;
     width: 100%;
     margin: 0 auto 1rem auto;
-    padding: 1rem; /* Sesuaikan padding dengan kebutuhan desain */
+    padding: 1rem;
     box-sizing: border-box;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    background: #19c9b3;
   }
   .carousel-nav {
     display: flex;

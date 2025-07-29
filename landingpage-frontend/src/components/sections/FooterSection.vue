@@ -167,6 +167,7 @@ const icons = [
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: flex-start;
 }
 
 .footer-buttons {
@@ -208,6 +209,8 @@ const icons = [
 
 .footer-icons {
   margin-top: 10px;
+  align-self: flex-start;
+  margin-left: 0;
 }
 
 .footer-icons img {
@@ -243,10 +246,11 @@ const icons = [
   .footer-bottom {
     flex-direction: row;
     justify-content: space-between;
+    gap: 25px;
   }
 
   .footer-actions {
-    align-items: flex-end;
+    align-items: flex-start;
   }
   .footer-info {
     flex-direction: row;

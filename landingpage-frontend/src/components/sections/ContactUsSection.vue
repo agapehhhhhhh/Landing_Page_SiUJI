@@ -164,7 +164,7 @@ function handleSubmit() {
   .contact-container {
     flex-direction: column;
     padding: 16px;
-    gap: 24px;
+    gap: 0px;
     border-radius: 8px;
     align-items: stretch;
   }
@@ -178,11 +178,13 @@ function handleSubmit() {
   .map-column iframe {
     height: 220px;
     min-height: auto;
+    margin-top: 10px !important; /* Hapus jarak atas pada map */
   }
   
   .section-title {
     font-size: 1.5rem;
     margin-bottom: 14px;
+    text-align: center;
   }
   
   .section-description {
@@ -201,6 +203,8 @@ function handleSubmit() {
     width: 100%;
     padding: 12px 0;
     font-size: 1rem;
+    margin-bottom: 0 !important;
+    margin-top: 8px;
   }
   
   .contact-form {

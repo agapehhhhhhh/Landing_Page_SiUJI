@@ -284,10 +284,11 @@ function getZIndex(index: number): number {
 .stack-image {
   position: relative;
   /* 💡 Perbaikan besar di sini ↓↓↓ */
-  margin-left: max(-300px, -17vw);
+  margin-left: max(-300px, -18vw);
   transition: transform 0.3s ease, z-index 0.3s ease;
   max-width: 100%;
   overflow: hidden;
+  border-radius: 24px;
 }
 .stack-image:nth-child(2) {
   transform: scale(1.3);
@@ -305,7 +306,7 @@ function getZIndex(index: number): number {
   border-radius: 24px;
   width: clamp(220px, 25vw, 460px); /* ✨ Ukuran adaptif realistik */
   height: auto;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transition: transform 0.4s ease, box-shadow 0.4s ease;

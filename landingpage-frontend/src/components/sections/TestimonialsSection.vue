@@ -415,11 +415,20 @@ export default {
     height: 14px;
   }
   .nav-dot {
-    width: 18px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #c2c2c2;
+    transition: all 0.3s;
+    opacity: 1;
+    display: inline-block;
   }
   .nav-dot.active {
-    width: 32px;
+    width: 28px;
+    height: 14px;
+    border-radius: 5px;
+    background: #6BC2A1;
+    opacity: 1;
   }
 }
 </style>
