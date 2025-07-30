@@ -1,14 +1,14 @@
 <template>
-  <section class="features-section">
+  <section class="feature-section">
     <div class="container">
       <!-- Header Section -->
-      <div v-if="showHeader" class="features-header">
+      <div v-if="showHeader" class="feature-header">
         <h2 class="section-title">{{ title }}</h2>
         <p class="section-subtitle">{{ subtitle }}</p>
       </div>
       
       <!-- Feature Content -->
-      <div class="features-content" :class="{ 'reverse': layout === 'left', 'no-header': !showHeader }">
+      <div class="feature-content" :class="{ 'reverse': layout === 'left', 'no-header': !showHeader }">
         <!-- Feature Text -->
         <div class="feature-text">
           <h3 class="feature-title">{{ featureTitle }}</h3>
@@ -16,7 +16,7 @@
         </div>
         
         <!-- Illustration -->
-        <div class="features-illustration">
+        <div class="feature-illustration">
           <div class="illustration-container">
             <div class="illustration-bg">
               <img 
@@ -67,11 +67,23 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.features-section {
+.feature-section {
   padding: 80px 0;
   background: linear-gradient(135deg, #ffffff 0%, rgba(76, 197, 189, 0.02) 50%, #ffffff 100%);
   position: relative;
   overflow: hidden;
+}
+
+.feature-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(76, 197, 189, 0.05) 0%, transparent 70%);
+  filter: blur(20px);
+  z-index: 0;
 }
 
 .container {
@@ -83,7 +95,7 @@ const props = defineProps({
 }
 
 /* Header */
-.features-header {
+.feature-header {
   text-align: center;
   margin-bottom: 60px;
 }
@@ -104,22 +116,23 @@ const props = defineProps({
 }
 
 /* Content Layout */
-.features-content {
+.feature-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
+
   align-items: center;
 }
 
-.features-content.reverse {
+.feature-content.reverse {
   direction: rtl;
 }
 
-.features-content.reverse > * {
+.feature-content.reverse > * {
   direction: ltr;
 }
 
-.features-content.no-header {
+.feature-content.no-header {
   margin-top: 0;
 }
 
@@ -144,7 +157,7 @@ const props = defineProps({
 }
 
 /* Illustration */
-.features-illustration {
+.feature-illustration {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,6 +171,7 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 
 .illustration-bg {
@@ -173,34 +187,24 @@ const props = defineProps({
   box-shadow: 0 20px 40px -12px rgba(76, 197, 189, 0.3);
 }
 
-.illustration-bg::before {
-  content: '';
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  right: -20px;
-  bottom: -20px;
-  background: radial-gradient(circle, rgba(76, 197, 189, 0.15) 0%, rgba(76, 197, 189, 0.05) 40%, transparent 70%);
-  border-radius: 44px;
-  z-index: -1;
-  filter: blur(20px);
-}
-
 .illustration-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
+
+
+
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .features-content {
+  .feature-content {
     grid-template-columns: 1fr;
     gap: 40px;
   }
   
-  .features-content.reverse {
+  .feature-content.reverse {
     direction: ltr;
   }
   
@@ -223,7 +227,7 @@ const props = defineProps({
     padding: 12px;
   }
   
-  .features-illustration {
+  .feature-illustration {
     order: -1;
   }
 }

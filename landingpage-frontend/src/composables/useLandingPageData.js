@@ -1,6 +1,6 @@
 // src/composables/useLandingPageData.js
 import { ref, onMounted } from "vue";
-import { fetchLandingPage } from "@/services/payloadService";
+import { fetchLandingPage, fetchFAQData } from "@/services/payloadService";
 
 export function useLandingPageData() {
   const pageData = ref({});
@@ -8,9 +8,18 @@ export function useLandingPageData() {
 
   const fetchData = async () => {
     try {
-      const data = await fetchLandingPage();
-      console.log("[DEBUG] fetched pageData:", data); // DEBUG
-      pageData.value = data;
+      const [landingData, faqData] = await Promise.all([
+        fetchLandingPage(),
+        fetchFAQData(),
+      ]);
+
+      console.log("[DEBUG] fetched landingData:", landingData); // DEBUG
+      console.log("[DEBUG] fetched faqData:", faqData); // DEBUG
+
+      pageData.value = {
+        ...landingData,
+        faqs: faqData,
+      };
     } catch (error) {
       console.error("Gagal fetch landing page:", error);
     } finally {
