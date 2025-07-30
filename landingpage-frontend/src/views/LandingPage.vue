@@ -11,6 +11,7 @@ import PortofolioSection from '@/components/sections/PortofolioSection.vue'
 import FaqSection from '@/components/sections/FAQSection.vue'
 import FeaturesSection from '@/components/sections/FeaturesSection.vue'
 import FeatureItem from '@/components/sections/FeatureItem.vue'
+import FeaturesListSection from '@/components/sections/FeaturesListSection.vue'
 import PricingSection from '@/components/sections/PricingSection.vue'
 import { useLandingPageData } from '@/composables/useLandingPageData'
 
@@ -26,33 +27,11 @@ const { pageData, isLoading } = useLandingPageData()
       <WhyChooseSection />
       <AvailableSection />
       
-      <!-- Features Section with Image on Right (dengan header) -->
-      <FeaturesSection 
-        title="Our Feature"
-        subtitle="This very extraordinary feature, can make learning activities more efficient"
-        feature-title="Lorem Ipsum dolor sit amet"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-        image-src="/assets/ilustrasi-hero.png"
-        layout="right"
-        :show-header="true"
-      />
-      
-      <!-- Features Section with Image on Left (tanpa header) -->
-      <FeatureItem 
-        feature-title="Fast Performance"
-        description="Lightning-fast loading times and optimized performance to ensure the best user experience for your customers."
-        image-src="/assets/ilustrasi-hero.png"
-        layout="left"
-        :show-header="false"
-      />
-      
-      <!-- Another Feature Section (tanpa header) -->
-      <FeatureItem 
-        feature-title="Beautiful Design"
-        description="Modern and elegant designs that are visually appealing and enhance your brand image and user engagement."
-        image-src="/assets/ilustrasi-hero.png"
-        layout="right"
-        :show-header="false"
+      <!-- Dynamic Features from API -->
+      <FeaturesListSection 
+        main-title="Fitur Unggulan SiUJI"
+        main-subtitle="Jelajahi fitur-fitur canggih yang membuat SiUJI menjadi pilihan terbaik untuk kebutuhan ujian online Anda"
+        :show-main-header="true"
       />
       
       <PortofolioSection :logos="pageData.portofolio" />

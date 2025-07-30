@@ -314,14 +314,21 @@ export const fetchPricingData = async () => {
         name: plan.name,
         type: plan.type || plan.name.toLowerCase(),
         description: plan.description,
-        monthlyPrice: plan.monthlyPrice?.toString() || "0",
-        yearlyPrice: plan.yearlyPrice?.toString() || "0",
+        // Handle price based on period
+        monthlyPrice: plan.period === 'month' ? plan.price?.toString() || "0" : "0",
+        yearlyPrice: plan.period === 'year' ? plan.price?.toString() || "0" : (plan.price * 12)?.toString() || "0",
+        price: plan.price?.toString() || "0",
+        period: plan.period || 'month',
+        currency: plan.currency || 'idr',
         savings: plan.savings || null,
-        buttonText: plan.buttonText || "Get Started",
-        features: plan.features || [],
+        buttonText: plan.ctaText || "Get Started",
+        ctaLink: plan.ctaLink || "#",
+        features: plan.features?.map(f => f.feature) || [],
         isPopular: plan.isPopular || false,
+        badge: plan.badge || "",
         order: plan.order !== undefined ? plan.order : index,
         isActive: plan.isActive !== false,
+        limitations: plan.limitations?.map(l => l.limitation) || [],
         icon: plan.icon
           ? {
               url: plan.icon.url.startsWith("http")
@@ -344,169 +351,80 @@ export const fetchPricingData = async () => {
       plans: [
         {
           id: 1,
-          name: "Starter",
-          type: "starter",
-          description:
-            "Perfect untuk institusi pendidikan kecil yang baru memulai digitalisasi ujian",
+          name: "Basic",
+          type: "basic",
+          description: "Untuk coba-coba dan penggunaan personal",
           monthlyPrice: "0",
           yearlyPrice: "0",
+          price: "0",
+          period: "month",
+          currency: "idr",
+          savings: null,
           buttonText: "Mulai Gratis",
+          ctaLink: "/register?plan=basic",
           features: [
-            "Maksimal 50 siswa per ujian",
-            "3 template soal dasar",
-            "Laporan hasil sederhana",
-            "Support email standar",
-            "Penyimpanan 1GB",
-            "Akses dashboard basic",
-            "Export hasil format PDF",
+            "Hingga 50 siswa",
+            "2 Ujian per bulan",
+            "Dukungan Email"
           ],
           isPopular: false,
+          badge: "",
           order: 0,
           isActive: true,
+          limitations: ["Maksimal 50 siswa per kelas", "Fitur analitik terbatas"],
           icon: null,
         },
         {
           id: 2,
-          name: "Professional",
-          type: "professional",
-          description:
-            "Solusi lengkap untuk sekolah menengah dan institusi pendidikan standar",
-          monthlyPrice: "29",
-          yearlyPrice: "290",
-          savings: "Hemat $58 per tahun",
-          buttonText: "Pilih Professional",
+          name: "Pro",
+          type: "pro",
+          description: "Solusi terbaik untuk sekolah dan institusi",
+          monthlyPrice: "500000",
+          yearlyPrice: "6000000",
+          price: "500000",
+          period: "month",
+          currency: "idr",
+          savings: "Hemat Rp 1.000.000 per tahun",
+          buttonText: "Pilih Pro",
+          ctaLink: "/register?plan=pro",
           features: [
-            "Maksimal 500 siswa per ujian",
-            "Semua template soal tersedia",
-            "Analitik mendalam & insight",
-            "Anti-cheating dasar",
-            "Support prioritas 24/7",
-            "Penyimpanan 25GB",
-            "Integrasi LMS populer",
-            "Bank soal dengan kategori",
-            "Auto-grading untuk essay",
-            "Mobile app access",
+            "Siswa tak terbatas",
+            "Ujian tak terbatas",
+            "AI Proctoring",
+            "Dukungan Prioritas"
           ],
           isPopular: true,
+          badge: "Paling Populer",
           order: 1,
           isActive: true,
+          limitations: [],
           icon: null,
         },
         {
           id: 3,
-          name: "Business",
-          type: "business",
-          description:
-            "Untuk universitas dan institusi besar dengan kebutuhan ujian skala besar",
-          monthlyPrice: "79",
-          yearlyPrice: "790",
-          savings: "Hemat $158 per tahun",
-          buttonText: "Pilih Business",
-          features: [
-            "Unlimited siswa per ujian",
-            "Advanced anti-cheating AI",
-            "Custom branding lengkap",
-            "API access penuh",
-            "Dedicated account manager",
-            "Penyimpanan 100GB",
-            "Custom integrations",
-            "White-label solution",
-            "Advanced reporting",
-            "Multi-campus support",
-            "Proctoring features",
-            "SSO integration",
-          ],
-          isPopular: false,
-          order: 2,
-          isActive: true,
-          icon: null,
-        },
-        {
-          id: 4,
           name: "Enterprise",
           type: "enterprise",
-          description:
-            "Solusi korporat untuk organisasi besar dengan kebutuhan khusus dan keamanan tinggi",
-          monthlyPrice: "199",
-          yearlyPrice: "1990",
-          savings: "Hemat $398 per tahun",
+          description: "Solusi kustom untuk kebutuhan institusi besar",
+          monthlyPrice: "0",
+          yearlyPrice: "0",
+          price: "0",
+          period: "year",
+          currency: "idr",
+          savings: null,
           buttonText: "Hubungi Sales",
+          ctaLink: "/contact",
           features: [
-            "Unlimited everything",
-            "Enterprise-grade security",
-            "24/7 dedicated support",
-            "On-premise deployment",
-            "Custom development",
-            "Unlimited storage",
-            "SLA guarantee 99.9%",
-            "Multi-region hosting",
-            "Compliance certifications",
-            "Advanced audit logs",
-            "Custom workflows",
-            "Priority feature requests",
+            "Semua fitur Pro",
+            "Server Khusus",
+            "Manager Akun Khusus"
           ],
           isPopular: false,
-          order: 3,
+          badge: "Custom",
+          order: 2,
           isActive: true,
+          limitations: [],
           icon: null,
-        },
-        {
-          id: 5,
-          name: "Education Plus",
-          type: "education-plus",
-          description:
-            "Paket khusus untuk institusi pendidikan dengan fitur pembelajaran adaptif",
-          monthlyPrice: "49",
-          yearlyPrice: "490",
-          savings: "Hemat $98 per tahun",
-          buttonText: "Pilih Education Plus",
-          features: [
-            "Maksimal 1000 siswa per ujian",
-            "AI-powered analytics",
-            "Adaptive learning insights",
-            "Parent portal access",
-            "Mobile app premium",
-            "Penyimpanan 50GB",
-            "Training & onboarding",
-            "Custom reporting dashboard",
-            "Student progress tracking",
-            "Performance predictions",
-            "Learning path recommendations",
-          ],
-          isPopular: false,
-          order: 4,
-          isActive: true,
-          icon: null,
-        },
-        {
-          id: 6,
-          name: "Academic Premium",
-          type: "academic-premium",
-          description:
-            "Solusi premium untuk institusi akademik dengan fitur penelitian dan kolaborasi",
-          monthlyPrice: "129",
-          yearlyPrice: "1290",
-          savings: "Hemat $258 per tahun",
-          buttonText: "Pilih Academic Premium",
-          features: [
-            "Unlimited siswa & staff",
-            "Research collaboration tools",
-            "Advanced analytics suite",
-            "Multi-language support",
-            "Global compliance ready",
-            "Unlimited storage",
-            "Academic calendar integration",
-            "Plagiarism detection",
-            "Video conferencing integration",
-            "Advanced security features",
-            "Custom assessment types",
-            "Institutional reporting",
-          ],
-          isPopular: false,
-          order: 5,
-          isActive: true,
-          icon: null,
-        },
+        }
       ],
     };
   }
@@ -699,5 +617,98 @@ export const fetchFeaturesData = async () => {
         isActive: true,
       },
     ];
+  }
+};
+
+// Function to fetch About Section data
+export const fetchAboutSectionData = async () => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/about-section?limit=1&where[isActive][equals]=true`
+    );
+    const aboutData = response.data;
+
+    const activeAbout = aboutData.docs.find((item) => item.isActive !== false);
+
+    if (!activeAbout) {
+      // Return fallback data if no active about section found
+      return {
+        title: "What is SIUJI?",
+        subtitle: "Platform Ujian Digital untuk Pembelajaran Modern",
+        description: "SIUJI is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exams; monitor due dates; grade results and provide students with feedback all in one place.",
+        slides: [
+          {
+            title: "For Teacher",
+            description: "SIUJI is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exam.",
+            images: ["/assets/ilustrasi-hero.png"]
+          },
+          {
+            title: "For Student", 
+            description: "SIUJI is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exam.",
+            images: ["/assets/ilustrasi-hero.png"]
+          }
+        ],
+        carouselConfig: {
+          autoSlide: true,
+          slideInterval: 3000,
+          pauseOnHover: true
+        }
+      };
+    }
+
+    // Process slides data
+    const processedSlides = activeAbout.slides?.map((slide, index) => ({
+      id: slide.id || index,
+      title: slide.title,
+      description: slide.description,
+      images: slide.images?.map(imageItem => 
+        imageItem.image?.url?.startsWith('http')
+          ? imageItem.image.url
+          : `${API_BASE_URL.replace('/api', '')}${imageItem.image?.url}`
+      ) || ["/assets/ilustrasi-hero.png"],
+      order: slide.order !== undefined ? slide.order : index
+    })).sort((a, b) => a.order - b.order) || [];
+
+    return {
+      title: activeAbout.title || "What is SIUJI?",
+      subtitle: activeAbout.subtitle || "",
+      description: extractPlainText(activeAbout.description) || "",
+      slides: processedSlides,
+      carouselConfig: activeAbout.carouselConfig || {
+        autoSlide: true,
+        slideInterval: 3000,
+        pauseOnHover: true
+      }
+    };
+  } catch (error) {
+    console.error("[fetchAboutSectionData] Error:", error);
+    
+    // Fallback data in case API is not available
+    return {
+      title: "What is SIUJI?",
+      subtitle: "Platform Ujian Digital untuk Pembelajaran Modern", 
+      description: "SIUJI is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exams; monitor due dates; grade results and provide students with feedback all in one place.",
+      slides: [
+        {
+          id: 1,
+          title: "For Teacher",
+          description: "SIUJI is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exam.",
+          images: ["/assets/ilustrasi-hero.png"],
+          order: 0
+        },
+        {
+          id: 2,
+          title: "For Student",
+          description: "SIUJI is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exam.", 
+          images: ["/assets/ilustrasi-hero.png"],
+          order: 1
+        }
+      ],
+      carouselConfig: {
+        autoSlide: true,
+        slideInterval: 3000,
+        pauseOnHover: true
+      }
+    };
   }
 };

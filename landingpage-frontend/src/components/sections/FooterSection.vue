@@ -30,11 +30,16 @@
             <p class="copyright">© 2021 All Rights Reserved</p>
           </div>
           <div class="footer-contact">
+            <p style="font-weight: bold;">Office</p>
             <address>
-              Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,<br />
+              Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,
               Kota Bandung, Jawa Barat 40112
             </address>
-            <p>info@somerah.id</p>
+            <p style="font-weight: bold;">Workshop</p>
+            <address>
+              Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
+            </address>
+            <p>info@someah.id</p>
             <p>+62 851 1724 2221</p>
           </div>
         </div>
@@ -111,14 +116,17 @@ const icons = [
 .footer-top {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: center;
+  gap: 110px;            /* Lebih besar agar antar kolom tidak terlalu rapat */
   margin-bottom: 20px;
+  max-width: 900px;     /* Batasi lebar maksimal agar tidak terlalu melebar */
+  margin: 0 auto 20px;  /* Tengah secara horizontal */
+  width: 100%;
 }
 
 .footer-column {
   min-width: 140px;
-  flex: 1;
+  text-align: left;
 }
 
 .footer-column h4 {
@@ -159,6 +167,7 @@ const icons = [
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: flex-start;
 }
 
 .footer-buttons {
@@ -172,15 +181,36 @@ const icons = [
   color: black;
   border: none;
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 13px;
   cursor: pointer;
-  display: flex;               /* Tambahkan ini */
-  align-items: center;         /* Tambahkan ini */
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center; 
+  gap: 8px;
+  min-width: 140px;
+  text-align: center; 
+}
+
+.footer-buttons button .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.footer-buttons button svg {
+  display: block;
+  height: 22px;
+  width: 22px;
 }
 
 .footer-icons {
   margin-top: 10px;
+  align-self: flex-start;
+  margin-left: 0;
 }
 
 .footer-icons img {
@@ -212,48 +242,15 @@ const icons = [
   font-style: normal;
 }
 
-.google-play-btn .icon {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  height: 22px;
-}
-.google-play-btn svg {
-  display: block;
-  height: 22px;
-  width: 22px;
-}
-.app-store-btn .icon {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  height: 22px;
-}
-.app-store-btn svg {
-  display: block;
-  height: 22px;
-  width: 20px;
-}
-.web-btn .icon {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 8px;
-  height: 22px;
-}
-.web-btn svg {
-  display: block;
-  height: 22px;
-  width: 25px;
-}
-
 @media (min-width: 768px) {
   .footer-bottom {
     flex-direction: row;
     justify-content: space-between;
+    gap: 25px;
   }
 
   .footer-actions {
-    align-items: flex-end;
+    align-items: flex-start;
   }
   .footer-info {
     flex-direction: row;

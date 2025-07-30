@@ -18,8 +18,8 @@ defineProps<{
 <style scoped>
 .platform-button {
   padding: 0.5rem 1.5rem;
-  border: 1px solid #000; /* hitam tipis */
-  border-radius: 9999px; /* pill style */
+  border: 1px solid #555555; /* hitam tipis */
+  border-radius: 10px; /* pill style */
   background-color: #fff;
   color: #000;
   font-weight: 500;
@@ -37,6 +37,6 @@ defineProps<{
 .platform-button.active {
   background-color: #1abc9c; /* tosca hijau */
   color: #fff;
-  border-color: #000000;
+  border-color: #555555;
 }
 </style>
