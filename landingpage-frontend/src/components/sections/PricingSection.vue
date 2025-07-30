@@ -613,18 +613,37 @@ export default {
   align-items: baseline;
   justify-content: center;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .currency {
   font-size: 24px;
   font-weight: 600;
-  margin-right: 4px;
 }
 
 .price {
   font-size: 64px;
   font-weight: 700;
   line-height: 1;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+/* Responsive font size based on content length */
+.price[data-length="long"] {
+  font-size: 48px;
+}
+
+.price[data-length="very-long"] {
+  font-size: 36px;
+}
+
+.period {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-left: 4px;
 }
 
 .savings {
@@ -833,6 +852,47 @@ export default {
   }
 }
 
+/* Loading and Error States */
+.loading-container,
+.error-container {
+  padding: 60px 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  margin: 0 auto;
+  max-width: 400px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  font-size: 18px;
+  color: #4cc5bd;
+  font-weight: 600;
+}
+
+.loading-spinner::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4cc5bd;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  font-size: 16px;
+  color: #e53e3e;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .pricing-section {
     padding: 60px 0;
@@ -922,6 +982,18 @@ export default {
 
   .price {
     font-size: 48px;
+  }
+
+  .price[data-length="long"] {
+    font-size: 36px;
+  }
+
+  .price[data-length="very-long"] {
+    font-size: 28px;
+  }
+
+  .period {
+    font-size: 14px;
   }
 
   .pricing-nav {
