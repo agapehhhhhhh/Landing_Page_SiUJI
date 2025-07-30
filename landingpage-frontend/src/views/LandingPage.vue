@@ -24,6 +24,7 @@ const { pageData, isLoading } = useLandingPageData()
       <HeroSection :data="pageData.hero" />
       <AboutSection />
       <WhyChooseSection />
+      <AvailableSection />
       
       <!-- Features Section with Image on Right (dengan header) -->
       <FeaturesSection 
@@ -55,11 +56,10 @@ const { pageData, isLoading } = useLandingPageData()
       />
       
       <PortofolioSection :logos="pageData.portofolio" />
-      <FaqSection :faqs="pageData.faqs" />
-      <AvailableSection />
       <TestimonialsSection />
       <PricingSection />
       <ContactUsSection />
+      <FaqSection :faqs="pageData.faqs" />
       <FooterSection />
     </div>
   </main>
