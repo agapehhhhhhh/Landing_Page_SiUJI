@@ -5,8 +5,18 @@
       <path d="M1129.32 97.3943C1324.63 118.472 1746.47 86.0099 1788.99 5.1333L315.709 0.336593L309.231 1093.74C238.72 1118.82 137.853 1140.76 -0.000886972 1158.94L309.073 1120.36L309.231 1093.74C459.162 1040.41 471.842 972.885 411.025 897.208C358.882 819.173 802.054 695.559 843.162 568.5C894.547 409.675 885.187 71.0466 1129.32 97.3943Z" fill="#4CC5BD" fill-opacity="0.24"/>
     </svg>
     <div class="container">
-      <h2 class="section-title">Why Choose Us?</h2>
-      <div class="content-wrapper" v-if="isDesktop">
+      <!-- Loading State -->
+      <div v-if="loading" class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Loading features...</p>
+      </div>
+      
+      <!-- Content -->
+      <div v-else-if="features.length > 0">
+        <h2 class="section-title">{{ sectionData.title }}</h2>
+        <p v-if="sectionData.subtitle" class="section-subtitle">{{ sectionData.subtitle }}</p>
+        
+        <div class="content-wrapper" v-if="isDesktop">
         <!-- Gambar Kiri -->
         <div class="visual">
           <transition name="fade" mode="out-in">
@@ -26,7 +36,7 @@
         <div class="features">
           <FeatureItem
             v-for="(feature, index) in features"
-            :key="index"
+            :key="feature.id"
             :emoji="feature.emoji"
             :title="feature.title"
             :description="feature.description"
@@ -35,8 +45,9 @@
             @click="!isDesktop && setActive(index)"
           />
         </div>
-      </div>
-      <div class="mobile-carousel" v-else>
+        </div>
+        
+        <div class="mobile-carousel" v-else-if="features.length > 0">
         <div class="visual">
           <img
             :src="features[activeFeatureIndex].image"
@@ -54,54 +65,102 @@
           <span>{{ activeFeatureIndex + 1 }} / {{ features.length }}</span>
           <button @click="nextFeature">→</button>
         </div>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div v-else class="empty-state">
+        <p>No features available at the moment.</p>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import FeatureItem from '@/components/sections/WhyChooseItem.vue'
+import { fetchWhyChooseSectionData } from '@/services/payloadService'
+
+// Define interfaces
+interface WhyChoosePoint {
+  id: number | string
+  title: string
+  description: string
+  emoji: string
+  image: string | { url: string; alt: string }
+  icon?: { url: string; alt: string }
+  order: number
+}
+
+interface WhyChooseData {
+  title: string
+  subtitle: string
+  points: WhyChoosePoint[]
+}
+
+// Reactive state
+const loading = ref(true)
+const sectionData = ref<WhyChooseData>({
+  title: 'Why Choose Us?',
+  subtitle: '',
+  points: []
+})
+
 // reactive state untuk index fitur yang di-hover (default: 0)
 const hoveredFeatureIndex = ref(0)
-
-const features = [
-  {
-    emoji: '📡',
-    title: 'Real-Time Monitoring',
-    description: 'Embrace the power of real-time monitoring and take control of your learning journey with us.',
-    image: new URL('@/assets/someah-logo.svg', import.meta.url).href
-  },
-  {
-    emoji: '♾️',
-    title: 'Lifetime Access',
-    description: 'Your education is not bound by time; it\'s a lifelong pursuit, and we\'re here to support your journey every step of the way.',
-    image: new URL('@/assets/blob-haikei.svg', import.meta.url).href
-  },
-  {
-    emoji: '👥',
-    title: 'Big Community',
-    description: 'Connect, collaborate, and share with a diverse group of peers, making your learning journey enriching and interactive.',
-    image: new URL('@/assets/wavesOpacity.svg', import.meta.url).href
-  }
-]
-
 const activeFeatureIndex = ref(0)
+
+// Load data from API
+async function loadWhyChooseData() {
+  try {
+    loading.value = true
+    const data = await fetchWhyChooseSectionData()
+    sectionData.value = data
+    
+    // Reset active index if points length changed
+    if (activeFeatureIndex.value >= data.points.length) {
+      activeFeatureIndex.value = 0
+      hoveredFeatureIndex.value = 0
+    }
+  } catch (error) {
+    console.error('Error loading why choose data:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// Computed features for compatibility with existing template
+const features = computed(() => 
+  sectionData.value.points.map(point => ({
+    id: point.id,
+    title: point.title,
+    description: point.description,
+    emoji: point.emoji,
+    image: typeof point.image === 'string' ? point.image : point.image?.url || '/assets/someah-logo.svg'
+  }))
+)
 
 const setActive = (index: number) => {
   hoveredFeatureIndex.value = index
   activeFeatureIndex.value = index
 }
-const isDesktop = ref(window.innerWidth > 640);
+
+const isDesktop = ref(window.innerWidth > 640)
 window.addEventListener('resize', () => {
-  isDesktop.value = window.innerWidth > 640;
+  isDesktop.value = window.innerWidth > 640
 })
+
 function nextFeature() {
-  activeFeatureIndex.value = (activeFeatureIndex.value + 1) % features.length;
+  activeFeatureIndex.value = (activeFeatureIndex.value + 1) % features.value.length
 }
+
 function prevFeature() {
-  activeFeatureIndex.value = (activeFeatureIndex.value - 1 + features.length) % features.length;
+  activeFeatureIndex.value = (activeFeatureIndex.value - 1 + features.value.length) % features.value.length
 }
+
+onMounted(() => {
+  loadWhyChooseData()
+})
 </script>
 
 <style scoped>
@@ -140,6 +199,53 @@ function prevFeature() {
   font-size: clamp(1.5rem, 2.5vw + 1rem, 2.5rem);
   font-weight: 700;
   margin-bottom: 2rem;
+}
+
+.section-subtitle {
+  font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+  color: #666;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #4CC5BD;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1.125rem;
 }
 .content-wrapper {
   display: flex;

@@ -712,3 +712,95 @@ export const fetchAboutSectionData = async () => {
     };
   }
 };
+
+// Function to fetch Why Choose Section data
+export const fetchWhyChooseSectionData = async () => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/why-choose-section?limit=1&where[isActive][equals]=true`
+    );
+    const whyChooseData = response.data;
+
+    const activeSection = whyChooseData.docs.find(item => item.isActive !== false);
+
+    if (!activeSection) {
+      return getFallbackWhyChooseData();
+    }
+
+    const processedPoints = activeSection.points?.map((point, index) => ({
+      id: point.id || index,
+      title: point.title,
+      description: point.description,
+      emoji: getDefaultEmoji(index), // Fallback emoji since collection doesn't have emoji field
+      icon: point.icon ? {
+        url: point.icon.url.startsWith('http') 
+          ? point.icon.url 
+          : `${API_BASE_URL.replace('/api', '')}${point.icon.url}`,
+        alt: point.icon.alt || point.title
+      } : null,
+      image: point.sideImage ? {
+        url: point.sideImage.url.startsWith('http')
+          ? point.sideImage.url
+          : `${API_BASE_URL.replace('/api', '')}${point.sideImage.url}`,
+        alt: point.sideImage.alt || point.title
+      } : getDefaultImage(index),
+      order: index
+    })) || [];
+
+    return {
+      title: activeSection.title || 'Why Choose Us?',
+      subtitle: activeSection.subtitle || '',
+      points: processedPoints
+    };
+  } catch (error) {
+    console.error('[fetchWhyChooseSectionData] Error:', error);
+    return getFallbackWhyChooseData();
+  }
+};
+
+// Helper functions for Why Choose Section
+const getFallbackWhyChooseData = () => ({
+  title: 'Why Choose Us?',
+  subtitle: '',
+  points: [
+    {
+      id: 1,
+      title: 'Real-Time Monitoring',
+      description: 'Embrace the power of real-time monitoring and take control of your learning journey with us.',
+      emoji: '📡',
+      image: new URL('/assets/someah-logo.svg', import.meta.url).href,
+      order: 0
+    },
+    {
+      id: 2,
+      title: 'Lifetime Access',
+      description: 'Your education is not bound by time; it\'s a lifelong pursuit, and we\'re here to support your journey every step of the way.',
+      emoji: '♾️',
+      image: new URL('/assets/blob-haikei.svg', import.meta.url).href,
+      order: 1
+    },
+    {
+      id: 3,
+      title: 'Big Community',
+      description: 'Connect, collaborate, and share with a diverse group of peers, making your learning journey enriching and interactive.',
+      emoji: '👥',
+      image: new URL('/assets/wavesOpacity.svg', import.meta.url).href,
+      order: 2
+    }
+  ]
+});
+
+const getDefaultEmoji = (index) => {
+  const emojis = ['📡', '♾️', '👥', '🎯', '🚀', '💡'];
+  return emojis[index] || '🎯';
+};
+
+const getDefaultImage = (index) => {
+  const images = [
+    '/assets/someah-logo.svg',
+    '/assets/blob-haikei.svg', 
+    '/assets/wavesOpacity.svg',
+    '/assets/Isolation Mode.svg'
+  ];
+  return images[index] || '/assets/someah-logo.svg';
+};
