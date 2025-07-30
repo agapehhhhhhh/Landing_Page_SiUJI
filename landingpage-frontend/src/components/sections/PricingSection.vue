@@ -6,71 +6,73 @@
       <p>Choose plan that works best for you, feel free to contact us</p>
 
       <!-- Billing Toggle -->
-      <div class="billing-toggle">
+      <div
+        class="billing-toggle"
+        :data-yearly="billingType === 'yearly'"
+        :class="{ 'is-toggling': isToggling }"
+      >
         <button
-          :class="['toggle-btn', { active: billingType === 'monthly' }]"
-          @click="billingType = 'monthly'"
+          v-for="type in billingTypes"
+          :key="type"
+          :class="['toggle-btn', { active: billingType === type }]"
+          @click="toggleBilling(type)"
+          :disabled="isToggling"
         >
-          Bill Monthly
-        </button>
-        <button
-          :class="['toggle-btn', { active: billingType === 'yearly' }]"
-          @click="billingType = 'yearly'"
-        >
-          Bill Yearly
+          Bill {{ type === "monthly" ? "Monthly" : "Yearly" }}
         </button>
       </div>
     </div>
 
     <!-- Pricing Cards Container -->
-    <div v-if="loading" class="loading-container">
-      <div class="loading-spinner">Loading pricing plans...</div>
-    </div>
-    
-    <div v-else-if="pricingPlans.length === 0" class="error-container">
-      <div class="error-message">Unable to load pricing plans. Please try again later.</div>
-    </div>
+    <div class="pricing-cards-wrapper">
+      <!-- Loading State -->
+      <div v-if="loading" class="loading-state">
+        <p>Loading pricing plans...</p>
+      </div>
 
-    <div v-else class="pricing-cards-wrapper">
-      <div class="pricing-cards-container" ref="cardsContainer">
+      <!-- Empty State -->
+      <div v-else-if="!pricingPlans.length" class="empty-state">
+        <p>No pricing plans available</p>
+      </div>
+
+      <!-- Pricing Cards -->
+      <div
+        v-else
+        class="pricing-cards-container"
+        ref="cardsContainer"
+        :class="{ 'is-sliding': isSliding }"
+        @touchstart="handleTouchStart"
+        @touchend="handleTouchEnd"
+      >
         <div
           v-for="(plan, index) in visiblePlans"
-          :key="plan.id"
-          :class="[
-            'pricing-card',
-            {
-              'center-card': index === 1,
-              'left-card': index === 0,
-              'right-card': index === 2,
-            },
-          ]"
-          @mouseenter="onCardHover(index)"
-          @mouseleave="onCardLeave"
+          :key="plan?.id || index"
+          :class="getCardClasses(index)"
+          @mouseenter="hoveredCard = index"
+          @mouseleave="hoveredCard = null"
+          v-show="plan"
         >
           <div class="plan-header">
-            <h4 class="plan-name">{{ plan.name }}</h4>
-            <p class="plan-description">{{ plan.description }}</p>
+            <h4 class="plan-name">{{ getPlanProperty(plan, 'name') }}</h4>
+            <p class="plan-description">{{ getPlanProperty(plan, 'description') }}</p>
 
             <div class="price-container">
-              <span class="currency">{{ getCurrencySymbol(plan.currency) }}</span>
-              <span 
-                class="price" 
-                :data-length="getPriceLength(billingType === 'yearly' && plan.yearlyPrice ? plan.yearlyPrice : plan.monthlyPrice)"
-              >{{
-                formatPrice(billingType === "yearly" && plan.yearlyPrice ? plan.yearlyPrice : plan.monthlyPrice)
-              }}</span>
-              <span class="period">{{ billingType === 'yearly' ? '/year' : '/month' }}</span>
+              <span class="currency">$</span>
+              <span class="price">{{ getCurrentPrice(plan) || 0 }}</span>
             </div>
 
-            <p v-if="plan.savings && billingType === 'yearly'" class="savings">
-              {{ plan.savings }}
+            <p
+              v-if="getSavingsText(plan) && billingType === 'yearly'"
+              class="savings"
+            >
+              {{ getSavingsText(plan) }}
             </p>
           </div>
 
           <div class="features-list">
             <div class="features-content">
               <div
-                v-for="(feature, idx) in plan.features"
+                v-for="(feature, idx) in getFeatures(plan)"
                 :key="idx"
                 class="feature-item"
               >
@@ -85,32 +87,40 @@
                     />
                   </svg>
                 </div>
-                <span>{{ feature }}</span>
+                <span>{{ getFeatureText(feature) }}</span>
               </div>
             </div>
           </div>
 
           <button :class="['cta-button', { 'center-button': index === 1 }]">
-            {{ plan.buttonText }}
+            {{ getPlanProperty(plan, 'buttonText') }}
           </button>
         </div>
       </div>
 
-      <!-- Custom Navigation -->
-      <div class="pricing-nav">
-        <button @click="slidePrev" class="nav-btn" :disabled="!canSlidePrev">
-          <span class="arrow-icon">&#8592;</span> Prev
+      <!-- Navigation -->
+      <div v-if="showNavigation" class="pricing-nav">
+        <button
+          @click="slidePrev"
+          class="nav-btn"
+          :disabled="!canSlide || isSliding"
+        >
+          Prev
         </button>
         <div class="nav-progress">
           <span
-            v-for="(_, idx) in totalDots"
+            v-for="(_, idx) in pricingPlans"
             :key="idx"
             :class="['nav-dot', { active: idx === centerIndex }]"
-            @click="goToSlide(idx)"
+            @click="!isSliding && (centerIndex = idx)"
           ></span>
         </div>
-        <button @click="slideNext" class="nav-btn" :disabled="!canSlideNext">
-          Next <span class="arrow-icon">&#8594;</span>
+        <button
+          @click="slideNext"
+          class="nav-btn"
+          :disabled="!canSlide || isSliding"
+        >
+          Next
         </button>
       </div>
     </div>
@@ -120,121 +130,226 @@
 <script>
 import { fetchPricingData } from "@/services/payloadService";
 
+// Constants
+const BILLING_TYPES = ['monthly', 'yearly'];
+const ANIMATION_DURATION = 200;
+const SWIPE_THRESHOLD = 50;
+
+// Property mappings for API flexibility
+const PROPERTY_MAPS = {
+  name: ['name', 'title', 'planName', 'plan_name'],
+  description: ['description', 'desc', 'subtitle', 'planDescription', 'plan_description'],
+  buttonText: ['buttonText', 'button_text', 'ctaText', 'cta_text', 'actionText', 'action_text'],
+  yearlyPrice: ['yearlyPrice', 'yearly_price', 'annualPrice', 'annual_price', 'priceYearly'],
+  monthlyPrice: ['monthlyPrice', 'monthly_price', 'price', 'priceMonthly'],
+  savings: ['savings', 'savingsText', 'savings_text', 'discount', 'discountText', 'discount_text']
+};
+
 export default {
   name: "PricingSection",
-  data() {
-    return {
-      billingType: "yearly", // 'monthly' or 'yearly'
-      centerIndex: 1, // Index dari card yang berada di tengah (Pro plan default)
-      hoveredCard: null,
-      pricingPlans: [],
-      loading: true,
-    };
-  },
+  data: () => ({
+    billingType: "yearly",
+    centerIndex: 1,
+    hoveredCard: null,
+    pricingPlans: [],
+    loading: true,
+    isSliding: false,
+    isToggling: false,
+    touchStartX: 0,
+    touchEndX: 0,
+  }),
   computed: {
+    billingTypes: () => BILLING_TYPES,
+    
     visiblePlans() {
-      if (this.pricingPlans.length <= 3) {
-        return this.pricingPlans;
-      }
-
-      // Ambil 3 card berdasarkan centerIndex
-      const plans = [];
       const total = this.pricingPlans.length;
+      if (total <= 3) return this.pricingPlans;
 
-      // Card kiri
-      const leftIndex =
-        this.centerIndex === 0 ? total - 1 : this.centerIndex - 1;
-      plans.push(this.pricingPlans[leftIndex]);
-
-      // Card tengah
-      plans.push(this.pricingPlans[this.centerIndex]);
-
-      // Card kanan
-      const rightIndex =
-        this.centerIndex === total - 1 ? 0 : this.centerIndex + 1;
-      plans.push(this.pricingPlans[rightIndex]);
-
-      return plans;
+      const getIndex = (offset) => (this.centerIndex + offset + total) % total;
+      return [
+        this.pricingPlans[getIndex(-1)],
+        this.pricingPlans[this.centerIndex],
+        this.pricingPlans[getIndex(1)],
+      ];
     },
-    totalDots() {
-      return this.pricingPlans.length;
+    
+    canSlide() {
+      const minPlans = this.isMobile() ? 1 : 3;
+      return this.pricingPlans.length > minPlans;
     },
-    canSlidePrev() {
-      return this.pricingPlans.length > 3;
-    },
-    canSlideNext() {
-      return this.pricingPlans.length > 3;
-    },
+    
+    showNavigation() {
+      return !this.loading && this.pricingPlans.length > 0;
+    }
   },
+  
   async mounted() {
     await this.loadPricingData();
+    window.addEventListener("resize", this.handleResize);
   },
+  
+  beforeUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  
   methods: {
     async loadPricingData() {
       try {
         this.loading = true;
         const data = await fetchPricingData();
         this.pricingPlans = data.plans || [];
-        // Set center index ke Pro plan (index 1) sebagai default
         this.centerIndex = Math.min(1, this.pricingPlans.length - 1);
       } catch (error) {
         console.error("Error loading pricing data:", error);
         this.pricingPlans = [];
+        this.centerIndex = 0;
       } finally {
         this.loading = false;
       }
     },
-    getCurrencySymbol(currency) {
-      const symbols = {
-        idr: 'Rp ',
-      };
-      return symbols[currency] || 'Rp ';
-    },
-    formatPrice(price) {
-      if (!price || price === '0') return 'Free';
+
+    // Unified slide method
+    slide(direction) {
+      if (!this.canSlide || this.isSliding) return;
       
-      // Convert to number for formatting
-      const numPrice = parseInt(price);
+      this.isSliding = true;
+      const container = this.$refs.cardsContainer;
+      const translateX = direction === 'next' ? -100 : 100;
       
-      // Format with abbreviations for large numbers
-      if (numPrice >= 1000000) {
-        return (numPrice / 1000000).toFixed(1).replace('.0', '') + 'Jt';
-      } else if (numPrice >= 1000) {
-        return (numPrice / 1000).toFixed(0) + 'rb';
+      // Animate out
+      if (container) {
+        container.style.transform = `translateX(${this.isMobile() ? translateX : translateX/2}px)`;
+        container.style.opacity = this.isMobile() ? "0.5" : "0.6";
       }
-      
-      return numPrice.toString();
+
+      setTimeout(() => {
+        // Update index
+        if (direction === 'next') {
+          this.centerIndex = this.centerIndex === this.pricingPlans.length - 1 ? 0 : this.centerIndex + 1;
+        } else {
+          this.centerIndex = this.centerIndex === 0 ? this.pricingPlans.length - 1 : this.centerIndex - 1;
+        }
+        
+        // Animate in
+        if (container) {
+          container.style.transform = "translateX(0)";
+          container.style.opacity = "1";
+        }
+
+        setTimeout(() => {
+          this.isSliding = false;
+        }, ANIMATION_DURATION);
+      }, this.isMobile() ? ANIMATION_DURATION : 150);
     },
-    getPriceLength(price) {
-      const formattedPrice = this.formatPrice(price);
-      if (formattedPrice.length > 6) return 'very-long';
-      if (formattedPrice.length > 4) return 'long';
-      return 'normal';
-    },
+
     slidePrev() {
-      if (this.canSlidePrev) {
-        this.centerIndex =
-          this.centerIndex === 0
-            ? this.pricingPlans.length - 1
-            : this.centerIndex - 1;
-      }
+      this.slide('prev');
     },
+
     slideNext() {
-      if (this.canSlideNext) {
-        this.centerIndex =
-          this.centerIndex === this.pricingPlans.length - 1
-            ? 0
-            : this.centerIndex + 1;
+      this.slide('next');
+    },
+
+    getCardClasses(index) {
+      const classes = ["pricing-card"];
+      if (index === 1) classes.push("center-card");
+      else if (index === 0) classes.push("left-card");
+      else if (index === 2) classes.push("right-card");
+      return classes;
+    },
+
+    isMobile() {
+      return window.innerWidth <= 768;
+    },
+
+    handleResize() {
+      this.$forceUpdate();
+    },
+
+    handleTouchStart(event) {
+      if (this.isMobile()) {
+        this.touchStartX = event.touches[0].clientX;
       }
     },
-    goToSlide(idx) {
-      this.centerIndex = idx;
+
+    handleTouchEnd(event) {
+      if (this.isMobile()) {
+        this.touchEndX = event.changedTouches[0].clientX;
+        this.handleSwipe();
+      }
     },
-    onCardHover(index) {
-      this.hoveredCard = index;
+
+    handleSwipe() {
+      const diff = this.touchStartX - this.touchEndX;
+      if (Math.abs(diff) > SWIPE_THRESHOLD) {
+        diff > 0 ? this.slideNext() : this.slidePrev();
+      }
     },
-    onCardLeave() {
-      this.hoveredCard = null;
+
+    // Unified property getter
+    getPlanProperty(plan, propertyType, fallback = '') {
+      if (!plan) return fallback || this.getDefaultValue(propertyType);
+      
+      const properties = PROPERTY_MAPS[propertyType] || [propertyType];
+      for (const prop of properties) {
+        if (plan[prop]) return plan[prop];
+      }
+      return fallback || this.getDefaultValue(propertyType);
+    },
+
+    getDefaultValue(propertyType) {
+      const defaults = {
+        name: "Unknown Plan",
+        description: "No description available",
+        buttonText: "Select Plan"
+      };
+      return defaults[propertyType] || "";
+    },
+
+    getCurrentPrice(plan) {
+      if (!plan) return 0;
+      
+      const priceType = this.billingType === 'yearly' ? 'yearlyPrice' : 'monthlyPrice';
+      return this.getPlanProperty(plan, priceType, 0);
+    },
+
+    getFeatures(plan) {
+      if (!plan?.features) return [];
+      
+      if (Array.isArray(plan.features)) return plan.features;
+      if (typeof plan.features === "object") return Object.values(plan.features);
+      return [];
+    },
+
+    getFeatureText(feature) {
+      if (typeof feature === "object" && feature !== null) {
+        const textProps = ['feature', 'text', 'name', 'title', 'description', 'label'];
+        for (const prop of textProps) {
+          if (feature[prop]) return feature[prop];
+        }
+        
+        if (feature.isIncluded !== undefined) {
+          return feature.isIncluded ? (feature.feature || feature.name || "Feature included") : "Feature not included";
+        }
+        
+        return Object.values(feature).join(" ") || "Unknown feature";
+      }
+      return feature || "Unknown feature";
+    },
+
+    getSavingsText(plan) {
+      return this.getPlanProperty(plan, 'savings');
+    },
+
+    toggleBilling(type) {
+      if (this.isToggling || this.billingType === type) return;
+
+      this.isToggling = true;
+      this.billingType = type;
+
+      setTimeout(() => {
+        this.isToggling = false;
+      }, 250);
     },
   },
 };
@@ -243,17 +358,25 @@ export default {
 <style scoped>
 .pricing-section {
   padding: 80px 0;
-  background: radial-gradient(circle at center, #6BC2A1 0%, #b7e6d1 60%, #ffffff 100%);
+  background: radial-gradient(
+    circle at center,
+    rgba(107, 194, 161, 0.5) 0%,
+    rgba(107, 194, 161, 0.3) 30%,
+    rgba(255, 255, 255, 0.8) 60%,
+    #ffffff 100%
+  );
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   text-align: center;
   overflow: hidden;
   min-height: 700px;
   position: relative;
 }
-  
 
 .pricing-header {
-  margin-bottom: 50 px;
+  margin-bottom: 50px;
   position: relative;
   z-index: 2;
 }
@@ -286,11 +409,35 @@ export default {
 .billing-toggle {
   display: inline-flex;
   background: #ffffff;
-  border-radius: 10px;
-  padding: 4px;
+  border-radius: 12px;
+  padding: 6px 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid #000000;
+  position: relative;
+}
+
+.billing-toggle::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  width: calc(50% - 10px);
+  height: calc(100% - 16px);
+  background: #4cc5bd;
+  border-radius: 8px;
   border: 1px solid #000000;
-  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(76, 197, 189, 0.25);
+  transition: transform 0.3s ease;
+  transform: translateX(0);
+  z-index: 1;
+}
+
+.billing-toggle[data-yearly="true"]::before {
+  transform: translateX(100%);
+}
+
+.billing-toggle.is-toggling::before {
+  transition: transform 0.3s ease;
 }
 
 .toggle-btn {
@@ -300,17 +447,33 @@ export default {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
   color: #718096;
+  position: relative;
+  z-index: 2;
+}
+
+.toggle-btn:first-child {
+  padding-left: 17px;
+}
+
+.toggle-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .toggle-btn.active {
-  background: #4cc5bd;
   color: white;
-  border-color: #060707;
-  border: 1px solid #000000;
-  box-shadow: 0 2px 8px rgba(76, 197, 189, 0.25);
+  background: transparent;
+}
+
+.toggle-btn:hover:not(:disabled) {
+  color: #4a5568;
+}
+
+.toggle-btn.active:hover:not(:disabled) {
+  color: white;
 }
 
 .pricing-cards-wrapper {
@@ -321,6 +484,12 @@ export default {
   padding: 0 40px;
 }
 
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 40px;
+}
+
 .pricing-cards-container {
   display: flex;
   justify-content: center;
@@ -328,15 +497,21 @@ export default {
   gap: 20px;
   padding: 40px 0;
   min-height: 500px;
+  overflow: visible;
+  perspective: 1000px;
+  transition: all 0.25s ease;
+}
+
+.pricing-cards-container.is-sliding {
+  pointer-events: none;
 }
 
 .pricing-card {
-  width: 280px;
+  width: 320px;
   background: white;
   border-radius: 20px;
-  padding: 32px 24px;
+  padding: 36px 28px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 2px solid #e2e8f0;
   position: relative;
   opacity: 1;
@@ -345,7 +520,8 @@ export default {
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 580px;
+  min-height: 545px;
+  transition: all 0.3s ease;
 }
 
 .pricing-card:hover {
@@ -353,9 +529,9 @@ export default {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   opacity: 1;
   border-color: #4cc5bd;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Center card styling - Pro plan yang hijau */
 .pricing-card.center-card {
   background: linear-gradient(135deg, #4cc5bd 0%, #4cc5bd 100%);
   color: white;
@@ -366,11 +542,15 @@ export default {
   box-shadow: 0 25px 50px rgba(76, 197, 189, 0.25);
 }
 
-/* Ellipse khusus untuk center card */
+.pricing-card.center-card .plan-description {
+  color: white;
+  opacity: 1;
+}
+
 .pricing-card.center-card::before {
   content: "";
   position: absolute;
-  top: calc(50% + 90px);
+  top: calc(50% + 100px);
   left: 50%;
   transform: translate(-50%, -50%);
   width: 500px;
@@ -395,7 +575,6 @@ export default {
   border-color: #2d3748;
 }
 
-/* Side cards yang tidak terlihat */
 .pricing-card.left-card,
 .pricing-card.right-card {
   opacity: 1;
@@ -411,7 +590,8 @@ export default {
 }
 
 .plan-header {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
+  transform: translateY(-25px);
 }
 
 .plan-name {
@@ -424,7 +604,7 @@ export default {
 .plan-description {
   font-size: 14px;
   opacity: 0.8;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   line-height: 1.5;
 }
 
@@ -474,14 +654,14 @@ export default {
 }
 
 .features-list {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   text-align: left;
-  padding: 16px;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #000000;
+  border-radius: 10px;
   background: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  min-height: 180px;
+  min-height: 160px;
   display: flex;
   flex-direction: column;
 }
@@ -491,7 +671,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 8px;
 }
 
 .feature-item {
@@ -507,14 +687,15 @@ export default {
 }
 
 .pricing-card.center-card .features-list {
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  border: 1px solid #000000;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.95);
   color: #2d3748;
-  min-height: 180px;
+  min-height: 160px;
 }
 
 .pricing-card.center-card .feature-item {
-  color: #0046c0;
+  color: #2d3748;
 }
 
 .feature-icon {
@@ -579,7 +760,7 @@ export default {
   background: white;
   color: #4a5568;
   border: 2px solid #4cc5bd;
-  border-radius: 30px;
+  border-radius: 10px;
   padding: 12px 24px;
   font-weight: 600;
   cursor: pointer;
@@ -587,19 +768,27 @@ export default {
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 12px rgba(76, 197, 189, 0.15);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
 }
 
 .nav-btn:hover:not(:disabled) {
   background: #4cc5bd;
   color: white;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 197, 189, 0.25);
+}
+
+.nav-btn:active:not(:disabled) {
+  transform: translateY(-1px);
+  transition: all 0.1s ease;
 }
 
 .nav-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
-  transform: none;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(76, 197, 189, 0.1);
 }
 
 .arrow-icon {
@@ -611,27 +800,31 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: white;
-  border-radius: 20px;
-  padding: 8px 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .nav-dot {
-  height: 4px;
-  width: 20px;
-  border-radius: 2px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
   background: #cbd5e0;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  transform: scale(1);
+}
+
+.nav-dot:hover {
+  background: #a0aec0;
+  transform: scale(1.1);
 }
 
 .nav-dot.active {
-  width: 40px;
+  width: 24px;
+  height: 8px;
+  border-radius: 4px;
   background: #4cc5bd;
+  transform: scale(1);
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .pricing-header h2,
   .pricing-header h3 {
@@ -647,7 +840,7 @@ export default {
   }
 
   .pricing-card {
-    width: 260px;
+    width: 300px;
   }
 
   .pricing-card.center-card {
@@ -703,6 +896,7 @@ export default {
 @media (max-width: 768px) {
   .pricing-section {
     padding: 60px 0;
+    overflow-x: hidden;
   }
 
   .pricing-header {
@@ -719,34 +913,71 @@ export default {
   }
 
   .pricing-cards-wrapper {
-    padding: 0 16px;
+    padding: 0 20px;
+    max-width: 100vw;
+    overflow: hidden;
   }
 
   .pricing-cards-container {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 20px;
+    overflow: hidden;
+    width: 100%;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    position: relative;
+    transition: transform 0.4s ease, opacity 0.4s ease;
   }
 
   .pricing-card {
-    width: 100%;
-    max-width: 320px;
+    width: calc(100vw - 60px);
+    max-width: 300px;
+    min-width: 280px;
     transform: scale(1);
     opacity: 1;
     border-color: #e2e8f0;
+    flex-shrink: 0;
+    margin: 0 auto;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    box-sizing: border-box;
   }
 
   .pricing-card.center-card {
     transform: scale(1);
-    order: -1;
     border-color: #2d3748;
   }
 
   .pricing-card.left-card,
   .pricing-card.right-card {
-    opacity: 1;
-    transform: scale(1);
+    opacity: 0;
+    transform: scale(0.8);
     border-color: #e2e8f0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .pricing-card.left-card {
+    left: -100%;
+  }
+
+  .pricing-card.right-card {
+    right: -100%;
+  }
+
+  .pricing-card:hover {
+    transform: scale(1) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+    border-color: #e2e8f0 !important;
+  }
+
+  .pricing-card.center-card:hover {
+    transform: scale(1) !important;
+    box-shadow: 0 25px 50px rgba(76, 197, 189, 0.25) !important;
+    border-color: #2d3748 !important;
   }
 
   .price {
@@ -775,9 +1006,36 @@ export default {
     font-size: 14px;
   }
 
+  .nav-progress {
+    gap: 6px;
+  }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .nav-dot.active {
+    width: 20px;
+    height: 6px;
+  }
+
   .billing-toggle {
-    margin-bottom: 20px;
     border-width: 1px;
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+
+  .billing-toggle::before {
+    top: 4px;
+    left: 8px;
+    width: calc(50% - 10px);
+    height: calc(100% - 10px);
+    border-radius: 6px;
+  }
+
+  .billing-toggle[data-yearly="true"]::before {
+    transform: translateX(calc(100% + 2px));
   }
 
   .toggle-btn {
@@ -786,18 +1044,58 @@ export default {
     border-width: 1px;
   }
 
-  .nav-progress {
-    gap: 6px;
-    padding: 6px 16px;
+  .toggle-btn:first-child {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
-  .nav-dot {
-    width: 16px;
-    height: 3px;
+  .toggle-btn:last-child {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-cards-wrapper {
+    padding: 0 15px;
   }
 
-  .nav-dot.active {
-    width: 32px;
+  .pricing-card {
+    width: calc(100vw - 50px);
+    max-width: 280px;
+    min-width: 260px;
+    padding: 24px 20px;
+  }
+
+  .pricing-header h2,
+  .pricing-header h3 {
+    font-size: 24px;
+  }
+
+  .pricing-header p {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .price {
+    font-size: 42px;
+  }
+
+  .plan-name {
+    font-size: 20px;
+  }
+
+  .features-list {
+    padding: 10px;
+    min-height: 140px;
+  }
+
+  .feature-item {
+    font-size: 13px;
+  }
+
+  .cta-button {
+    padding: 14px 20px;
+    font-size: 15px;
   }
 }
 </style>
