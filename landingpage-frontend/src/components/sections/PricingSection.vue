@@ -23,7 +23,15 @@
     </div>
 
     <!-- Pricing Cards Container -->
-    <div class="pricing-cards-wrapper">
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner">Loading pricing plans...</div>
+    </div>
+    
+    <div v-else-if="pricingPlans.length === 0" class="error-container">
+      <div class="error-message">Unable to load pricing plans. Please try again later.</div>
+    </div>
+
+    <div v-else class="pricing-cards-wrapper">
       <div class="pricing-cards-container" ref="cardsContainer">
         <div
           v-for="(plan, index) in visiblePlans"
@@ -44,10 +52,14 @@
             <p class="plan-description">{{ plan.description }}</p>
 
             <div class="price-container">
-              <span class="currency">$</span>
-              <span class="price">{{
-                billingType === "yearly" ? plan.yearlyPrice : plan.monthlyPrice
+              <span class="currency">{{ getCurrencySymbol(plan.currency) }}</span>
+              <span 
+                class="price" 
+                :data-length="getPriceLength(billingType === 'yearly' && plan.yearlyPrice ? plan.yearlyPrice : plan.monthlyPrice)"
+              >{{
+                formatPrice(billingType === "yearly" && plan.yearlyPrice ? plan.yearlyPrice : plan.monthlyPrice)
               }}</span>
+              <span class="period">{{ billingType === 'yearly' ? '/year' : '/month' }}</span>
             </div>
 
             <p v-if="plan.savings && billingType === 'yearly'" class="savings">
@@ -164,13 +176,40 @@ export default {
         const data = await fetchPricingData();
         this.pricingPlans = data.plans || [];
         // Set center index ke Pro plan (index 1) sebagai default
-        this.centerIndex = 1;
+        this.centerIndex = Math.min(1, this.pricingPlans.length - 1);
       } catch (error) {
         console.error("Error loading pricing data:", error);
         this.pricingPlans = [];
       } finally {
         this.loading = false;
       }
+    },
+    getCurrencySymbol(currency) {
+      const symbols = {
+        idr: 'Rp ',
+      };
+      return symbols[currency] || 'Rp ';
+    },
+    formatPrice(price) {
+      if (!price || price === '0') return 'Free';
+      
+      // Convert to number for formatting
+      const numPrice = parseInt(price);
+      
+      // Format with abbreviations for large numbers
+      if (numPrice >= 1000000) {
+        return (numPrice / 1000000).toFixed(1).replace('.0', '') + 'Jt';
+      } else if (numPrice >= 1000) {
+        return (numPrice / 1000).toFixed(0) + 'rb';
+      }
+      
+      return numPrice.toString();
+    },
+    getPriceLength(price) {
+      const formattedPrice = this.formatPrice(price);
+      if (formattedPrice.length > 6) return 'very-long';
+      if (formattedPrice.length > 4) return 'long';
+      return 'normal';
     },
     slidePrev() {
       if (this.canSlidePrev) {
@@ -394,18 +433,37 @@ export default {
   align-items: baseline;
   justify-content: center;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .currency {
   font-size: 24px;
   font-weight: 600;
-  margin-right: 4px;
 }
 
 .price {
   font-size: 64px;
   font-weight: 700;
   line-height: 1;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+/* Responsive font size based on content length */
+.price[data-length="long"] {
+  font-size: 48px;
+}
+
+.price[data-length="very-long"] {
+  font-size: 36px;
+}
+
+.period {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-left: 4px;
 }
 
 .savings {
@@ -601,6 +659,47 @@ export default {
   }
 }
 
+/* Loading and Error States */
+.loading-container,
+.error-container {
+  padding: 60px 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  margin: 0 auto;
+  max-width: 400px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  font-size: 18px;
+  color: #4cc5bd;
+  font-weight: 600;
+}
+
+.loading-spinner::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4cc5bd;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  font-size: 16px;
+  color: #e53e3e;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .pricing-section {
     padding: 60px 0;
@@ -652,6 +751,18 @@ export default {
 
   .price {
     font-size: 48px;
+  }
+
+  .price[data-length="long"] {
+    font-size: 36px;
+  }
+
+  .price[data-length="very-long"] {
+    font-size: 28px;
+  }
+
+  .period {
+    font-size: 14px;
   }
 
   .pricing-nav {
