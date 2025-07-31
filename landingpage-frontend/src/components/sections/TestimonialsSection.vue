@@ -46,7 +46,7 @@
             <div class="testimonial-footer">
               <div class="testimonial-divider"></div>
               <p class="reviewer-name">{{ review.name }}</p>
-              <p class="reviewer-job">{{ review.job }}<span v-if="review.school"> - {{ review.school }}</span></p>
+              <p class="reviewer-job">{{ review.job }}<span v-if="review.school"> | {{ review.school }}</span></p>
             </div>
           </div>
         </SwiperSlide>

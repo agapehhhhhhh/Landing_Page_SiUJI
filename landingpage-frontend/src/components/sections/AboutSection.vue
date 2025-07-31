@@ -211,12 +211,18 @@ onUnmounted(() => {
 })
 
 function pauseSlide() {
+  // Disable hover pause on mobile devices
+  if (window.innerWidth <= 768) return
+  
   if (aboutData.value.carouselConfig.pauseOnHover) {
     clearInterval(rotateIntervalId)
   }
 }
 
 function resumeSlide() {
+  // Disable hover resume on mobile devices
+  if (window.innerWidth <= 768) return
+  
   if (aboutData.value.carouselConfig.pauseOnHover) {
     rotateIntervalId = window.setInterval(() => {
       rotateImages()
@@ -589,8 +595,8 @@ function moveImageToCenter(clickedIndex: number) {
 /* === Dekorasi === */
 .pulse-circle {
   position: absolute;
-  bottom: 40px;
-  right: 60px;
+  top: 20px;
+  left: 60px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -622,46 +628,60 @@ function moveImageToCenter(clickedIndex: number) {
 /* === Mobile Only === */
 @media (max-width: 768px) {
   .section-content {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
-    padding: 0;
-    margin-top: 40px; /* Jarak atas lebih kecil */
-  }
-
-   .card {
+    justify-content: center;
+    gap: 24px;
+    padding: 0 16px;
+    margin-top: 24px;
+    grid-template-columns: none;
     width: 100%;
-    max-width: calc(100% - 32px); /* Sama persis dengan section-title */
-    margin: 0 auto;
-    padding: 24px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   }
 
   .left-card {
     width: 100%;
     padding: 0;
-    max-width: 100%;
+    max-width: 100vw;
+    order: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0; /* Hapus margin kiri negatif */
+    margin-right: 0;
   }
-  .section-title {
-    padding: 24px; /* Sesuaikan dengan card */
-    margin: 0 auto 0; /* Jarak bawah lebih kecil */
-    max-width: calc(100% - 32px); /* Sama dengan card */
+  
+  .card {
+    width: 90%; /* Lebarkan sedikit dari 100% */
+    max-width: 340px;
+    margin: 0 auto; /* Ini yang membuat card berada di tengah */
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: auto;
+    min-height: 200px;
   }
 
   .right-images {
     justify-content: center;
     max-width: 100%;
+    order: 2; /* Gambar muncul kedua */
   }
 
   .image-stack {
-    display: none !important; /* force hide */
+    display: none !important;
   }
 
   .stack-image {
     display: none !important;
   }
 
-    .desktop-only {
+  .desktop-only {
     display: none !important;
   }
 
@@ -674,25 +694,27 @@ function moveImageToCenter(clickedIndex: number) {
 
   .single-image {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
   .single-img {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 16px;
-  object-fit: cover;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    height: 240px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    /* Disable hover effects on mobile */
+    pointer-events: none;
   }
 
   /* Placeholder styles */
   .placeholder-image,
   .placeholder-stack {
     width: 100%;
-    max-width: 300px;
-    height: 200px;
+    max-width: 320px;
+    height: 240px;
     border-radius: 16px;
     background: #f0f0f0;
     display: flex;
@@ -705,7 +727,21 @@ function moveImageToCenter(clickedIndex: number) {
 
   .placeholder-stack {
     width: 320px;
-    height: 200px;
+    height: 240px;
+  }
+
+  /* Mobile carousel navigation */
+  .carousel-navigation {
+    margin-top: 32px;
+    order: 3; /* Navigation muncul terakhir */
+    position: relative;
+    z-index: 10; /* Pastikan di atas hiasan */
+  }
+
+  /* Hide decorations on mobile */
+  .pulse-circle,
+  .rounded-block {
+    display: none !important;
   }
 }
 </style>
