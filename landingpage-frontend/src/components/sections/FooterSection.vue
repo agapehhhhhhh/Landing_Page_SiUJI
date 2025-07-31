@@ -32,15 +32,19 @@
           <div class="footer-contact">
             <p style="font-weight: bold;">Office</p>
             <address>
-              Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,
-              Kota Bandung, Jawa Barat 40112
+              <a href="https://maps.app.goo.gl/E9RGvBWK6qMgahpJ9" target="_blank" rel="noopener noreferrer">
+                Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,
+                Kota Bandung, Jawa Barat 40112
+              </a>
             </address>
             <p style="font-weight: bold;">Workshop</p>
             <address>
-              Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
+              <a href="https://maps.app.goo.gl/4KuJQPBfXt1nNANE6" target="_blank" rel="noopener noreferrer">
+                Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
+              </a>
             </address>
-            <p>info@someah.id</p>
-            <p>+62 851 1724 2221</p>
+            <p><a href="mailto:info@someah.id">info@someah.id</a></p>
+            <p><a href="tel:+6285117242221">+62 851 1724 2221</a></p>
           </div>
         </div>
 
@@ -74,17 +78,16 @@
 </template>
 
 <script setup lang="ts">
-import logo from '@/assets/someah-logo.svg'
+import logo from '@/assets/logo.svg'
 import DownloadButton from '@/components/common/DownloadButton.vue'
+import facebookIcon from '@/assets/facebook.png'
+import instagramIcon from '@/assets/instagram.png'
+import linkedinIcon from '@/assets/linkedin.png'
 
 const icons = [
-  { src: "/icons/telegram.svg", alt: "Telegram", link: "#" },
-  { src: "/icons/twitter.svg", alt: "Twitter", link: "#" },
-  { src: "/icons/facebook.svg", alt: "Facebook", link: "#" },
-  { src: "/icons/instagram.svg", alt: "Instagram", link: "#" },
-  { src: "/icons/youtube.svg", alt: "YouTube", link: "#" },
-  { src: "/icons/tiktok.svg", alt: "TikTok", link: "#" },
-  { src: "/icons/linkedin.svg", alt: "LinkedIn", link: "#" },
+  { src: facebookIcon, alt: "Facebook", link: "#" },
+  { src: instagramIcon, alt: "Instagram", link: "#" },
+  { src: linkedinIcon, alt: "LinkedIn", link: "#" },
 ]
 
 // Download links - can be easily configured
@@ -105,89 +108,100 @@ const handleDownloadClick = (url: string) => {
 .footer {
   background-color: #0f172a;
   color: white;
-  padding: 40px 20px;
+  padding: clamp(30px, 5vh, 60px) clamp(20px, 3vw, 40px);
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: clamp(13px, 1.1vw, 16px);
 }
 
 .footer-container {
-  max-width: 1200px;
+  max-width: clamp(1000px, 95vw, 1600px);
   margin: 0 auto;
+  width: 100%;
 }
 
 .footer-top {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 110px;            /* Lebih besar agar antar kolom tidak terlalu rapat */
-  margin-bottom: 20px;
-  max-width: 900px;     /* Batasi lebar maksimal agar tidak terlalu melebar */
-  margin: 0 auto 20px;  /* Tengah secara horizontal */
+  gap: clamp(80px, 12vw, 160px);
+  margin-bottom: clamp(20px, 3vh, 30px);
+  max-width: clamp(800px, 85vw, 1200px);
+  margin: 0 auto clamp(20px, 3vh, 30px);
   width: 100%;
+  padding: 0 clamp(20px, 3vw, 40px);
 }
 
 .footer-column {
-  min-width: 140px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .footer-column h4 {
-  margin-bottom: 8px;
+  margin-bottom: clamp(6px, 1vh, 12px);
   font-weight: bold;
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+
+.footer-column p {
+  font-size: clamp(12px, 1vw, 15px);
+  line-height: 1.4;
+  margin: clamp(2px, 0.5vh, 4px) 0;
 }
 
 .footer-separator {
   height: 1px;
   background-color: #374151;
-  margin: 20px 0;
+  margin: clamp(20px, 3vh, 35px) 0;
 }
 
 .footer-bottom {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
 }
 
 .footer-info {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 5px;
 }
 
 .footer-info .logo {
-  height: 32px;
-  margin-bottom: 8px;
+  height: clamp(28px, 3vw, 40px);
+  margin-bottom: clamp(3px, 0.5vh, 6px);
 }
 
 .footer-info address,
 .footer-info p {
-  margin: 4px 0;
+  margin: clamp(1px, 0.2vh, 3px) 0;
   color: #cbd5e1;
+  font-size: clamp(12px, 1vw, 15px);
+  line-height: 1.5;
 }
 
 .footer-actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 5px;
   align-items: flex-start;
 }
 
 .footer-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: clamp(6px, 1vw, 12px);
 }
 
 .footer-icons {
-  margin-top: 10px;
+  margin-top: 2px;
   align-self: flex-start;
   margin-left: 0;
 }
 
 .footer-icons img {
-  height: 24px;
-  width: 24px;
-  margin-right: 10px;
+  height: clamp(20px, 2.5vw, 32px);
+  width: clamp(20px, 2.5vw, 32px);
+  margin-right: clamp(8px, 1.5vw, 15px);
   vertical-align: middle;
 }
 
@@ -198,36 +212,95 @@ const handleDownloadClick = (url: string) => {
 }
 
 .footer-brand .logo {
-  height: 32px;
-  margin-bottom: 8px;
+  height: clamp(28px, 3vw, 40px);
+  margin-bottom: clamp(3px, 0.5vh, 6px);
+}
+
+.footer-brand .copyright {
+  font-size: clamp(11px, 0.9vw, 14px);
+  margin: clamp(1px, 0.2vh, 2px) 0;
 }
 
 .footer-contact {
   color: #cbd5e1;
-  font-size: 14px;
+  font-size: clamp(12px, 1vw, 15px);
 }
 
 .footer-contact address,
 .footer-contact p {
-  margin: 4px 0;
+  margin: clamp(1px, 0.2vh, 3px) 0;
   font-style: normal;
+  line-height: 1.5;
+}
+
+.footer-contact a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-contact a:hover {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 @media (min-width: 768px) {
+  .footer {
+    padding: clamp(40px, 6vh, 80px) clamp(30px, 4vw, 60px);
+  }
+  
+  .footer-top {
+    gap: clamp(100px, 14vw, 180px);
+    margin-bottom: clamp(25px, 4vh, 40px);
+    justify-content: center;
+    flex-wrap: nowrap;
+    padding: 0 clamp(30px, 4vw, 50px);
+  }
+  
+  .footer-column {
+    white-space: nowrap;
+  }
+  
   .footer-bottom {
     flex-direction: row;
     justify-content: space-between;
-    gap: 25px;
+    gap: 5px;
+    align-items: flex-start;
   }
 
   .footer-actions {
     align-items: flex-start;
   }
+  
   .footer-info {
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 40px;
+    gap: 15px;
+    flex: 1;
+  }
+  
+  .footer-brand {
+    min-width: clamp(150px, 20vw, 250px);
+  }
+  
+  .footer-contact {
+    flex: 1;
+    max-width: clamp(300px, 40vw, 500px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .footer {
+    padding: clamp(50px, 7vh, 100px) clamp(40px, 5vw, 80px);
+  }
+  
+  .footer-top {
+    gap: clamp(120px, 16vw, 200px);
+  }
+  
+  .footer-info {
+    gap: 20px;
   }
 }
 </style>
