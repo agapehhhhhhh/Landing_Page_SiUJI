@@ -8,20 +8,8 @@
       </p>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="isLoading" class="loading-container">
-      <div class="loading-spinner"></div>
-      <p>Loading testimonials...</p>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="error-container">
-      <p>⚠️ Error loading testimonials: {{ error }}</p>
-      <button @click="loadTestimonials" class="retry-btn">Retry</button>
-    </div>
-
-    <!-- Testimonials Content -->
-    <div v-else-if="reviews.length > 0" class="swiper-container">
+    <!-- Tambahkan container untuk Swiper -->
+    <div class="swiper-container">
       <Swiper
         :slides-per-view="3"
         :space-between="20"
@@ -36,36 +24,26 @@
       >
         <SwiperSlide
           v-for="(review, index) in reviews"
-          :key="review.id || index"
+          :key="index"
         >
           <div class="testimonial-card">
             <div class="reviewer-photo">
-              <img 
-                :src="review.avatar?.url || '@/assets/user.png'" 
-                :alt="review.avatar?.alt || review.name || 'User Icon'"
-                @error="handleImageError"
-              />
+              <img src="@/assets/user.png" alt="User Icon" />
             </div>
-            <h3>{{ review.title || 'Testimonial' }}</h3>
+            <h3>{{ review.title }}</h3>
             <p class="testimonial-text">{{ review.content }}</p>
             <div class="testimonial-footer">
               <div class="testimonial-divider"></div>
               <p class="reviewer-name">{{ review.name }}</p>
-              <p class="reviewer-job">{{ review.job || review.position }}</p>
-              <p v-if="review.school" class="reviewer-school">{{ review.school }}</p>
+              <p class="reviewer-job">{{ review.job }}</p>
             </div>
           </div>
         </SwiperSlide>
       </Swiper>
     </div>
 
-    <!-- Empty State -->
-    <div v-else class="empty-state">
-      <p>No testimonials available at the moment.</p>
-    </div>
-    
     <!-- Custom Navigation -->
-    <div v-if="!isLoading && !error && reviews.length > 0" class="testimonial-nav">
+    <div class="testimonial-nav">
       <button @click="slidePrev" class="nav-btn">
         <svg class="arrow-svg" viewBox="0 0 24 24">
           <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -94,63 +72,46 @@
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
-import { fetchTestimonialsData } from '@/services/payloadService';
 
 export default {
   name: "TestimonialSection",
   components: { Swiper, SwiperSlide },
   data() {
     return {
-      reviews: [],
+      reviews: [
+        {
+          title: "Online Billing, Invoicing, & Contracts",
+          content:
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+          name: "Agus",
+          job: "Pekerjaan",
+        },
+        {
+          title: "Online Billing, Invoicing, & Contracts",
+          content:
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+          name: "Asep",
+          job: "Pekerjaan",
+        },
+        {
+          title: "Online Billing, Invoicing, & Contracts",
+          content:
+            "PERSIB JUARA",
+          name: "Ujang",
+          job: "Pekerjaan",
+        },
+        {
+          title: "Online Billing, Invoicing, & Contracts",
+          content:
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+          name: "Kedu",
+          job: "Pekerjaan",
+        },
+      ],
       currentIndex: 0,
-      isLoading: true,
-      error: null
     };
   },
-  async mounted() {
-    await this.loadTestimonials();
-  },
-  methods: {
-    async loadTestimonials() {
-      try {
-        this.isLoading = true;
-        this.error = null;
-        
-        const testimonialsData = await fetchTestimonialsData();
-        this.reviews = testimonialsData;
-        
-        console.log("Loaded testimonials:", this.reviews);
-      } catch (error) {
-        console.error("Error loading testimonials:", error);
-        this.error = error.message;
-        
-        // Use fallback data if API fails
-        this.reviews = [
-          {
-            id: 1,
-            title: "Online Billing, Invoicing, & Contracts",
-            content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            name: "Agus",
-            job: "Pekerjaan",
-            avatar: null
-          },
-          {
-            id: 2,
-            title: "Online Billing, Invoicing, & Contracts",
-            content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            name: "Asep",
-            job: "Pekerjaan",
-            avatar: null
-          }
-        ];
-      } finally {
-        this.isLoading = false;
-      }
-    },
-    handleImageError(event) {
-      // Fallback to default image if avatar fails to load
-      event.target.src = require('@/assets/user.png');
-    },
+    methods: {
     onSlideChange(swiper) {
       this.currentIndex = swiper.realIndex;
     },
@@ -398,87 +359,6 @@ export default {
   opacity: 1;
 }
 
-/* Loading State */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  color: #666;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #54be96;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Error State */
-.error-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  color: #e74c3c;
-}
-
-.retry-btn {
-  background: #54be96;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  margin-top: 16px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-
-.retry-btn:hover {
-  background: #4aa085;
-}
-
-/* Empty State */
-.empty-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-  color: #888;
-  font-style: italic;
-}
-
-/* School Name */
-.reviewer-school {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
-  font-style: italic;
-}
-
-@media (max-width: 1024px) {
-  .testimonial-card {
-    flex: 0 0 calc(100% / 2 - 20px); /* 2 card per view di tablet */
-  }
-  .swiper-container {
-    padding: 0 40px;
-  }
-  
-  .swiper-slide-next .testimonial-card {
-    transform: scale(1.1);
-  }
-}
 @media (max-width: 600px) {
   .testimonial-section {
     padding: 16px 0;

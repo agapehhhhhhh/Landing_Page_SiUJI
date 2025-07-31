@@ -707,8 +707,107 @@ export const fetchAboutSectionData = async () => {
       carouselConfig: {
         autoSlide: true,
         slideInterval: 3000,
-        pauseOnHover: true
       }
+    };
+  }
+};
+
+// Function to fetch Why Choose Section data
+export const fetchWhyChooseSectionData = async () => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/why-choose-section?limit=1&where[isActive][equals]=true`
+    );
+    const whyChooseData = response.data;
+
+    const activeWhyChoose = whyChooseData.docs.find((item) => item.isActive !== false);
+
+    if (!activeWhyChoose) {
+      // Return fallback data if no active why choose section found
+      return {
+        title: "Why Choose SIUJI?",
+        subtitle: "Platform ujian digital terdepan untuk institusi pendidikan modern",
+        points: [
+          {
+            title: "Keamanan Berlapis",
+            description: "Sistem keamanan canggih dengan teknologi anti-kecurangan dan monitoring real-time untuk menjaga integritas ujian.",
+            icon: null,
+            sideImage: null
+          },
+          {
+            title: "Mudah Digunakan",
+            description: "Interface yang intuitif dan user-friendly memungkinkan guru dan siswa menggunakan platform tanpa kesulitan.",
+            icon: null,
+            sideImage: null
+          },
+          {
+            title: "Analitik Mendalam",
+            description: "Dashboard analitik komprehensif untuk memantau performa siswa dan efektivitas pembelajaran secara real-time.",
+            icon: null,
+            sideImage: null
+          }
+        ]
+      };
+    }
+
+    // Process points data
+    const processedPoints = activeWhyChoose.points?.map((point, index) => ({
+      title: point.title,
+      description: point.description,
+      icon: point.icon
+        ? {
+            url: point.icon.url.startsWith('http')
+              ? point.icon.url
+              : `${API_BASE_URL.replace('/api', '')}${point.icon.url}`,
+            alt: point.icon.alt || point.title
+          }
+        : null,
+      sideImage: point.sideImage
+        ? {
+            url: point.sideImage.url.startsWith('http')
+              ? point.sideImage.url
+              : `${API_BASE_URL.replace('/api', '')}${point.sideImage.url}`,
+            alt: point.sideImage.alt || point.title
+          }
+        : null,
+      order: index
+    })) || [];
+
+    return {
+      title: activeWhyChoose.title || "Why Choose SIUJI?",
+      subtitle: activeWhyChoose.subtitle || "",
+      points: processedPoints
+    };
+  } catch (error) {
+    console.error("[fetchWhyChooseSectionData] Error:", error);
+    
+    // Fallback data in case API is not available
+    return {
+      title: "Why Choose SIUJI?",
+      subtitle: "Platform ujian digital terdepan untuk institusi pendidikan modern",
+      points: [
+        {
+          title: "Keamanan Berlapis",
+          description: "Sistem keamanan canggih dengan teknologi anti-kecurangan dan monitoring real-time untuk menjaga integritas ujian.",
+          icon: null,
+          sideImage: null,
+          order: 0
+        },
+        {
+          title: "Mudah Digunakan", 
+          description: "Interface yang intuitif dan user-friendly memungkinkan guru dan siswa menggunakan platform tanpa kesulitan.",
+          icon: null,
+          sideImage: null,
+          order: 1
+        },
+        {
+          title: "Analitik Mendalam",
+          description: "Dashboard analitik komprehensif untuk memantau performa siswa dan efektivitas pembelajaran secara real-time.",
+          icon: null,
+          sideImage: null,
+          order: 2
+        }
+      ]
     };
   }
 };
