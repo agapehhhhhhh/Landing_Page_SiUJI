@@ -26,6 +26,7 @@ defineProps<{
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: 'Inter';
 }
 .platform-button:hover {
   background-color: #e8f7f2;
