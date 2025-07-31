@@ -5,6 +5,7 @@
       <path d="M1129.32 97.3943C1324.63 118.472 1746.47 86.0099 1788.99 5.1333L315.709 0.336593L309.231 1093.74C238.72 1118.82 137.853 1140.76 -0.000886972 1158.94L309.073 1120.36L309.231 1093.74C459.162 1040.41 471.842 972.885 411.025 897.208C358.882 819.173 802.054 695.559 843.162 568.5C894.547 409.675 885.187 71.0466 1129.32 97.3943Z" fill="#4CC5BD" fill-opacity="0.24"/>
     </svg>
     <div class="container">
+
       <h2 class="section-title">{{ whyChooseData.title }}</h2>
       <div class="content-wrapper" v-if="isDesktop">
         <!-- Gambar Kiri -->
@@ -35,8 +36,9 @@
             @click="!isDesktop && setActive(index)"
           />
         </div>
-      </div>
-      <div class="mobile-carousel" v-else>
+        </div>
+        
+        <div class="mobile-carousel" v-else-if="features.length > 0">
         <div class="visual">
           <img
             :src="whyChooseData.points[activeFeatureIndex]?.sideImage?.url || whyChooseData.points[activeFeatureIndex]?.icon?.url || fallbackImage"
@@ -55,6 +57,12 @@
           <span>{{ activeFeatureIndex + 1 }} / {{ whyChooseData.points.length }}</span>
           <button @click="nextFeature">→</button>
         </div>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div v-else class="empty-state">
+        <p>No features available at the moment.</p>
       </div>
     </div>
   </section>
@@ -64,7 +72,6 @@
 import { ref, onMounted } from 'vue'
 import FeatureItem from '@/components/sections/WhyChooseItem.vue'
 import { fetchWhyChooseSectionData } from '@/services/payloadService'
-
 // reactive state untuk index fitur yang di-hover (default: 0)
 const hoveredFeatureIndex = ref(0)
 const activeFeatureIndex = ref(0)
@@ -95,7 +102,7 @@ const setActive = (index: number) => {
 
 const isDesktop = ref(window.innerWidth > 640);
 window.addEventListener('resize', () => {
-  isDesktop.value = window.innerWidth > 640;
+  isDesktop.value = window.innerWidth > 640
 })
 
 function nextFeature() {
@@ -107,6 +114,10 @@ function prevFeature() {
   const maxIndex = whyChooseData.value.points.length - 1
   activeFeatureIndex.value = activeFeatureIndex.value <= 0 ? maxIndex : activeFeatureIndex.value - 1
 }
+
+onMounted(() => {
+  loadWhyChooseData()
+})
 </script>
 
 <style scoped>
