@@ -47,24 +47,29 @@ function handleSubmit() {
 <style scoped>
 .contact-section {
   background-color: white;
-  padding: 40px 0;
+  padding: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Jaga jarak atas-bawah tetap */
+  box-sizing: border-box;
+  font-family: 'Inter';
 }
 
 .contact-container {
   background-color: #38b2ac;
-  padding: 30px;
+  padding: clamp(20px, 3vw, 40px);
   border-radius: 12px;
-  width: 100%;
-  max-width: 1200px;
+  width: clamp(300px, 90vw, 1400px);
+  height: clamp(500px, 85vh, 800px);
   display: flex;
-  gap: 40px;
-  align-items: stretch; /* Memastikan kedua kolom memiliki tinggi yang sama */
+  gap: clamp(20px, 4vw, 60px);
+  align-items: stretch;
   background-image: url('@/assets/Isolation Mode.svg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right bottom;
+  box-sizing: border-box;
 }
 
 .form-column {
@@ -88,24 +93,23 @@ function handleSubmit() {
 .map-column iframe {
   width: 100%;
   height: 100%;
-  min-height: 350px;
+  min-height: clamp(300px, 40vh, 400px);
   border-radius: 10px;
   display: block;
-  margin-top: 90px; /* Menghapus margin agar peta mulai dari atas */
+  margin-top: clamp(40px, 8vh, 90px);
 }
 
 .section-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: clamp(15px, 2vw, 25px);
   margin-top: 0;
-  -webkit-text-stroke: 1px #000000; /* Outline hitam */
-  text-stroke: 1px #222;         /* Untuk browser lain */
+  -webkit-text-stroke: 1px #000000;
 }
 
 .section-description {
-  font-size: 1rem;
-  margin-bottom: 30px;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  margin-bottom: clamp(20px, 3vw, 35px);
   line-height: 1.6;
   margin-top: 0;
 }
@@ -121,12 +125,12 @@ function handleSubmit() {
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: 12px 16px;
-  margin-bottom: 16px;
+  padding: clamp(10px, 1.5vw, 16px);
+  margin-bottom: clamp(12px, 2vw, 20px);
   border-radius: 8px;
   border: 1px solid #555555;
   outline: none;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
   box-sizing: border-box;
   margin-left: 0;
   margin-right: 0;
@@ -134,25 +138,26 @@ function handleSubmit() {
 
 .contact-form textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: clamp(80px, 12vh, 120px);
+  height: clamp(80px, 15vh, 150px);
 }
 
 .send-button {
   background-color: white;
   color: #38b2ac;
-  padding: 12px 16px;
+  padding: clamp(10px, 1.5vw, 16px);
   font-weight: bold;
   border: 1px solid #555555;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 0; /* Hapus auto agar tidak mengisi ruang kosong */
+  margin-top: 0;
   width: 100%;
   box-sizing: border-box;
   display: block;
   margin-left: 0;
   margin-right: 0;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
 }
 
 
@@ -161,12 +166,20 @@ function handleSubmit() {
 }
 
 @media (max-width: 700px) {
+  .contact-section {
+    min-height: 100vh;
+    padding: 10px;
+  }
+  
   .contact-container {
     flex-direction: column;
-    padding: 16px;
-    gap: 0px;
+    padding: clamp(16px, 3vw, 24px);
+    gap: clamp(15px, 3vw, 25px);
     border-radius: 8px;
     align-items: stretch;
+    width: 100%;
+    height: auto;
+    min-height: 85vh;
   }
   
   .form-column,
@@ -176,35 +189,40 @@ function handleSubmit() {
   }
   
   .map-column iframe {
-    height: 220px;
+    height: clamp(200px, 30vh, 280px);
     min-height: auto;
-    margin-top: 10px !important; /* Hapus jarak atas pada map */
+    margin-top: clamp(10px, 2vh, 20px) !important;
   }
   
   .section-title {
-    font-size: 1.5rem;
-    margin-bottom: 14px;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    margin-bottom: clamp(12px, 2vw, 18px);
     text-align: center;
   }
   
   .section-description {
-    font-size: 0.95rem;
-    margin-bottom: 18px;
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    margin-bottom: clamp(16px, 3vw, 22px);
   }
   
   .contact-form input,
   .contact-form textarea {
-    font-size: 0.95rem;
-    padding: 10px 12px;
-    margin-bottom: 12px;
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    padding: clamp(8px, 2vw, 12px);
+    margin-bottom: clamp(10px, 2vw, 16px);
+  }
+  
+  .contact-form textarea {
+    min-height: clamp(80px, 15vh, 120px);
+    height: clamp(80px, 15vh, 120px);
   }
   
   .send-button {
     width: 100%;
-    padding: 12px 0;
-    font-size: 1rem;
+    padding: clamp(10px, 2vw, 14px);
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
     margin-bottom: 0 !important;
-    margin-top: 8px;
+    margin-top: clamp(6px, 1vh, 12px);
   }
   
   .contact-form {

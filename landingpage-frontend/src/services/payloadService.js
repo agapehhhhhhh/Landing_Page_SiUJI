@@ -811,3 +811,82 @@ export const fetchWhyChooseSectionData = async () => {
     };
   }
 };
+
+// Function to fetch Testimonials data
+export const fetchTestimonials = async () => {
+  try {
+    // Fetch testimonials data from Payload API with sorting
+    const response = await axios.get(`${API_BASE_URL}/testimonials?sort=order&where[isActive][equals]=true`);
+    
+    if (response.data?.docs) {
+      return response.data.docs.map(testimonial => ({
+        id: testimonial.id,
+        title: testimonial.testimonialTitle || "Online Billing, Invoicing, & Contracts",
+        content: testimonial.content,
+        name: testimonial.name,
+        job: testimonial.position,
+        school: testimonial.school,
+        avatar: testimonial.avatar ? {
+          url: testimonial.avatar.url?.startsWith('http') 
+            ? testimonial.avatar.url 
+            : `http://localhost:3000${testimonial.avatar.url}`,
+          alt: testimonial.avatar.alt || testimonial.name
+        } : null,
+        isFeatured: testimonial.isFeatured || false,
+        order: testimonial.order || 0
+      }));
+    }
+    
+    return [];
+  } catch (error) {
+    console.error("[fetchTestimonials] Error:", error);
+    
+    // Return fallback data if API fails
+    return [
+      {
+        id: 1,
+        title: "Online Billing, Invoicing, & Contracts",
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        name: "Agus",
+        job: "Pekerjaan",
+        school: "SMK Negeri 1",
+        avatar: null,
+        isFeatured: false,
+        order: 1
+      },
+      {
+        id: 2,
+        title: "Online Billing, Invoicing, & Contracts", 
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        name: "Asep",
+        job: "Pekerjaan",
+        school: "SMK Negeri 2",
+        avatar: null,
+        isFeatured: false,
+        order: 2
+      },
+      {
+        id: 3,
+        title: "Online Billing, Invoicing, & Contracts",
+        content: "PERSIB JUARA",
+        name: "Ujang",
+        job: "Pekerjaan", 
+        school: "SMK Negeri 3",
+        avatar: null,
+        isFeatured: true,
+        order: 3
+      },
+      {
+        id: 4,
+        title: "Online Billing, Invoicing, & Contracts",
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        name: "Kedu",
+        job: "Pekerjaan",
+        school: "SMK Negeri 4", 
+        avatar: null,
+        isFeatured: false,
+        order: 4
+      }
+    ];
+  }
+};
