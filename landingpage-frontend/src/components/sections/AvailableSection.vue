@@ -177,12 +177,12 @@ const handleButtonClick = (url: string) => {
   transform: scale(1.01);
 }
 .info-banner {
-  margin-top: clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(1.2rem, 2vw, 2.2rem);
   margin-left: auto;
   margin-right: auto;
-  max-width: clamp(800px, 75vw, 1500px);
-  padding: clamp(0.8rem, 1.5vw, 1.8rem) clamp(1.2rem, 2.5vw, 2.2rem);
-  border-radius: 14px;
+  max-width: clamp(700px, 70vw, 1200px);
+  padding: clamp(0.8rem, 1.5vw, 1.6rem) clamp(1.2rem, 2vw, 2rem);
+  border-radius: 13px;
   border: 1px solid #555555;
   background: linear-gradient(90deg, #5ec7c0, #4CC5BD);
   display: flex;

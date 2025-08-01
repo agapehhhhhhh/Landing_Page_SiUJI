@@ -145,9 +145,9 @@ function prevFeature() {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: clamp(1200px, 95vw, 1600px);
+  max-width: clamp(800px, 90vw, 1400px);
   margin-inline: auto;
-  padding-inline: clamp(1.5rem, 6vw, 4rem); /* otomatis menyesuaikan layar */
+  padding-inline: clamp(1rem, 4vw, 3rem);
   text-align: center;
 }
 .section-title {
@@ -173,9 +173,9 @@ function prevFeature() {
 .visual img {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9; /* 💡 atur rasio tetap */
+  aspect-ratio: 16 / 9;
   object-fit: contain;
-  max-width: clamp(700px, 85vw, 900px);
+  max-width: clamp(350px, 80vw, 800px);
   border-radius: 16px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }

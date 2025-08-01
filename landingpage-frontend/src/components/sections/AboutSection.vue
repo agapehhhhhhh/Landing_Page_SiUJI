@@ -513,8 +513,8 @@ function moveImageToCenter(clickedIndex: number) {
   background: #fff;
   border: 2px solid #19d3c5;
   border-radius: 10px;
-  width: 90px;
-  height: 38px;
+  width: 60px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
