@@ -145,7 +145,7 @@ function prevFeature() {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: clamp(800px, 90vw, 1400px);
+  max-width: clamp(800px, 90vw, 1550px);
   margin-inline: auto;
   padding-inline: clamp(1rem, 4vw, 3rem);
   text-align: center;
