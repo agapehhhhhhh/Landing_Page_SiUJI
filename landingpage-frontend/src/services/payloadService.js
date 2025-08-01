@@ -29,6 +29,14 @@ const extractPlainText = (richTextContent) => {
   return "No answer provided";
 };
 
+function toAbsUrl(maybe) {
+  // maybe bisa berupa object upload { url, ... } atau string id
+  if (!maybe || typeof maybe === "string") return null;
+  const url = maybe.url;
+  if (!url) return null;
+  return url.startsWith("http") ? url : `${ORIGIN}${url}`;
+}
+
 export const fetchLandingPage = async () => {
   try {
     const [hero, portfolio] = await Promise.all([
@@ -43,9 +51,21 @@ export const fetchLandingPage = async () => {
     // Process hero data from API
     let processedHero = null;
     if (hero) {
+      // Ornaments: proses array agar url gambar valid
+      let ornaments = Array.isArray(hero.ornaments)
+        ? hero.ornaments.map((orn) => ({
+            ...orn,
+            image:
+              orn.image && orn.image.url
+                ? (orn.image.url.startsWith("http")
+                    ? orn.image.url
+                    : `${API_BASE_URL.replace("/api", "")}${orn.image.url}`)
+                : null,
+          }))
+        : [];
+
       processedHero = {
         ...hero,
-        // Fix hero image URL - add base URL if it's relative
         heroImage: hero.heroImage
           ? {
               ...hero.heroImage,
@@ -54,6 +74,7 @@ export const fetchLandingPage = async () => {
                 : `${API_BASE_URL.replace("/api", "")}${hero.heroImage.url}`,
             }
           : { url: "/assets/ilustrasi-hero.png" },
+        ornaments,
       };
     }
 
@@ -80,6 +101,7 @@ export const fetchLandingPage = async () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         ctaText: "Get Started Now",
         heroImage: { url: "/assets/ilustrasi-hero.png" },
+        ornaments: [],
       },
       portofolio:
         processedPortfolio.length > 0
