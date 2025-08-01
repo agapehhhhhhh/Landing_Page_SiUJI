@@ -31,18 +31,9 @@
           </div>
           <div class="footer-contact">
             <p style="font-weight: bold;">Office</p>
-            <address>
-              <a href="https://maps.app.goo.gl/E9RGvBWK6qMgahpJ9" target="_blank" rel="noopener noreferrer">
-                Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung,
-                Kota Bandung, Jawa Barat 40112
-              </a>
-            </address>
+            <address><a href="https://maps.app.goo.gl/E9RGvBWK6qMgahpJ9" target="_blank" rel="noopener noreferrer">Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung, Kota Bandung, Jawa Barat 40112</a></address>
             <p style="font-weight: bold;">Workshop</p>
-            <address>
-              <a href="https://maps.app.goo.gl/4KuJQPBfXt1nNANE6" target="_blank" rel="noopener noreferrer">
-                Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
-              </a>
-            </address>
+            <address><a href="https://maps.app.goo.gl/4KuJQPBfXt1nNANE6" target="_blank" rel="noopener noreferrer">Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222</a></address>
             <p><a href="mailto:info@someah.id">info@someah.id</a></p>
             <p><a href="tel:+6285117242221">+62 851 1724 2221</a></p>
           </div>
@@ -151,13 +142,18 @@ const handleDownloadClick = (url: string) => {
 .footer-separator {
   height: 1px;
   background-color: #374151;
-  margin: clamp(20px, 3vh, 35px) 0;
+  margin: clamp(20px, 3vh, 35px) auto;
+  max-width: clamp(1100px, 95vw, 1400px);
+  width: 100%;
 }
 
 .footer-bottom {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-width: clamp(1100px, 95vw, 1400px);
+  margin: 0 auto;
+  width: 100%;
 }
 
 .footer-info {
@@ -226,11 +222,28 @@ const handleDownloadClick = (url: string) => {
   font-size: clamp(12px, 1vw, 15px);
 }
 
+
 .footer-contact address,
 .footer-contact p {
   margin: clamp(1px, 0.2vh, 3px) 0;
   font-style: normal;
   line-height: 1.5;
+  display: block;
+}
+
+.footer-contact address a {
+  display: inline;
+  white-space: normal;
+  vertical-align: baseline;
+}
+
+.footer-contact address {
+  margin: clamp(1px, 0.2vh, 3px) 0;
+  font-style: normal;
+  line-height: 1.5;
+  display: block;
+  padding: 0;
+  text-indent: 0;
 }
 
 .footer-contact a {
@@ -260,12 +273,15 @@ const handleDownloadClick = (url: string) => {
   .footer-column {
     white-space: nowrap;
   }
-  
+
   .footer-bottom {
     flex-direction: row;
     justify-content: space-between;
-    gap: 5px;
+    gap: 20px;
     align-items: flex-start;
+    max-width: clamp(1200px, 95vw, 1500px);
+    margin: 0 auto;
+    width: 100%;
   }
 
   .footer-actions {
@@ -301,6 +317,12 @@ const handleDownloadClick = (url: string) => {
   
   .footer-info {
     gap: 20px;
+  }
+  .footer-separator {
+    max-width: 1200px;
+  }
+  .footer-bottom {
+    max-width: 1200px;
   }
 }
 </style>
