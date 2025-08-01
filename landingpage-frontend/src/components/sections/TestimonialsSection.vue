@@ -1,3 +1,4 @@
+
 <template>
   <section class="testimonial-section">
     <div class="testimonial-header">
@@ -9,7 +10,7 @@
     </div>
 
     <!-- Tambahkan container untuk Swiper -->
-    <div class="swiper-container">
+    <div :class="['swiper-container', reviews.length < 3 ? 'few-testimonials' : '']">
       <!-- Loading state -->
       <div v-if="loading" class="loading-testimonials">
         <p>Loading testimonials...</p>
@@ -18,13 +19,13 @@
       <!-- Testimonials swiper -->
       <Swiper
         v-else-if="reviews.length > 0"
-        :slides-per-view="3"
+        :slides-per-view="reviews.length === 2 ? 2 : 3"
         :space-between="0"
         :loop="reviews.length > 3"
         :autoplay="reviews.length > 1 ? { delay: 3000, disableOnInteraction: false } : false"
         :breakpoints="{
           0: { slidesPerView: 1 },
-          601: { slidesPerView: Math.min(3, reviews.length) }
+          601: { slidesPerView: reviews.length === 2 ? 2 : Math.min(3, reviews.length) }
         }"
         @slideChange="onSlideChange"
         ref="swiperRef"
@@ -144,6 +145,15 @@ export default {
 </script>
 
 <style scoped>
+/* Jika testimonial kurang dari 3, jarak antar card lebih dekat dan CSS benar di sini */
+.swiper-container.few-testimonials {
+  padding-left: clamp(40px, 6vw, 120px);
+  padding-right: clamp(40px, 6vw, 120px);
+}
+.swiper-container.few-testimonials .swiper-wrapper {
+  display: flex;
+  justify-content: center;
+}
 /* Loading state */
 .loading-testimonials {
   display: flex;
@@ -178,6 +188,19 @@ export default {
   overflow: hidden; /* Pastikan overflow visible */
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Jika testimonial kurang dari 3, semua card sama besar dan rata tengah */
+.swiper-container.few-testimonials .swiper-slide-next .testimonial-card,
+.swiper-container.few-testimonials .testimonial-card {
+  transform: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #555;
+  z-index: 1;
+}
+.swiper-container.few-testimonials .swiper-slide {
+  justify-content: center;
+  align-items: center;
 }
 
 /* Pastikan card testimonial yang di-scale tidak terpotong */
