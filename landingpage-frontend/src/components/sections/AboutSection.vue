@@ -42,6 +42,7 @@
                   :style="{ zIndex: getZIndex(index) }"
                   @mouseover="hoveredIndex = index"
                   @mouseleave="hoveredIndex = -1"
+                  @click="moveImageToCenter(index)"
                 >
                   <img :src="img" alt="stacked" />
                 </div>
@@ -72,8 +73,8 @@
 
       <!-- Dot carousel + Arrow -->
       <div v-if="aboutData.slides.length > 0" class="carousel-navigation">
-        <button @click="prevSlide" class="arrow" aria-label="Previous Slide">
-          <span class="material-icons">arrow_back</span>
+        <button @click="prevSlide" class="arrow">
+          Prev
         </button>
 
         <div class="carousel-dots">
@@ -86,7 +87,7 @@
         </div>
 
         <button @click="nextSlide" class="arrow">
-          <span class="material-icons">arrow_forward</span>
+          Next
         </button>
       </div>
       <div class="pulse-circle"></div>
@@ -210,12 +211,18 @@ onUnmounted(() => {
 })
 
 function pauseSlide() {
+  // Disable hover pause on mobile devices
+  if (window.innerWidth <= 768) return
+  
   if (aboutData.value.carouselConfig.pauseOnHover) {
     clearInterval(rotateIntervalId)
   }
 }
 
 function resumeSlide() {
+  // Disable hover resume on mobile devices
+  if (window.innerWidth <= 768) return
+  
   if (aboutData.value.carouselConfig.pauseOnHover) {
     rotateIntervalId = window.setInterval(() => {
       rotateImages()
@@ -257,15 +264,25 @@ function getZIndex(index: number): number {
   if (hoveredIndex.value === index) return 10
   return index === 1 ? 3 : index === 0 ? 1 : 2
 }
+
+function moveImageToCenter(clickedIndex: number) {
+  if (clickedIndex === 1) return // Jika gambar tengah diklik, tidak perlu swap
+  
+  // Swap gambar yang diklik dengan gambar tengah
+  const temp = rotatingImages.value[1]
+  rotatingImages.value[1] = rotatingImages.value[clickedIndex]
+  rotatingImages.value[clickedIndex] = temp
+}
 </script>
 
 <style scoped>
 .about-section {
+  font-family: 'Inter';
   position: relative;
   overflow: hidden;
   width: 100%;
   min-height: calc(100vh - 80px); /* 80px sesuai tinggi navbar */
-  padding: clamp(40px, 6vh, 80px) clamp(16px, 4vw, 40px);
+  padding: clamp(8px, 1.5vh, 18px) clamp(8px, 2vw, 20px); /* dari 24px~48px jadi 8px~18px */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -278,29 +295,29 @@ function getZIndex(index: number): number {
 .section-title {
   background: white;
   border-radius: 20px;
-  padding: clamp(24px, 3vw, 48px);
+  padding: clamp(20px, 1.5vw, 40px);
   text-align: center;
-  max-width: clamp(320px, 60vw, 800px);
-  margin: 0 auto clamp(32px, 5vh, 60px);
+  max-width: clamp(350px, 95vw, 1200px); /* Lebih lebar */
+  margin: 0 auto 20px; /* dari clamp(18px, 2vh, 28px) -> 12px saja, atau bisa 8px kalau mau lebih dekat */
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 2;
 }
 
 .section-title h2 {
-  font-size: clamp(20px, 2.5vw, 32px);
+  font-size: clamp(1.5rem, 4vw + 1vh, 2.6rem);
   font-weight: 700;
   margin-bottom: 20px;
 }
 
 .section-title p {
-  font-size: clamp(14px, 1.6vw, 16px);
+  font-size: clamp(1rem, 2.5vw + 0.5vh, 1.3rem);
   line-height: 1.6;
   color: #555;
 }
 
 .section-title .subtitle {
-  font-size: 18px;
+  font-size: clamp(1rem, 2.5vw + 0.5vh, 1.3rem);
   font-weight: 500;
   color: #666;
   margin-bottom: 16px;
@@ -343,149 +360,204 @@ function getZIndex(index: number): number {
 }
 
 .section-content {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;    /* Dua kolom, sama lebar */
   flex-direction: row;
-  flex-wrap: nowrap;
   justify-content: center;
   align-items: stretch;
-  max-width: 1600px;
+  gap: clamp(48px, 7vw, 120px);
   width: 100%;
-  margin-top: clamp(32px, 5vh, 80px);
-  gap: clamp(16px, 4vw, 60px);
+  max-width: 1640px; /* >1440px biar benar-benar megar di layar 2K */
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4vw, 72px);
+  min-height: unset; /* atau min-height: 0; */
+  margin-top: 30px;
+  box-sizing: border-box;
 }
 
-.left-card,
-.right-images {
+/* Card kiri */
+.left-card {
   flex: 1 1 0;
-  max-width: 50%;
-  min-width: 0; /* 💡 penting agar isi shrink saat layar kecil */
+  min-width: clamp(340px, 31vw, 700px);  /* Lebarkan batas bawah & atas */
+  max-width: 100%;                       /* Biar ngikut parent */
   display: flex;
   align-items: stretch;
+  height: 100%;
+  margin-left: clamp(-30px, -3vw, -50px);
 }
+
+/* Stack gambar kanan */
+.right-images {
+  flex: 1 1 0;
+  min-width: clamp(300px, 29vw, 700px);  /* Ikuti parent, gambar tetap proporsional */
+  max-width: 100%;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  justify-content: flex-start;
+}
+
 
 .card {
   background: white;
-  padding: clamp(24px, 2.5vw, 36px);
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.11);
+  padding: clamp(32px, 3vw, 56px) clamp(28px, 3vw, 64px); /* Perbesar padding */
+  transition: transform 0.3s;
   width: 100%;
-  max-width: clamp(260px, 36vw, 480px);
-  transition: transform 0.3s ease;
-  margin: 0 auto;
+  max-width: unset;
+  min-width: 0;
+  height: clamp(240px, 28vw, 340px); /* Perbesar tinggi card */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: clamp(1rem, 2vw + 0.5vh, 1.4rem); /* Font responsif terhadap kotak */
+  box-sizing: border-box;
 }
 .card:hover {
   transform: translateY(-6px);
 }
 .card h3 {
-  font-size: clamp(16px, 2vw, 20px);
+  font-size: clamp(1.2rem, 3vw + 0.5vh, 1.8rem);
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
   border-bottom: 1px solid #ccc;
-  padding-bottom: 6px;
+  padding-bottom: 0px;
   text-align: center;
 }
 .card p {
-  font-size: clamp(14px, 1.6vw, 16px);
+  font-size: clamp(0.95rem, 1.8vw + 0.3vh, 1.3rem);
   line-height: 1.6;
   color: #444;
 }
 
-.right-images {
+.right-images,
+.image-stack-wrapper {
+  min-width: 340px; /* atau set ke 360px sesuai kebutuhan */
+  height: 100%;
+  align-items: stretch;
   display: flex;
-  justify-content: flex-start;
 }
+
 
 .image-stack {
-  display: flex;
   position: relative;
-  justify-content: center;
+  min-width: 380px;
+  max-width: 520px;
+  width: 100%;
+  height: clamp(240px, 28vw, 340px);
+  display: flex;
   align-items: center;
-  padding-left: clamp(20px, 4vw, 55px);
+  justify-content: center;
+  padding: 0;
+  margin-left: clamp(200px, 5vw, 250px);
 }
 
+/* Image Stack dengan efek layering sederhana */
 .stack-image {
-  position: relative;
-  /* 💡 Perbaikan besar di sini ↓↓↓ */
-  margin-left: max(-300px, -18vw);
-  transition: transform 0.3s ease, z-index 0.3s ease;
-  max-width: 100%;
+  position: absolute;
+  transition: transform 0.35s ease, z-index 0.3s ease;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  border-radius: 24px;
 }
-.stack-image:nth-child(2) {
-  transform: scale(1.3);
-  z-index: 3;
-}
+
+/* Semua gambar dengan style yang sama, hanya beda posisi dan z-index */
 .stack-image:first-child {
-  margin-left: 0;
+  z-index: 1;
+  left: -190px;
+  transform: scale(0.8);
+  cursor: pointer;
 }
-.stack-image:hover {
-  transform: scale(1.7);
+
+.stack-image:nth-child(2) {
+  z-index: 3;
+  transform: scale(1.1);
+  cursor: default;
+}
+
+.stack-image:nth-child(3) {
+  z-index: 2;
+  right: -190px;
+  transform: scale(0.8);
+  cursor: pointer;
+}
+
+/* Hover effects - hanya untuk gambar tengah */
+.stack-image:nth-child(2):hover {
+  transform: scale(1.25);
   z-index: 10;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
 }
 
 .stack-image img {
-  border-radius: 24px;
-  width: clamp(220px, 25vw, 460px); /* ✨ Ukuran adaptif realistik */
-  height: auto;
-  aspect-ratio: 16 / 9;
+  width: clamp(320px, 29vw, 420px);
+  height: clamp(240px, 21.75vw, 315px);
+  aspect-ratio: 4/3;
   object-fit: cover;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 20px;
+  display: block;
 }
 
 /* === Carousel === */
 .carousel-navigation {
-  margin-top: clamp(32px, 6vh, 64px); /* ← lebih rendah secara responsif */
+  margin-top: clamp(32px, 6vh, 64px);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
+  box-shadow: none;
 }
+
 .arrow {
   background: #fff;
-  border: 1px solid #555555;
-  border-radius: 25%;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.12);
-  width: 44px;
-  height: 44px;
+  border: 2px solid #19d3c5;
+  border-radius: 10px;
+  width: 90px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  color: #4CC5BD;
+  font-size: 1rem;
+  color: #7bbfc3;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  box-shadow: none;
   padding: 0;
 }
+
+.arrow span,
+.arrow .material-icons {
+  font-size: 1rem;
+  color: #7bbfc3;
+}
+
 .arrow:hover {
-  background: #6BC2A1;
-  color: #fff;
-  transform: scale(1.1);
+  background: #e6faf8;
+  color: #19d3c5;
+  border-color: #19d3c5;
 }
-.material-icons {
-  font-size: 32px;
-  color: #555555;
-  transition: transform 0.2s ease;
-}
-.arrow:hover .material-icons {
-  transform: scale(1.1);
-  color: #ffffff;
-}
+
 .carousel-dots {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 }
+
 .carousel-dots span {
-  width: 10px;
-  height: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 8px;
+  height: 8px;
+  background: #d2f3f1;
+  border-radius: 4px;
+  display: inline-block;
+  transition: background 0.2s, width 0.2s;
 }
+
 .carousel-dots span.active {
-  background: white;
+  background: #ffffff;
+  width: 24px;
+  border-radius: 4px;
 }
 
 /* === Animasi === */
@@ -523,8 +595,8 @@ function getZIndex(index: number): number {
 /* === Dekorasi === */
 .pulse-circle {
   position: absolute;
-  bottom: 40px;
-  right: 60px;
+  top: 20px;
+  left: 60px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -556,46 +628,60 @@ function getZIndex(index: number): number {
 /* === Mobile Only === */
 @media (max-width: 768px) {
   .section-content {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
-    padding: 0;
-    margin-top: 40px; /* Jarak atas lebih kecil */
-  }
-
-   .card {
+    justify-content: center;
+    gap: 24px;
+    padding: 0 16px;
+    margin-top: 24px;
+    grid-template-columns: none;
     width: 100%;
-    max-width: calc(100% - 32px); /* Sama persis dengan section-title */
-    margin: 0 auto;
-    padding: 24px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   }
 
   .left-card {
     width: 100%;
     padding: 0;
-    max-width: 100%;
+    max-width: 100vw;
+    order: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0; /* Hapus margin kiri negatif */
+    margin-right: 0;
   }
-  .section-title {
-    padding: 24px; /* Sesuaikan dengan card */
-    margin: 0 auto 0; /* Jarak bawah lebih kecil */
-    max-width: calc(100% - 32px); /* Sama dengan card */
+  
+  .card {
+    width: 90%; /* Lebarkan sedikit dari 100% */
+    max-width: 340px;
+    margin: 0 auto; /* Ini yang membuat card berada di tengah */
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: auto;
+    min-height: 200px;
   }
 
   .right-images {
     justify-content: center;
     max-width: 100%;
+    order: 2; /* Gambar muncul kedua */
   }
 
   .image-stack {
-    display: none !important; /* force hide */
+    display: none !important;
   }
 
   .stack-image {
     display: none !important;
   }
 
-    .desktop-only {
+  .desktop-only {
     display: none !important;
   }
 
@@ -608,25 +694,27 @@ function getZIndex(index: number): number {
 
   .single-image {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
   .single-img {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 16px;
-  object-fit: cover;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    height: 240px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    /* Disable hover effects on mobile */
+    pointer-events: none;
   }
 
   /* Placeholder styles */
   .placeholder-image,
   .placeholder-stack {
     width: 100%;
-    max-width: 300px;
-    height: 200px;
+    max-width: 320px;
+    height: 240px;
     border-radius: 16px;
     background: #f0f0f0;
     display: flex;
@@ -639,7 +727,21 @@ function getZIndex(index: number): number {
 
   .placeholder-stack {
     width: 320px;
-    height: 200px;
+    height: 240px;
+  }
+
+  /* Mobile carousel navigation */
+  .carousel-navigation {
+    margin-top: 32px;
+    order: 3; /* Navigation muncul terakhir */
+    position: relative;
+    z-index: 10; /* Pastikan di atas hiasan */
+  }
+
+  /* Hide decorations on mobile */
+  .pulse-circle,
+  .rounded-block {
+    display: none !important;
   }
 }
 </style>

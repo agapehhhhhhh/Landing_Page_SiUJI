@@ -8,28 +8,23 @@
       </p>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="isLoading" class="loading-container">
-      <div class="loading-spinner"></div>
-      <p>Loading testimonials...</p>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="error-container">
-      <p>⚠️ Error loading testimonials: {{ error }}</p>
-      <button @click="loadTestimonials" class="retry-btn">Retry</button>
-    </div>
-
-    <!-- Testimonials Content -->
-    <div v-else-if="reviews.length > 0" class="swiper-container">
+    <!-- Tambahkan container untuk Swiper -->
+    <div class="swiper-container">
+      <!-- Loading state -->
+      <div v-if="loading" class="loading-testimonials">
+        <p>Loading testimonials...</p>
+      </div>
+      
+      <!-- Testimonials swiper -->
       <Swiper
+        v-else-if="reviews.length > 0"
         :slides-per-view="3"
-        :space-between="20"
-        :loop="true"
-        :autoplay="{ delay: 3000, disableOnInteraction: false }"
+        :space-between="0"
+        :loop="reviews.length > 3"
+        :autoplay="reviews.length > 1 ? { delay: 3000, disableOnInteraction: false } : false"
         :breakpoints="{
           0: { slidesPerView: 1 },
-          601: { slidesPerView: 3 }
+          601: { slidesPerView: Math.min(3, reviews.length) }
         }"
         @slideChange="onSlideChange"
         ref="swiperRef"
@@ -42,34 +37,30 @@
             <div class="reviewer-photo">
               <img 
                 :src="review.avatar?.url || '@/assets/user.png'" 
-                :alt="review.avatar?.alt || review.name || 'User Icon'"
+                :alt="review.avatar?.alt || review.name"
                 @error="handleImageError"
               />
             </div>
-            <h3>{{ review.title || 'Testimonial' }}</h3>
+            <h3>{{ review.title }}</h3>
             <p class="testimonial-text">{{ review.content }}</p>
             <div class="testimonial-footer">
               <div class="testimonial-divider"></div>
               <p class="reviewer-name">{{ review.name }}</p>
-              <p class="reviewer-job">{{ review.job || review.position }}</p>
-              <p v-if="review.school" class="reviewer-school">{{ review.school }}</p>
+              <p class="reviewer-job">{{ review.job }}<span v-if="review.school"> | {{ review.school }}</span></p>
             </div>
           </div>
         </SwiperSlide>
       </Swiper>
+      
+      <!-- No testimonials state -->
+      <div v-else-if="!loading && reviews.length === 0" class="no-testimonials">
+        <p>No testimonials available at the moment.</p>
+      </div>
     </div>
 
-    <!-- Empty State -->
-    <div v-else class="empty-state">
-      <p>No testimonials available at the moment.</p>
-    </div>
-    
     <!-- Custom Navigation -->
-    <div v-if="!isLoading && !error && reviews.length > 0" class="testimonial-nav">
+    <div v-if="!loading && reviews.length > 3" class="testimonial-nav">
       <button @click="slidePrev" class="nav-btn">
-        <svg class="arrow-svg" viewBox="0 0 24 24">
-          <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
         Prev
       </button>
       <div class="nav-progress">
@@ -83,9 +74,6 @@
       </div>
       <button @click="slideNext" class="nav-btn">
         Next
-        <svg class="arrow-svg" viewBox="0 0 24 24">
-          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
       </button>
     </div>
   </section>
@@ -94,7 +82,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
-import { fetchTestimonialsData } from '@/services/payloadService';
+import { fetchTestimonials } from '@/services/payloadService';
 
 export default {
   name: "TestimonialSection",
@@ -103,8 +91,7 @@ export default {
     return {
       reviews: [],
       currentIndex: 0,
-      isLoading: true,
-      error: null
+      loading: true,
     };
   },
   async mounted() {
@@ -113,43 +100,20 @@ export default {
   methods: {
     async loadTestimonials() {
       try {
-        this.isLoading = true;
-        this.error = null;
-        
-        const testimonialsData = await fetchTestimonialsData();
-        this.reviews = testimonialsData;
-        
-        console.log("Loaded testimonials:", this.reviews);
+        this.loading = true;
+        const testimonials = await fetchTestimonials();
+        this.reviews = testimonials || [];
+        console.log('Loaded testimonials:', this.reviews.length, 'items');
       } catch (error) {
-        console.error("Error loading testimonials:", error);
-        this.error = error.message;
-        
-        // Use fallback data if API fails
-        this.reviews = [
-          {
-            id: 1,
-            title: "Online Billing, Invoicing, & Contracts",
-            content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            name: "Agus",
-            job: "Pekerjaan",
-            avatar: null
-          },
-          {
-            id: 2,
-            title: "Online Billing, Invoicing, & Contracts",
-            content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            name: "Asep",
-            job: "Pekerjaan",
-            avatar: null
-          }
-        ];
+        console.error('Error loading testimonials:', error);
+        this.reviews = [];
       } finally {
-        this.isLoading = false;
+        this.loading = false;
       }
     },
     handleImageError(event) {
-      // Fallback to default image if avatar fails to load
-      event.target.src = require('@/assets/user.png');
+      // Fallback to default user icon if image fails to load
+      event.target.src = new URL('@/assets/user.png', import.meta.url).href;
     },
     onSlideChange(swiper) {
       this.currentIndex = swiper.realIndex;
@@ -166,7 +130,13 @@ export default {
     },
     goToSlide(idx) {
       if (this.$refs.swiperRef && this.$refs.swiperRef.$el && this.$refs.swiperRef.$el.swiper) {
-        this.$refs.swiperRef.$el.swiper.slideToLoop(idx);
+        // Use slideTo instead of slideToLoop if loop is disabled
+        const swiper = this.$refs.swiperRef.$el.swiper;
+        if (swiper.params.loop) {
+          swiper.slideToLoop(idx);
+        } else {
+          swiper.slideTo(idx);
+        }
       }
     },
   },
@@ -174,6 +144,27 @@ export default {
 </script>
 
 <style scoped>
+/* Loading state */
+.loading-testimonials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* No testimonials state */
+.no-testimonials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 18px;
+  color: #999;
+  font-style: italic;
+}
+
 /* Pastikan card testimonial yang di-scale tidak terpotong */
 .swiper-slide {
   overflow: visible;
@@ -181,9 +172,9 @@ export default {
 /* Card testimonial tengah lebih besar dengan selector CSS sederhana */
 /* Tambahkan CSS untuk container Swiper */
 .swiper-container {
-  max-width: 1200px;
+  max-width: clamp(1200px, 95vw, 1600px);
   margin: 0 auto;
-  padding: 0 60px; /* Tambahkan padding lebih besar di kiri-kanan */
+  padding: 20px clamp(40px, 5vw, 80px); /* Tambahkan padding atas-bawah untuk card yang di-scale */
   overflow: hidden; /* Pastikan overflow visible */
   width: 100%;
   box-sizing: border-box;
@@ -203,6 +194,7 @@ export default {
 /* Card tengah yang aktif */
 .swiper-slide-next .testimonial-card {
   transform: scale(1.1);
+  border: 1.5px solid #555;
   box-shadow: 0 6px 24px rgba(84, 190, 150, 0.25);
   z-index: 10;
   position: relative;
@@ -214,13 +206,13 @@ export default {
     circle at center,
     rgba(107, 194, 161, 0.5) 0%,
     rgba(107, 194, 161, 0.3) 30%,
-    rgba(255, 255, 255, 0.8) 60%,
+    rgba(255, 255, 255, 0.8) 50%,
     #ffffff 100%
   );
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  font-family: Arial, sans-serif;
+  font-family: Inter;
   text-align: center;
   overflow: visible;
   min-height: calc(100vh - 80px);
@@ -245,9 +237,10 @@ export default {
 .testimonial-card {
   background-color: white;
   border-radius: 12px;
+  border: 1px solid #555;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: clamp(260px, 24vw, 340px); /* sedikit diperkecil dari 28vw */
-  padding: clamp(20px, 2vw, 24px);
+  width: clamp(300px, 28vw, 400px); /* sedikit diperbesar dari 24vw ke 28vw */
+  padding: clamp(24px, 2.5vw, 32px);
   margin: 0 auto;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -266,8 +259,8 @@ export default {
 }
 
 .reviewer-photo {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: #00c2c2;
   margin: 0 auto 15px;
@@ -280,10 +273,12 @@ export default {
 .reviewer-photo img {
   width: 60%;
   height: auto;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .testimonial-card h3 {
-  font-size: clamp(15px, 1.2vw, 18px); /* dari max 20 -> max 18 */
+  font-size: clamp(16px, 1.4vw, 20px); /* dari max 18 -> max 20 */
   color: #1a237e;
   margin-bottom: 15px;
   text-align: center;
@@ -291,7 +286,7 @@ export default {
 
 .testimonial-text {
   color: #333;
-  font-size: clamp(13px, 1vw, 16px); /* dari max 18 -> max 16 */
+  font-size: clamp(14px, 1.2vw, 18px); /* dari max 16 -> max 18 */
   margin-bottom: 20px;
   line-height: 1.5;
 }
@@ -318,17 +313,17 @@ export default {
   font-weight: bold;
   margin-bottom: 5px;
   color: #000;
-  font-size: clamp(13px, 0.9vw, 16px); /* sebelumnya bisa 18px */
+  font-size: clamp(14px, 1.1vw, 18px); /* sebelumnya max 16px */
   margin-top: auto;
 }
 
 .reviewer-job {
-  font-size: clamp(12px, 0.85vw, 14px);
+  font-size: clamp(13px, 1vw, 16px);
   color: #777;
 }
 
 .swiper {
-  padding: 30px 0; /* Beri padding atas-bawah untuk card yang di-scale */
+  padding: 35px 0; /* Kurangi padding karena sudah ada di container */
   overflow: hidden;
 }
 
@@ -338,17 +333,19 @@ export default {
   justify-content: center;
   margin-top: 24px;
   gap: 16px;
+  font-family: 'Inter';
 }
 .nav-btn {
   background: #fff;
   color: #222;
   border: 2px solid #54be96;
   border-radius: 10px;
-  padding: 6px 24px;
+  padding: 15px 20px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   box-shadow: 0 2px 8px rgba(84, 190, 150, 0.08);
   transition: background 0.2s, border 0.2s;
@@ -357,13 +354,6 @@ export default {
   background: #54be96;
   color: #fff;
   border-color: #009e7a;
-}
-
-.arrow-svg {
-  width: 16px;
-  height: 16px;
-  stroke: #222;
-  transition: stroke 0.2s;
 }
 
 .nav-btn:hover .arrow-svg {
@@ -398,87 +388,6 @@ export default {
   opacity: 1;
 }
 
-/* Loading State */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  color: #666;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #54be96;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Error State */
-.error-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  color: #e74c3c;
-}
-
-.retry-btn {
-  background: #54be96;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  margin-top: 16px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-
-.retry-btn:hover {
-  background: #4aa085;
-}
-
-/* Empty State */
-.empty-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-  color: #888;
-  font-style: italic;
-}
-
-/* School Name */
-.reviewer-school {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
-  font-style: italic;
-}
-
-@media (max-width: 1024px) {
-  .testimonial-card {
-    flex: 0 0 calc(100% / 2 - 20px); /* 2 card per view di tablet */
-  }
-  .swiper-container {
-    padding: 0 40px;
-  }
-  
-  .swiper-slide-next .testimonial-card {
-    transform: scale(1.1);
-  }
-}
 @media (max-width: 600px) {
   .testimonial-section {
     padding: 16px 0;
@@ -525,8 +434,10 @@ export default {
     margin-top: 18px;
   }
   .nav-btn {
-    padding: 5px 16px;
+    padding: 10px 10px;
     font-size: 14px;
+    min-width: 44px;
+    min-height: 44px;
   }
   .nav-progress {
     gap: 10px;

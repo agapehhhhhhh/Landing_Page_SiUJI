@@ -729,7 +729,6 @@ export const fetchAboutSectionData = async () => {
       carouselConfig: {
         autoSlide: true,
         slideInterval: 3000,
-        pauseOnHover: true
       }
     };
   }
@@ -743,86 +742,173 @@ export const fetchWhyChooseSectionData = async () => {
     );
     const whyChooseData = response.data;
 
-    const activeSection = whyChooseData.docs.find(item => item.isActive !== false);
+    const activeWhyChoose = whyChooseData.docs.find((item) => item.isActive !== false);
 
-    if (!activeSection) {
-      return getFallbackWhyChooseData();
+    if (!activeWhyChoose) {
+      // Return fallback data if no active why choose section found
+      return {
+        title: "Why Choose SIUJI?",
+        subtitle: "Platform ujian digital terdepan untuk institusi pendidikan modern",
+        points: [
+          {
+            title: "Keamanan Berlapis",
+            description: "Sistem keamanan canggih dengan teknologi anti-kecurangan dan monitoring real-time untuk menjaga integritas ujian.",
+            icon: null,
+            sideImage: null
+          },
+          {
+            title: "Mudah Digunakan",
+            description: "Interface yang intuitif dan user-friendly memungkinkan guru dan siswa menggunakan platform tanpa kesulitan.",
+            icon: null,
+            sideImage: null
+          },
+          {
+            title: "Analitik Mendalam",
+            description: "Dashboard analitik komprehensif untuk memantau performa siswa dan efektivitas pembelajaran secara real-time.",
+            icon: null,
+            sideImage: null
+          }
+        ]
+      };
     }
 
-    const processedPoints = activeSection.points?.map((point, index) => ({
-      id: point.id || index,
+    // Process points data
+    const processedPoints = activeWhyChoose.points?.map((point, index) => ({
       title: point.title,
       description: point.description,
-      emoji: getDefaultEmoji(index), // Fallback emoji since collection doesn't have emoji field
-      icon: point.icon ? {
-        url: point.icon.url.startsWith('http') 
-          ? point.icon.url 
-          : `${API_BASE_URL.replace('/api', '')}${point.icon.url}`,
-        alt: point.icon.alt || point.title
-      } : null,
-      image: point.sideImage ? {
-        url: point.sideImage.url.startsWith('http')
-          ? point.sideImage.url
-          : `${API_BASE_URL.replace('/api', '')}${point.sideImage.url}`,
-        alt: point.sideImage.alt || point.title
-      } : getDefaultImage(index),
+      icon: point.icon
+        ? {
+            url: point.icon.url.startsWith('http')
+              ? point.icon.url
+              : `${API_BASE_URL.replace('/api', '')}${point.icon.url}`,
+            alt: point.icon.alt || point.title
+          }
+        : null,
+      sideImage: point.sideImage
+        ? {
+            url: point.sideImage.url.startsWith('http')
+              ? point.sideImage.url
+              : `${API_BASE_URL.replace('/api', '')}${point.sideImage.url}`,
+            alt: point.sideImage.alt || point.title
+          }
+        : null,
       order: index
     })) || [];
 
     return {
-      title: activeSection.title || 'Why Choose Us?',
-      subtitle: activeSection.subtitle || '',
+      title: activeWhyChoose.title || "Why Choose SIUJI?",
+      subtitle: activeWhyChoose.subtitle || "",
       points: processedPoints
     };
   } catch (error) {
-    console.error('[fetchWhyChooseSectionData] Error:', error);
-    return getFallbackWhyChooseData();
+    console.error("[fetchWhyChooseSectionData] Error:", error);
+    
+    // Fallback data in case API is not available
+    return {
+      title: "Why Choose SIUJI?",
+      subtitle: "Platform ujian digital terdepan untuk institusi pendidikan modern",
+      points: [
+        {
+          title: "Keamanan Berlapis",
+          description: "Sistem keamanan canggih dengan teknologi anti-kecurangan dan monitoring real-time untuk menjaga integritas ujian.",
+          icon: null,
+          sideImage: null,
+          order: 0
+        },
+        {
+          title: "Mudah Digunakan", 
+          description: "Interface yang intuitif dan user-friendly memungkinkan guru dan siswa menggunakan platform tanpa kesulitan.",
+          icon: null,
+          sideImage: null,
+          order: 1
+        },
+        {
+          title: "Analitik Mendalam",
+          description: "Dashboard analitik komprehensif untuk memantau performa siswa dan efektivitas pembelajaran secara real-time.",
+          icon: null,
+          sideImage: null,
+          order: 2
+        }
+      ]
+    };
   }
 };
 
-// Helper functions for Why Choose Section
-const getFallbackWhyChooseData = () => ({
-  title: 'Why Choose Us?',
-  subtitle: '',
-  points: [
-    {
-      id: 1,
-      title: 'Real-Time Monitoring',
-      description: 'Embrace the power of real-time monitoring and take control of your learning journey with us.',
-      emoji: '📡',
-      image: new URL('/assets/someah-logo.svg', import.meta.url).href,
-      order: 0
-    },
-    {
-      id: 2,
-      title: 'Lifetime Access',
-      description: 'Your education is not bound by time; it\'s a lifelong pursuit, and we\'re here to support your journey every step of the way.',
-      emoji: '♾️',
-      image: new URL('/assets/blob-haikei.svg', import.meta.url).href,
-      order: 1
-    },
-    {
-      id: 3,
-      title: 'Big Community',
-      description: 'Connect, collaborate, and share with a diverse group of peers, making your learning journey enriching and interactive.',
-      emoji: '👥',
-      image: new URL('/assets/wavesOpacity.svg', import.meta.url).href,
-      order: 2
+// Function to fetch Testimonials data
+export const fetchTestimonials = async () => {
+  try {
+    // Fetch testimonials data from Payload API with sorting
+    const response = await axios.get(`${API_BASE_URL}/testimonials?sort=order&where[isActive][equals]=true`);
+    
+    if (response.data?.docs) {
+      return response.data.docs.map(testimonial => ({
+        id: testimonial.id,
+        title: testimonial.testimonialTitle || "Online Billing, Invoicing, & Contracts",
+        content: testimonial.content,
+        name: testimonial.name,
+        job: testimonial.position,
+        school: testimonial.school,
+        avatar: testimonial.avatar ? {
+          url: testimonial.avatar.url?.startsWith('http') 
+            ? testimonial.avatar.url 
+            : `http://localhost:3000${testimonial.avatar.url}`,
+          alt: testimonial.avatar.alt || testimonial.name
+        } : null,
+        isFeatured: testimonial.isFeatured || false,
+        order: testimonial.order || 0
+      }));
     }
-  ]
-});
-
-const getDefaultEmoji = (index) => {
-  const emojis = ['📡', '♾️', '👥', '🎯', '🚀', '💡'];
-  return emojis[index] || '🎯';
-};
-
-const getDefaultImage = (index) => {
-  const images = [
-    '/assets/someah-logo.svg',
-    '/assets/blob-haikei.svg', 
-    '/assets/wavesOpacity.svg',
-    '/assets/Isolation Mode.svg'
-  ];
-  return images[index] || '/assets/someah-logo.svg';
+    
+    return [];
+  } catch (error) {
+    console.error("[fetchTestimonials] Error:", error);
+    
+    // Return fallback data if API fails
+    return [
+      {
+        id: 1,
+        title: "Online Billing, Invoicing, & Contracts",
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        name: "Agus",
+        job: "Pekerjaan",
+        school: "SMK Negeri 1",
+        avatar: null,
+        isFeatured: false,
+        order: 1
+      },
+      {
+        id: 2,
+        title: "Online Billing, Invoicing, & Contracts", 
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        name: "Asep",
+        job: "Pekerjaan",
+        school: "SMK Negeri 2",
+        avatar: null,
+        isFeatured: false,
+        order: 2
+      },
+      {
+        id: 3,
+        title: "Online Billing, Invoicing, & Contracts",
+        content: "PERSIB JUARA",
+        name: "Ujang",
+        job: "Pekerjaan", 
+        school: "SMK Negeri 3",
+        avatar: null,
+        isFeatured: true,
+        order: 3
+      },
+      {
+        id: 4,
+        title: "Online Billing, Invoicing, & Contracts",
+        content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+        name: "Kedu",
+        job: "Pekerjaan",
+        school: "SMK Negeri 4", 
+        avatar: null,
+        isFeatured: false,
+        order: 4
+      }
+    ];
+  }
 };
