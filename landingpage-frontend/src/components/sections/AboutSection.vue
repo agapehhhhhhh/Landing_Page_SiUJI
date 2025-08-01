@@ -517,10 +517,10 @@ function moveImageToCenter(clickedIndex: number) {
 
 .arrow {
   background: #fff;
-  border: 2px solid #19d3c5;
+  border: 1px solid #555555;
   border-radius: 10px;
-  width: 60px;
-  height: 45px;
+  width: 64px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
