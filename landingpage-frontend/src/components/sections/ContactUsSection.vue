@@ -21,7 +21,7 @@
 
       <!-- Right Column: Map -->
       <div class="map-column">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7744774219545!2d107.61524227414148!3d-6.917543767703492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ccfaa20b87%3A0x737853f7eedf64a9!2sSomeah%20Kreatif%20Nusantara!5e0!3m2!1sid!2sid!4v1753412975191!5m2!1sid!2sid" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7744774219545!2d107.61524227414148!3d-6.917543767703492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ccfaa20b87%3A0x737853f7eedf64a9!2sSomeah%20Kreatif%20Nusantara!5e0!3m2!1sid!2sid!4v1753412975191!5m2!1sid!2sid" width="800" height="600" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </section>
@@ -61,7 +61,8 @@ function handleSubmit() {
   padding: clamp(20px, 3vw, 40px);
   border-radius: 12px;
   width: clamp(300px, 90vw, 1400px);
-  height: clamp(500px, 85vh, 800px);
+  max-height: 85vh;
+  min-height: clamp(500px, 70vh, 800px);
   display: flex;
   gap: clamp(20px, 4vw, 60px);
   align-items: stretch;
@@ -70,15 +71,19 @@ function handleSubmit() {
   background-size: cover;
   background-position: right bottom;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .form-column {
   flex: 1;
-  min-width: 300px;
+  min-width: 280px;
+  max-width: 50%;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Menyusun konten dari atas */
+  justify-content: flex-start;
+  overflow: hidden;
+  height: 100%;
 }
 
 .map-column {
@@ -100,63 +105,70 @@ function handleSubmit() {
 }
 
 .section-title {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.2rem, 3.5vw, 3rem);
   font-weight: bold;
-  margin-bottom: clamp(15px, 2vw, 25px);
+  margin-bottom: clamp(8px, 1.5vw, 25px);
   margin-top: 0;
+  line-height: 1.2;
 }
 
 .section-description {
-  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  margin-bottom: clamp(20px, 3vw, 35px);
-  line-height: 1.6;
+  font-size: clamp(0.8rem, 1.1vw, 1.1rem);
+  margin-bottom: clamp(12px, 2vw, 35px);
+  line-height: 1.5;
   margin-top: 0;
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Form akan mengisi sisa ruang */
-  justify-content: flex-start; /* Tombol akan tetap berada di bawah */
-  padding: 0; /* Pastikan tidak ada padding */
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 0;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: clamp(10px, 1.5vw, 16px);
-  margin-bottom: clamp(12px, 2vw, 20px);
+  padding: clamp(8px, 1.2vw, 16px);
+  margin-bottom: clamp(8px, 1.5vw, 20px);
   border-radius: 8px;
   border: 1px solid #555555;
   outline: none;
-  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+  font-size: clamp(0.8rem, 1vw, 1.1rem);
   box-sizing: border-box;
   margin-left: 0;
   margin-right: 0;
+  flex-shrink: 0;
 }
 
 .contact-form textarea {
   resize: vertical;
-  min-height: clamp(80px, 12vh, 120px);
-  height: clamp(80px, 15vh, 150px);
+  min-height: clamp(60px, 8vh, 120px);
+  height: clamp(60px, 12vh, 150px);
+  flex-grow: 1;
+  max-height: clamp(120px, 20vh, 200px);
 }
 
 .send-button {
   background-color: white;
   color: #38b2ac;
-  padding: clamp(10px, 1.5vw, 16px);
+  padding: clamp(8px, 1.2vw, 16px);
   font-weight: bold;
   border: 1px solid #555555;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 0;
+  margin-top: auto;
   width: 100%;
   box-sizing: border-box;
   display: block;
   margin-left: 0;
   margin-right: 0;
-  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+  font-size: clamp(0.8rem, 1vw, 1.1rem);
+  flex-shrink: 0;
 }
 
 
