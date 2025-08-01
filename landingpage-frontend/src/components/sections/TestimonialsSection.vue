@@ -30,7 +30,7 @@
           },
           601: { 
             slidesPerView: reviews.length === 2 ? 2 : Math.min(3, reviews.length),
-            spaceBetween: 0
+            spaceBetween: reviews.length === 2 ? 40 : 0
           }
         }"
         @slideChange="onSlideChange"
@@ -166,12 +166,24 @@ export default {
 <style scoped>
 /* Jika testimonial kurang dari 3, jarak antar card lebih dekat dan CSS benar di sini */
 .swiper-container.few-testimonials {
-  padding-left: clamp(40px, 6vw, 120px);
-  padding-right: clamp(40px, 6vw, 120px);
-}
-.swiper-container.few-testimonials .swiper-wrapper {
+  padding-left: clamp(40px, 5vw, 100px);
+  padding-right: clamp(40px, 5vw, 100px);
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.swiper-container.few-testimonials .swiper-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  transform: none !important;
+}
+.swiper-container.few-testimonials .swiper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 /* Loading state */
 .loading-testimonials {
@@ -209,6 +221,29 @@ export default {
   box-sizing: border-box;
 }
 
+/* Khusus untuk 2 testimoni - absolute centering */
+.swiper-container.few-testimonials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-container.few-testimonials .swiper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-container.few-testimonials .swiper-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  transform: none !important;
+  gap: clamp(30px, 4vw, 60px) !important;
+}
+
 /* Jika testimonial kurang dari 3, semua card sama besar dan rata tengah */
 .swiper-container.few-testimonials .swiper-slide-next .testimonial-card,
 .swiper-container.few-testimonials .testimonial-card {
@@ -216,10 +251,26 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #555;
   z-index: 1;
+  width: clamp(280px, 26vw, 380px); /* Sedikit lebih kecil untuk 2 card */
 }
 .swiper-container.few-testimonials .swiper-slide {
-  justify-content: center;
-  align-items: center;
+  justify-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  margin: 0 auto !important;
+}
+
+/* Khusus untuk 2 testimonial - membagi ruang menjadi dua bagian sama */
+.swiper-container.few-testimonials .swiper-slide:first-child {
+  margin-right: clamp(15px, 2vw, 25px) !important;
+  margin-left: auto !important;
+}
+
+.swiper-container.few-testimonials .swiper-slide:last-child {
+  margin-left: clamp(15px, 2vw, 25px) !important;
+  margin-right: auto !important;
 }
 
 /* Pastikan card testimonial yang di-scale tidak terpotong */
