@@ -15,7 +15,11 @@
           <input type="tel" v-model="form.phone" placeholder="What is your phone number? *" required />
           <input type="text" v-model="form.email" placeholder="Email address *" required />
           <textarea v-model="form.message" placeholder="Your message... *" required></textarea>
-          <button type="submit" class="send-button">Send Message &gt;</button>
+          <button type="submit" class="send-button" :disabled="sending">
+            {{ sending ? 'Sending...' : 'Send Message >' }}
+          </button>
+          <div v-if="success" class="success-message" style="color: #fff; margin-top: 10px; font-weight: bold;">Pesan berhasil dikirim!</div>
+          <div v-if="error" class="error-message" style="color: #ffdddd; margin-top: 10px; font-weight: bold;">{{ error }}</div>
         </form>
       </div>
 
@@ -29,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { sendContactMessage } from '@/services/payloadService'
 
 const form = ref({
   name: '',
@@ -37,10 +42,23 @@ const form = ref({
   subject: '',
   message: '',
 })
+const sending = ref(false)
+const success = ref(false)
+const error = ref('')
 
-function handleSubmit() {
-  console.log('Form Submitted:', form.value)
-  // TODO: Integrasi ke Payload CMS, Email API, dsb.
+async function handleSubmit() {
+  sending.value = true
+  success.value = false
+  error.value = ''
+  try {
+    await sendContactMessage(form.value)
+    success.value = true
+    form.value = { name: '', phone: '', email: '', subject: '', message: '' }
+  } catch (err: any) {
+    error.value = err.message || 'Network error'
+  } finally {
+    sending.value = false
+  }
 }
 </script>
 
