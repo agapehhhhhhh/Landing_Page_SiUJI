@@ -194,7 +194,7 @@ onUnmounted(() => {
 .desktop-login {
   flex-shrink: 0;
   padding: 8px 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   transition: all 0.3s;
@@ -380,7 +380,7 @@ onUnmounted(() => {
 .mobile-login-button {
   width: 100%;
   padding: 24px 32px;
-  border-radius: 20px;
+  border-radius: 10px;
   background: #4cc5bd;
   color: white;
   font-weight: 600;

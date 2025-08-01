@@ -2,27 +2,14 @@
   <section class="hero">
     <!-- Background SVG -->
     <div class="shape-svg">
-      <svg
-        id="visual"
-        viewBox="0 0 900 600"
-        xmlns="http://www.w3.org/2000/svg"
-        version="1.1"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M595 600L571 566.7C547 533.3 499 466.7 505.2 400C511.3 333.3 571.7 266.7 580.5 200C589.3 133.3 546.7 66.7 525.3 33.3L504 0L900 0L900 33.3C900 66.7 900 133.3 900 200C900 266.7 900 333.3 900 400C900 466.7 900 533.3 900 566.7L900 600Z"
-          fill="#4CC5BD"
-          stroke-linecap="round"
-          stroke-linejoin="miter"
-        />
-      </svg>
+      <img src="@/assets/hero-section.svg" alt="Hero Background" />
     </div>
 
     <!-- Konten Utama -->
     <div class="hero-container">
       <div class="hero-text">
-        <h1>{{ data?.title || 'Default Title' }}</h1>
-        <p>{{ data?.subtitle || 'Default Subtitle' }}</p>
+        <h1>{{ data?.title || "Default Title" }}</h1>
+        <p>{{ data?.subtitle || "Default Subtitle" }}</p>
 
         <!-- Gambar untuk mobile (akan ditampilkan hanya pada mobile) -->
         <div class="hero-visual-mobile">
@@ -55,7 +42,7 @@
         </div>
 
         <a class="hero-button" :href="data?.ctaLink || '#'">
-          {{ data?.ctaText || 'Get Started' }}
+          {{ data?.ctaText || "Get Started" }}
           <span>&rarr;</span>
         </a>
       </div>
@@ -115,11 +102,11 @@ defineProps({
   z-index: 0;
 }
 
-.shape-svg svg {
+.shape-svg img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  min-height: 100vh;
+  object-fit: contain;
+  object-position: right top;
 }
 
 .hero-container {
@@ -219,11 +206,17 @@ defineProps({
 
 /* Floating animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.floating, .floating-mobile {
+.floating,
+.floating-mobile {
   position: absolute;
   z-index: 3;
   animation: float 4s ease-in-out infinite;
@@ -240,22 +233,62 @@ defineProps({
 }
 
 /* Desktop floating positions */
-.book { top: 20%; right: 5%; animation-delay: 0s; }
-.pencil { top: 45%; right: 60%; animation-delay: 0.5s; }
-.file { bottom: 10%; right: 11%; animation-delay: 1s; }
-.pen { bottom: 80%; left: 50%; animation-delay: 1.5s; }
-.monitor { bottom: 15%; left: 50%; animation-delay: 2s; }
+.book {
+  top: 20%;
+  right: 5%;
+  animation-delay: 0s;
+}
+.pencil {
+  top: 45%;
+  right: 60%;
+  animation-delay: 0.5s;
+}
+.file {
+  bottom: 10%;
+  right: 11%;
+  animation-delay: 1s;
+}
+.pen {
+  bottom: 80%;
+  left: 50%;
+  animation-delay: 1.5s;
+}
+.monitor {
+  bottom: 15%;
+  left: 50%;
+  animation-delay: 2s;
+}
 
 /* Mobile floating positions */
-.book-mobile { top: 35%; right: 0%; animation-delay: 0s; }
-.pencil-mobile { top: 25%; left: 0%; animation-delay: 0.5s; }
-.file-mobile { bottom: 10%; right: 3%; animation-delay: 1s; }
-.pen-mobile { bottom: 5%; left: 3%; animation-delay: 1.5s; }
+.book-mobile {
+  top: 35%;
+  right: 0%;
+  animation-delay: 0s;
+}
+.pencil-mobile {
+  top: 25%;
+  left: 0%;
+  animation-delay: 0.5s;
+}
+.file-mobile {
+  bottom: 10%;
+  right: 3%;
+  animation-delay: 1s;
+}
+.pen-mobile {
+  bottom: 5%;
+  left: 3%;
+  animation-delay: 1.5s;
+}
 
 /* Tablet styles (1025px+) */
 @media (min-width: 1025px) {
-  .hero-visual-mobile { display: none; }
-  .hero-visual { display: flex; }
+  .hero-visual-mobile {
+    display: none;
+  }
+  .hero-visual {
+    display: flex;
+  }
 }
 
 /* Large tablet (901px - 1024px) */
@@ -265,50 +298,54 @@ defineProps({
     height: calc(100vh - 68px);
     margin-bottom: 0;
   }
-  
+
   .shape-svg {
     height: 100vh;
     bottom: -68px;
   }
-  
+
   .shape-svg svg {
     min-height: calc(100vh + 68px);
   }
-  
+
   .hero-container {
     padding: 0 1.5rem;
   }
-  
+
   .hero-text {
     margin-left: 1rem;
     margin-top: -30px;
   }
-  
+
   .hero-text h1 {
     font-size: 3rem;
     margin-left: 0.5rem;
   }
-  
+
   .hero-text p {
     margin-left: 0.6rem;
   }
-  
+
   .hero-button {
     margin-left: 0.5rem;
   }
-  
+
   .hero-image {
     left: 150px;
     max-width: 400px;
   }
-  
+
   .floating {
     width: 35px;
     height: 35px;
   }
-  
-  .hero-visual-mobile { display: none; }
-  .hero-visual { display: flex; }
+
+  .hero-visual-mobile {
+    display: none;
+  }
+  .hero-visual {
+    display: flex;
+  }
 }
 
 /* Mobile and small tablet (480px - 900px) */
@@ -318,16 +355,16 @@ defineProps({
     height: calc(100vh - 68px);
     margin-bottom: 0;
   }
-  
+
   .shape-svg {
     height: 100vh;
     bottom: -68px;
   }
-  
+
   .shape-svg svg {
     min-height: calc(100vh + 68px);
   }
-  
+
   .hero-container {
     flex-direction: column;
     text-align: center;
@@ -335,43 +372,47 @@ defineProps({
     gap: 1.5rem;
     justify-content: center;
   }
-  
+
   .hero-text {
     margin: 65px 0 0 0;
     padding: 0;
     max-width: 100%;
   }
-  
+
   .hero-text h1 {
     font-size: 2.8rem;
     margin: 0 0 1rem 0;
   }
-  
+
   .hero-text p {
     font-size: 1.05rem;
     margin: 55px 0 1.5rem 0;
   }
-  
+
   .hero-button {
     margin: 1.5rem 0 0 0;
   }
-  
+
   .hero-visual-mobile {
     display: block;
     margin: 1.5rem 0;
   }
-  
+
   .hero-image-mobile {
     max-width: 350px;
   }
-  
+
   .floating-mobile {
     width: 32px;
     height: 32px;
   }
-  
-  .hero-visual { display: none; }
-  .floating:not(.floating-mobile) { display: none; }
+
+  .hero-visual {
+    display: none;
+  }
+  .floating:not(.floating-mobile) {
+    display: none;
+  }
 }
 
 /* Small mobile (max-width: 480px) */
@@ -381,16 +422,16 @@ defineProps({
     height: calc(100vh - 68px);
     margin-bottom: 0;
   }
-  
+
   .shape-svg {
     height: 100vh;
     bottom: -68px;
   }
-  
+
   .shape-svg svg {
     min-height: calc(100vh + 68px);
   }
-  
+
   .hero-container {
     flex-direction: column;
     text-align: center;
@@ -398,46 +439,48 @@ defineProps({
     gap: 1.2rem;
     justify-content: center;
   }
-  
+
   .hero-text {
     margin: 65px 0 0 0;
     padding: 0;
     max-width: 100%;
   }
-  
+
   .hero-text h1 {
     font-size: 1.8rem;
     line-height: 1.2;
     margin: 0 0 1rem 0;
   }
-  
+
   .hero-text p {
     font-size: 0.9rem;
     line-height: 1.5;
     margin: 55px 0 1.2rem 0;
   }
-  
+
   .hero-button {
     padding: 10px 20px;
     font-size: 0.9rem;
     margin: 1.2rem 0 0 0;
   }
-  
+
   .hero-visual-mobile {
     display: block;
     margin: 1.2rem 0;
   }
-  
+
   .hero-image-mobile {
     max-width: 260px;
   }
-  
+
   .floating-mobile {
     width: 26px;
     height: 26px;
   }
-  
-  .hero-visual { display: none; }
+
+  .hero-visual {
+    display: none;
+  }
 }
 
 /* Very small screens (max-width: 360px) */
@@ -445,21 +488,21 @@ defineProps({
   .hero-text h1 {
     font-size: 1.6rem;
   }
-  
+
   .hero-text p {
     font-size: 0.85rem;
     line-height: 1.4;
   }
-  
+
   .hero-button {
     padding: 8px 16px;
     font-size: 0.85rem;
   }
-  
+
   .hero-image-mobile {
     max-width: 240px;
   }
-  
+
   .floating-mobile {
     width: 24px;
     height: 24px;
@@ -472,57 +515,61 @@ defineProps({
     padding-top: 60px;
     height: calc(100vh - 68px);
   }
-  
+
   .shape-svg {
     height: 100vh;
     bottom: -68px;
   }
-  
+
   .shape-svg svg {
     min-height: calc(100vh + 68px);
   }
-  
+
   .hero-container {
     padding: 0.5rem;
     gap: 0.8rem;
     justify-content: center;
   }
-  
+
   .hero-text {
     margin: 15px 0 0 0;
   }
-  
+
   .hero-text h1 {
     font-size: 1.5rem;
     margin: 0 0 0.5rem 0;
   }
-  
+
   .hero-text p {
     font-size: 0.85rem;
     margin: 45px 0 0.8rem 0;
   }
-  
+
   .hero-button {
     padding: 8px 16px;
     font-size: 0.85rem;
     margin: 0.8rem 0 0 0;
   }
-  
+
   .hero-visual-mobile {
     display: block;
     margin: 0.8rem 0;
   }
-  
+
   .hero-image-mobile {
     max-width: 200px;
   }
-  
+
   .floating-mobile {
     width: 22px;
     height: 22px;
   }
-  
-  .hero-visual { display: none; }
-  .floating:not(.floating-mobile) { display: none; }
+
+  .hero-visual {
+    display: none;
+  }
+  .floating:not(.floating-mobile) {
+    display: none;
+  }
 }
 </style>

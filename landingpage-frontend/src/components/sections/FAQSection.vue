@@ -2,7 +2,10 @@
   <section class="faq-section">
     <!-- Header with title -->
     <div class="faq-header">
-      <h2>Frequently Asked Questions</h2>
+      <div class="header-content">
+        <img src="@/assets/faq.svg" alt="FAQ Icon" class="faq-logo" />
+        <h2>Frequently Asked Questions</h2>
+      </div>
     </div>
 
     <!-- Category navigation -->
@@ -163,9 +166,24 @@ export default {
 .faq-section {
   position: relative;
   padding: 80px 20px 100px;
-  background: linear-gradient(135deg, #6bc2a1 0%, #7dd3b0 50%, #8ee4bf 100%);
+  background: linear-gradient(135deg, #4cc5bd 0%, #7dd3b0 50%, #8ee4bf 100%);
   overflow: hidden;
   min-height: 600px;
+}
+
+.faq-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("@/assets/faq-wave.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: 1;
 }
 
 /* Header */
@@ -176,13 +194,28 @@ export default {
   z-index: 2;
 }
 
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  position: relative;
+  margin-left: -150px;
+}
+
+.faq-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .faq-header h2 {
-  font-size: 2.5rem;
+  font-size: 50px;
   font-weight: 700;
   color: white;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+  text-align: center;
 }
 
 /* Category Navigation */
@@ -205,7 +238,7 @@ export default {
   justify-content: center;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(10px);
-  border: 3px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 1);
   max-width: 100%;
 }
 
@@ -226,15 +259,15 @@ export default {
 }
 
 .category-btn:hover {
-  color: #6bc2a1;
-  background: rgba(107, 194, 161, 0.1);
+  color: #4cc5bd;
+  background: rgba(76, 197, 189, 0.1);
   transform: translateY(-1px);
 }
 
 .category-btn.active {
-  background: #6bc2a1;
+  background: #4cc5bd;
   color: white;
-  box-shadow: 0 4px 15px rgba(107, 194, 161, 0.3);
+  box-shadow: 0 4px 15px rgba(76, 197, 189, 0.3);
   transform: translateY(-1px);
 }
 
@@ -281,18 +314,18 @@ export default {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 3px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid transparent;
 }
 
 .faq-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  border-color: rgba(107, 194, 161, 0.3);
+  border: 1px solid #000000;
 }
 
 .faq-item.active {
-  border-color: #6bc2a1;
-  box-shadow: 0 8px 30px rgba(107, 194, 161, 0.2);
+  border-color: #4cc5bd;
+  box-shadow: 0 8px 30px rgba(76, 197, 189, 0.2);
 }
 
 .faq-item.blurred {
@@ -319,7 +352,8 @@ export default {
 .faq-toggle {
   width: 32px;
   height: 32px;
-  background: #6bc2a1;
+  background: #4cc5bd;
+  border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -330,7 +364,8 @@ export default {
 }
 
 .faq-toggle.open {
-  background: #ff6b6b;
+  background: white;
+  border: 1px solid #000000;
   transform: rotate(45deg);
 }
 
@@ -339,6 +374,10 @@ export default {
   height: 16px;
   color: white;
   transition: transform 0.3s ease;
+}
+
+.faq-toggle.open svg {
+  color: #000000;
 }
 
 .faq-answer {
@@ -388,7 +427,7 @@ export default {
 
 .read-more-btn {
   background: white;
-  color: #6bc2a1;
+  color: #4cc5bd;
   border: 3px solid rgba(0, 0, 0, 0.2);
   padding: 14px 32px;
   border-radius: 25px;
@@ -414,6 +453,17 @@ export default {
 
   .faq-header h2 {
     font-size: 2rem;
+  }
+
+  .header-content {
+    gap: 20px;
+    flex-direction: column;
+    margin-left: 0;
+  }
+
+  .faq-logo {
+    width: 80px;
+    height: 80px;
   }
 
   .category-container {

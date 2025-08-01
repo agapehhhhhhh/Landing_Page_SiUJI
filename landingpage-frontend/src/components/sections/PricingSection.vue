@@ -53,8 +53,10 @@
           v-show="plan"
         >
           <div class="plan-header">
-            <h4 class="plan-name">{{ getPlanProperty(plan, 'name') }}</h4>
-            <p class="plan-description">{{ getPlanProperty(plan, 'description') }}</p>
+            <h4 class="plan-name">{{ getPlanProperty(plan, "name") }}</h4>
+            <p class="plan-description">
+              {{ getPlanProperty(plan, "description") }}
+            </p>
 
             <div class="price-container">
               <span class="currency">$</span>
@@ -90,11 +92,11 @@
                 <span>{{ getFeatureText(feature) }}</span>
               </div>
             </div>
-          </div>
 
-          <button :class="['cta-button', { 'center-button': index === 1 }]">
-            {{ getPlanProperty(plan, 'buttonText') }}
-          </button>
+            <button :class="['cta-button', { 'center-button': index === 1 }]">
+              {{ getPlanProperty(plan, "buttonText") }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -131,18 +133,44 @@
 import { fetchPricingData } from "@/services/payloadService";
 
 // Constants
-const BILLING_TYPES = ['monthly', 'yearly'];
+const BILLING_TYPES = ["monthly", "yearly"];
 const ANIMATION_DURATION = 200;
 const SWIPE_THRESHOLD = 50;
 
 // Property mappings for API flexibility
 const PROPERTY_MAPS = {
-  name: ['name', 'title', 'planName', 'plan_name'],
-  description: ['description', 'desc', 'subtitle', 'planDescription', 'plan_description'],
-  buttonText: ['buttonText', 'button_text', 'ctaText', 'cta_text', 'actionText', 'action_text'],
-  yearlyPrice: ['yearlyPrice', 'yearly_price', 'annualPrice', 'annual_price', 'priceYearly'],
-  monthlyPrice: ['monthlyPrice', 'monthly_price', 'price', 'priceMonthly'],
-  savings: ['savings', 'savingsText', 'savings_text', 'discount', 'discountText', 'discount_text']
+  name: ["name", "title", "planName", "plan_name"],
+  description: [
+    "description",
+    "desc",
+    "subtitle",
+    "planDescription",
+    "plan_description",
+  ],
+  buttonText: [
+    "buttonText",
+    "button_text",
+    "ctaText",
+    "cta_text",
+    "actionText",
+    "action_text",
+  ],
+  yearlyPrice: [
+    "yearlyPrice",
+    "yearly_price",
+    "annualPrice",
+    "annual_price",
+    "priceYearly",
+  ],
+  monthlyPrice: ["monthlyPrice", "monthly_price", "price", "priceMonthly"],
+  savings: [
+    "savings",
+    "savingsText",
+    "savings_text",
+    "discount",
+    "discountText",
+    "discount_text",
+  ],
 };
 
 export default {
@@ -160,7 +188,7 @@ export default {
   }),
   computed: {
     billingTypes: () => BILLING_TYPES,
-    
+
     visiblePlans() {
       const total = this.pricingPlans.length;
       if (total <= 3) return this.pricingPlans;
@@ -172,26 +200,25 @@ export default {
         this.pricingPlans[getIndex(1)],
       ];
     },
-    
+
     canSlide() {
-      const minPlans = this.isMobile() ? 1 : 3;
-      return this.pricingPlans.length > minPlans;
+      return this.pricingPlans.length > 3;
     },
-    
+
     showNavigation() {
-      return !this.loading && this.pricingPlans.length > 0;
-    }
+      return !this.loading && this.pricingPlans.length > 3;
+    },
   },
-  
+
   async mounted() {
     await this.loadPricingData();
     window.addEventListener("resize", this.handleResize);
   },
-  
+
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
   },
-  
+
   methods: {
     async loadPricingData() {
       try {
@@ -211,43 +238,54 @@ export default {
     // Unified slide method
     slide(direction) {
       if (!this.canSlide || this.isSliding) return;
-      
+
       this.isSliding = true;
       const container = this.$refs.cardsContainer;
-      const translateX = direction === 'next' ? -100 : 100;
-      
+      const translateX = direction === "next" ? -100 : 100;
+
       // Animate out
       if (container) {
-        container.style.transform = `translateX(${this.isMobile() ? translateX : translateX/2}px)`;
+        container.style.transform = `translateX(${
+          this.isMobile() ? translateX : translateX / 2
+        }px)`;
         container.style.opacity = this.isMobile() ? "0.5" : "0.6";
       }
 
-      setTimeout(() => {
-        // Update index
-        if (direction === 'next') {
-          this.centerIndex = this.centerIndex === this.pricingPlans.length - 1 ? 0 : this.centerIndex + 1;
-        } else {
-          this.centerIndex = this.centerIndex === 0 ? this.pricingPlans.length - 1 : this.centerIndex - 1;
-        }
-        
-        // Animate in
-        if (container) {
-          container.style.transform = "translateX(0)";
-          container.style.opacity = "1";
-        }
+      setTimeout(
+        () => {
+          // Update index
+          if (direction === "next") {
+            this.centerIndex =
+              this.centerIndex === this.pricingPlans.length - 1
+                ? 0
+                : this.centerIndex + 1;
+          } else {
+            this.centerIndex =
+              this.centerIndex === 0
+                ? this.pricingPlans.length - 1
+                : this.centerIndex - 1;
+          }
 
-        setTimeout(() => {
-          this.isSliding = false;
-        }, ANIMATION_DURATION);
-      }, this.isMobile() ? ANIMATION_DURATION : 150);
+          // Animate in
+          if (container) {
+            container.style.transform = "translateX(0)";
+            container.style.opacity = "1";
+          }
+
+          setTimeout(() => {
+            this.isSliding = false;
+          }, ANIMATION_DURATION);
+        },
+        this.isMobile() ? ANIMATION_DURATION : 150
+      );
     },
 
     slidePrev() {
-      this.slide('prev');
+      this.slide("prev");
     },
 
     slideNext() {
-      this.slide('next');
+      this.slide("next");
     },
 
     getCardClasses(index) {
@@ -287,9 +325,9 @@ export default {
     },
 
     // Unified property getter
-    getPlanProperty(plan, propertyType, fallback = '') {
+    getPlanProperty(plan, propertyType, fallback = "") {
       if (!plan) return fallback || this.getDefaultValue(propertyType);
-      
+
       const properties = PROPERTY_MAPS[propertyType] || [propertyType];
       for (const prop of properties) {
         if (plan[prop]) return plan[prop];
@@ -301,44 +339,55 @@ export default {
       const defaults = {
         name: "Unknown Plan",
         description: "No description available",
-        buttonText: "Select Plan"
+        buttonText: "Select Plan",
       };
       return defaults[propertyType] || "";
     },
 
     getCurrentPrice(plan) {
       if (!plan) return 0;
-      
-      const priceType = this.billingType === 'yearly' ? 'yearlyPrice' : 'monthlyPrice';
+
+      const priceType =
+        this.billingType === "yearly" ? "yearlyPrice" : "monthlyPrice";
       return this.getPlanProperty(plan, priceType, 0);
     },
 
     getFeatures(plan) {
       if (!plan?.features) return [];
-      
+
       if (Array.isArray(plan.features)) return plan.features;
-      if (typeof plan.features === "object") return Object.values(plan.features);
+      if (typeof plan.features === "object")
+        return Object.values(plan.features);
       return [];
     },
 
     getFeatureText(feature) {
       if (typeof feature === "object" && feature !== null) {
-        const textProps = ['feature', 'text', 'name', 'title', 'description', 'label'];
+        const textProps = [
+          "feature",
+          "text",
+          "name",
+          "title",
+          "description",
+          "label",
+        ];
         for (const prop of textProps) {
           if (feature[prop]) return feature[prop];
         }
-        
+
         if (feature.isIncluded !== undefined) {
-          return feature.isIncluded ? (feature.feature || feature.name || "Feature included") : "Feature not included";
+          return feature.isIncluded
+            ? feature.feature || feature.name || "Feature included"
+            : "Feature not included";
         }
-        
+
         return Object.values(feature).join(" ") || "Unknown feature";
       }
       return feature || "Unknown feature";
     },
 
     getSavingsText(plan) {
-      return this.getPlanProperty(plan, 'savings');
+      return this.getPlanProperty(plan, "savings");
     },
 
     toggleBilling(type) {
@@ -362,13 +411,14 @@ export default {
     circle at center,
     rgba(107, 194, 161, 0.5) 0%,
     rgba(107, 194, 161, 0.3) 30%,
-    rgba(255, 255, 255, 0.8) 60%,
+    rgba(255, 255, 255, 0.8) 55%,
     #ffffff 100%
   );
-  background-size: 100% 100%;
+  background-size: 100% 100%; /* Reduced from 100% 100% to make circle smaller */
   background-repeat: no-repeat;
   background-position: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
   text-align: center;
   overflow: hidden;
   min-height: 700px;
@@ -550,7 +600,7 @@ export default {
 .pricing-card.center-card::before {
   content: "";
   position: absolute;
-  top: calc(50% + 100px);
+  top: calc(50% + 115px);
   left: 50%;
   transform: translate(-50%, -50%);
   width: 500px;
@@ -654,7 +704,7 @@ export default {
 }
 
 .features-list {
-  margin-bottom: 20px;
+  margin-bottom: 0;
   text-align: left;
   padding: 12px;
   border: 1px solid #000000;
@@ -664,6 +714,7 @@ export default {
   min-height: 160px;
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .features-content {
@@ -671,15 +722,17 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 0;
 }
 
 .feature-item {
   display: flex;
   align-items: center;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.8;
   color: #2d3748;
+  margin-bottom: 12px;
+  font-family: "Inter", sans-serif;
 }
 
 .feature-item:last-child {
@@ -719,16 +772,20 @@ export default {
 }
 
 .cta-button {
-  width: 100%;
-  padding: 16px 24px;
-  border: 2px solid #4cc5bd;
-  border-radius: 12px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 15px 20px;
+  border: 1px solid #030707;
+  border-radius: 10px;
   background: transparent;
   color: #4cc5bd;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
+  align-self: flex-end;
+  font-family: "Inter", sans-serif;
+  border-radius: 1;
 }
 
 .cta-button:hover {
@@ -738,13 +795,14 @@ export default {
 }
 
 .cta-button.center-button {
-  background: white;
-  color: #4cc5bd;
+  background: #4cc5bd;
+  color: white;
   border: 1px solid #000000;
 }
 
 .cta-button.center-button:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: #3ba69f;
+  border-color: #3ba69f;
   transform: translateY(-2px);
 }
 
@@ -757,9 +815,9 @@ export default {
 }
 
 .nav-btn {
-  background: white;
-  color: #4a5568;
-  border: 2px solid #4cc5bd;
+  background: #ffffff;
+  color: #4cc5bd;
+  border: 1px solid #000000;
   border-radius: 10px;
   padding: 12px 24px;
   font-weight: 600;
@@ -768,13 +826,14 @@ export default {
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 12px rgba(76, 197, 189, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);    
   transform: translateY(0);
 }
 
 .nav-btn:hover:not(:disabled) {
   background: #4cc5bd;
   color: white;
+  border-color: #000000;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(76, 197, 189, 0.25);
 }
@@ -871,7 +930,7 @@ export default {
 }
 
 .loading-spinner::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -883,8 +942,12 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error-message {
@@ -978,6 +1041,10 @@ export default {
     transform: scale(1) !important;
     box-shadow: 0 25px 50px rgba(76, 197, 189, 0.25) !important;
     border-color: #2d3748 !important;
+  }
+
+  .pricing-card.center-card::before {
+    top: calc(50% + 150px);
   }
 
   .price {
@@ -1087,15 +1154,20 @@ export default {
   .features-list {
     padding: 10px;
     min-height: 140px;
+    margin-bottom: 0;
+    gap: 10px;
   }
 
   .feature-item {
-    font-size: 13px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 1.6;
   }
 
   .cta-button {
-    padding: 14px 20px;
-    font-size: 15px;
+    padding: 12px 18px;
+    font-size: 13px;
+    width: 75%;
   }
 }
 </style>
