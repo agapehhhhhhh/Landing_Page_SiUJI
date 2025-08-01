@@ -7,62 +7,61 @@
     <div class="container">
 
       <h2 class="section-title">{{ whyChooseData.title }}</h2>
-      <div class="content-wrapper" v-if="isDesktop">
-        <!-- Gambar Kiri -->
-        <div class="visual">
-          <transition name="fade" mode="out-in">
-            <img
-              :key="whyChooseData.points[hoveredFeatureIndex]?.sideImage?.url || whyChooseData.points[hoveredFeatureIndex]?.icon?.url"
-              :src="whyChooseData.points[hoveredFeatureIndex]?.sideImage?.url || whyChooseData.points[hoveredFeatureIndex]?.icon?.url || fallbackImage"
-              :alt="whyChooseData.points[hoveredFeatureIndex]?.sideImage?.alt || whyChooseData.points[hoveredFeatureIndex]?.title || 'Feature Visual'"
+      <div>
+        <div class="content-wrapper" v-if="isDesktop">
+          <!-- Gambar Kiri -->
+          <div class="visual">
+            <transition name="fade" mode="out-in">
+              <img
+                :key="whyChooseData.points[hoveredFeatureIndex]?.sideImage?.url || whyChooseData.points[hoveredFeatureIndex]?.icon?.url"
+                :src="whyChooseData.points[hoveredFeatureIndex]?.sideImage?.url || whyChooseData.points[hoveredFeatureIndex]?.icon?.url || fallbackImage"
+                :alt="whyChooseData.points[hoveredFeatureIndex]?.sideImage?.alt || whyChooseData.points[hoveredFeatureIndex]?.title || 'Feature Visual'"
+              />
+            </transition>
+          </div>
+
+          <!-- Garis Pemisah -->
+          <div class="vertical-divider"></div>
+
+          <!-- Fitur -->
+          <div class="features">
+            <FeatureItem
+              v-for="(point, index) in whyChooseData.points"
+              :key="point.title + index"
+              :emoji="point.icon?.url ? '' : '📡'"
+              :iconUrl="point.icon?.url"
+              :title="point.title"
+              :description="point.description"
+              :active="index === activeFeatureIndex"
+              @mouseenter="isDesktop && setActive(index)"
+              @click="!isDesktop && setActive(index)"
             />
-          </transition>
+          </div>
         </div>
-
-        <!-- Garis Pemisah -->
-        <div class="vertical-divider"></div>
-
-        <!-- Fitur -->
-        <div class="features">
+        <div class="mobile-carousel" v-else-if="whyChooseData.points.length > 0">
+          <div class="visual">
+            <img
+              :src="whyChooseData.points[activeFeatureIndex]?.sideImage?.url || whyChooseData.points[activeFeatureIndex]?.icon?.url || fallbackImage"
+              :alt="whyChooseData.points[activeFeatureIndex]?.sideImage?.alt || whyChooseData.points[activeFeatureIndex]?.title || 'Feature Visual'"
+            />
+          </div>
           <FeatureItem
-            v-for="(point, index) in whyChooseData.points"
-            :key="point.title + index"
-            :emoji="point.icon?.url ? '' : '📡'"
-            :iconUrl="point.icon?.url"
-            :title="point.title"
-            :description="point.description"
-            :active="index === activeFeatureIndex"
-            @mouseenter="isDesktop && setActive(index)"
-            @click="!isDesktop && setActive(index)"
+            :emoji="whyChooseData.points[activeFeatureIndex]?.icon?.url ? '' : '📡'"
+            :iconUrl="whyChooseData.points[activeFeatureIndex]?.icon?.url"
+            :title="whyChooseData.points[activeFeatureIndex]?.title"
+            :description="whyChooseData.points[activeFeatureIndex]?.description"
+            :active="true"
           />
+          <div class="carousel-nav">
+            <button @click="prevFeature">←</button>
+            <span>{{ activeFeatureIndex + 1 }} / {{ whyChooseData.points.length }}</span>
+            <button @click="nextFeature">→</button>
+          </div>
         </div>
+        <!-- Empty State -->
+        <div v-else class="empty-state">
+          <p>No features available at the moment.</p>
         </div>
-        
-        <div class="mobile-carousel" v-else-if="features.length > 0">
-        <div class="visual">
-          <img
-            :src="whyChooseData.points[activeFeatureIndex]?.sideImage?.url || whyChooseData.points[activeFeatureIndex]?.icon?.url || fallbackImage"
-            :alt="whyChooseData.points[activeFeatureIndex]?.sideImage?.alt || whyChooseData.points[activeFeatureIndex]?.title || 'Feature Visual'"
-          />
-        </div>
-        <FeatureItem
-          :emoji="whyChooseData.points[activeFeatureIndex]?.icon?.url ? '' : '📡'"
-          :iconUrl="whyChooseData.points[activeFeatureIndex]?.icon?.url"
-          :title="whyChooseData.points[activeFeatureIndex]?.title"
-          :description="whyChooseData.points[activeFeatureIndex]?.description"
-          :active="true"
-        />
-        <div class="carousel-nav">
-          <button @click="prevFeature">←</button>
-          <span>{{ activeFeatureIndex + 1 }} / {{ whyChooseData.points.length }}</span>
-          <button @click="nextFeature">→</button>
-        </div>
-        </div>
-      </div>
-      
-      <!-- Empty State -->
-      <div v-else class="empty-state">
-        <p>No features available at the moment.</p>
       </div>
     </div>
   </section>
@@ -115,9 +114,7 @@ function prevFeature() {
   activeFeatureIndex.value = activeFeatureIndex.value <= 0 ? maxIndex : activeFeatureIndex.value - 1
 }
 
-onMounted(() => {
-  loadWhyChooseData()
-})
+// Removed redundant onMounted block that called undefined loadWhyChooseData()
 </script>
 
 <style scoped>

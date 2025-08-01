@@ -60,11 +60,11 @@ const selectPlatform = (platform: string) => {
 const mockupImage = computed(() => {
   switch (selectedPlatform.value) {
     case 'Android':
-      return new URL('@/assets/someah-logo.svg', import.meta.url).href
+      return new URL('@/assets/Android_robot.svg.png', import.meta.url).href
     case 'IOS':
-      return new URL('@/assets/wavesOpacity.svg', import.meta.url).href
+      return new URL('@/assets/iOS.jpg', import.meta.url).href
     default:
-      return new URL('@/assets/blob-haikei.svg', import.meta.url).href
+      return new URL('@/assets/dashboard.png', import.meta.url).href
   }
 })
 

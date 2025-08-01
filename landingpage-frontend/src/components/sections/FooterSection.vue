@@ -85,9 +85,9 @@ import instagramIcon from '@/assets/instagram.png'
 import linkedinIcon from '@/assets/linkedin.png'
 
 const icons = [
-  { src: facebookIcon, alt: "Facebook", link: "#" },
-  { src: instagramIcon, alt: "Instagram", link: "#" },
-  { src: linkedinIcon, alt: "LinkedIn", link: "#" },
+  { src: facebookIcon, alt: "Facebook", link: "https://web.facebook.com/someah.id?_rdc=1&_rdr#" },
+  { src: instagramIcon, alt: "Instagram", link: "https://www.instagram.com/someahkreatif/" },
+  { src: linkedinIcon, alt: "LinkedIn", link: "https://www.linkedin.com/company/somearch-nusantara/" },
 ]
 
 // Download links - can be easily configured
