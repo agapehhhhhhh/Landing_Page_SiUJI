@@ -39,22 +39,34 @@
           </div>
         </div>
         <div class="mobile-carousel" v-else-if="whyChooseData.points.length > 0">
-          <div class="visual">
-            <img
-              :src="whyChooseData.points[activeFeatureIndex]?.sideImage?.url || whyChooseData.points[activeFeatureIndex]?.icon?.url || fallbackImage"
-              :alt="whyChooseData.points[activeFeatureIndex]?.sideImage?.alt || whyChooseData.points[activeFeatureIndex]?.title || 'Feature Visual'"
+          <transition name="mobile-slide" mode="out-in">
+            <div class="visual" :key="activeFeatureIndex">
+              <img
+                :src="whyChooseData.points[activeFeatureIndex]?.sideImage?.url || whyChooseData.points[activeFeatureIndex]?.icon?.url || fallbackImage"
+                :alt="whyChooseData.points[activeFeatureIndex]?.sideImage?.alt || whyChooseData.points[activeFeatureIndex]?.title || 'Feature Visual'"
+              />
+            </div>
+          </transition>
+          <transition name="mobile-slide" mode="out-in">
+            <FeatureItem
+              :key="activeFeatureIndex"
+              :emoji="whyChooseData.points[activeFeatureIndex]?.icon?.url ? '' : '📡'"
+              :iconUrl="whyChooseData.points[activeFeatureIndex]?.icon?.url"
+              :title="whyChooseData.points[activeFeatureIndex]?.title"
+              :description="whyChooseData.points[activeFeatureIndex]?.description"
+              :active="true"
             />
-          </div>
-          <FeatureItem
-            :emoji="whyChooseData.points[activeFeatureIndex]?.icon?.url ? '' : '📡'"
-            :iconUrl="whyChooseData.points[activeFeatureIndex]?.icon?.url"
-            :title="whyChooseData.points[activeFeatureIndex]?.title"
-            :description="whyChooseData.points[activeFeatureIndex]?.description"
-            :active="true"
-          />
+          </transition>
           <div class="carousel-nav">
             <button @click="prevFeature">←</button>
-            <span>{{ activeFeatureIndex + 1 }} / {{ whyChooseData.points.length }}</span>
+            <div class="nav-dots">
+              <span
+                v-for="(_, index) in whyChooseData.points"
+                :key="index"
+                :class="['nav-dot', { active: index === activeFeatureIndex }]"
+                @click="setActive(index)"
+              ></span>
+            </div>
             <button @click="nextFeature">→</button>
           </div>
         </div>
@@ -200,6 +212,20 @@ function prevFeature() {
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
+
+/* Mobile slide animation */
+.mobile-slide-enter-active, .mobile-slide-leave-active {
+  transition: all 0.4s ease;
+}
+.mobile-slide-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.mobile-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
 @media (min-width: 641px) {
   .mobile-carousel { display: none; }
 }
@@ -290,6 +316,32 @@ function prevFeature() {
   }
   .carousel-nav button:active {
     background: #319e8c;
+  }
+  .nav-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 48px;
+    justify-content: center;
+  }
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: #c2c2c2;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+    transform: scale(1);
+  }
+  .nav-dot:hover {
+    transform: scale(1.1);
+  }
+  .nav-dot.active {
+    background: #4CC5BD;
+    width: 10px;
+    height: 10px;
+    transform: scale(1.2);
   }
   .carousel-nav span {
     font-size: 1rem;

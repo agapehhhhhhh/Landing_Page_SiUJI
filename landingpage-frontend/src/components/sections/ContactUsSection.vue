@@ -104,7 +104,6 @@ function handleSubmit() {
   font-weight: bold;
   margin-bottom: clamp(15px, 2vw, 25px);
   margin-top: 0;
-  -webkit-text-stroke: 1px #000000;
 }
 
 .section-description {

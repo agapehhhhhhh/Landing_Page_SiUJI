@@ -325,4 +325,43 @@ const handleDownloadClick = (url: string) => {
     max-width: 1200px;
   }
 }
+
+@media (max-width: 767px) {
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(15px, 4vw, 30px);
+    justify-items: center;
+    align-items: start;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: clamp(15px, 3vh, 25px);
+  }
+  
+  .footer-column {
+    text-align: center;
+    white-space: normal;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 80px;
+  }
+  
+  .footer-column h4 {
+    font-size: clamp(13px, 3vw, 16px);
+    margin-bottom: clamp(4px, 1vh, 8px);
+    width: 100%;
+    text-align: center;
+  }
+  
+  .footer-column p {
+    font-size: clamp(11px, 2.5vw, 13px);
+    margin: clamp(1px, 0.3vh, 3px) 0;
+    width: 100%;
+    text-align: center;
+  }
+}
 </style>

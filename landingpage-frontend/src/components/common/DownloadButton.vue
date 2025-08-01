@@ -75,6 +75,7 @@ const handleClick = () => {
   text-align: center;
   transition: all 0.2s ease;
   font-family: 'Inter';
+  border: 1px solid #555; /* Light gray border */
 }
 
 .download-btn:hover {

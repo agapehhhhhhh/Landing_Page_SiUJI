@@ -652,10 +652,10 @@ function moveImageToCenter(clickedIndex: number) {
   }
   
   .card {
-    width: 90%; /* Lebarkan sedikit dari 100% */
-    max-width: 340px;
-    margin: 0 auto; /* Ini yang membuat card berada di tengah */
-    padding: 24px;
+    width: 100%;
+    max-width: clamp(350px, 100vw, 1200px); /* Samakan dengan .section-title */
+    margin: 0 auto;
+    padding: 0 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     order: 1;
     display: flex;

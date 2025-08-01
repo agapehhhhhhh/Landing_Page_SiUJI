@@ -32,14 +32,12 @@
         <p class="info-text">
           {{ bannerText }}
         </p>
-        <div class="download-button">
-          <DownloadButton 
+        <DownloadButton 
             :type="buttonType"
             :url="bannerButtonLink"
             :label="bannerButtonLabel"
             @click="handleButtonClick"
           />
-        </div>
       </div>
     </div>
   </section>
@@ -197,10 +195,6 @@ const handleButtonClick = (url: string) => {
   font-size: clamp(0.9rem, 0.8vw + 0.4rem, 1.1rem);
   line-height: 1.5;
   flex: 1 1 300px;
-}
-.download-button {
-  border-radius: 10px;
-  border: 1px solid #555555;
 }
 
 /* Transition Fade */

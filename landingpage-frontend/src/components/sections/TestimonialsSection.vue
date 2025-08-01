@@ -24,8 +24,14 @@
         :loop="reviews.length > 3"
         :autoplay="reviews.length > 1 ? { delay: 3000, disableOnInteraction: false } : false"
         :breakpoints="{
-          0: { slidesPerView: 1 },
-          601: { slidesPerView: reviews.length === 2 ? 2 : Math.min(3, reviews.length) }
+          0: { 
+            slidesPerView: 1, 
+            spaceBetween: 20 
+          },
+          601: { 
+            slidesPerView: reviews.length === 2 ? 2 : Math.min(3, reviews.length),
+            spaceBetween: 0
+          }
         }"
         @slideChange="onSlideChange"
         ref="swiperRef"
@@ -59,8 +65,8 @@
       </div>
     </div>
 
-    <!-- Custom Navigation -->
-    <div v-if="!loading && reviews.length > 3" class="testimonial-nav">
+    <!-- Custom Navigation for Desktop -->
+    <div v-if="!loading && reviews.length > 3" class="testimonial-nav desktop-nav">
       <button @click="slidePrev" class="nav-btn">
         Prev
       </button>
@@ -76,6 +82,19 @@
       <button @click="slideNext" class="nav-btn">
         Next
       </button>
+    </div>
+
+    <!-- Custom Navigation for Mobile -->
+    <div v-if="!loading && reviews.length > 1" class="testimonial-nav mobile-nav">
+      <div class="nav-progress">
+        <span
+          v-for="(_, idx) in reviews"
+          :key="idx"
+          :class="['nav-dot', { active: idx === currentIndex }]"
+          @click="goToSlide(idx)"
+          style="cursor:pointer"
+        ></span>
+      </div>
     </div>
   </section>
 </template>
@@ -358,6 +377,16 @@ export default {
   gap: 16px;
   font-family: 'Inter';
 }
+
+/* Desktop navigation - default visible */
+.desktop-nav {
+  display: flex;
+}
+
+/* Mobile navigation - hidden by default */
+.mobile-nav {
+  display: none;
+}
 .nav-btn {
   background: #fff;
   color: #222;
@@ -418,7 +447,7 @@ export default {
     overflow: hidden;
   }
   .swiper-container {
-    padding: 0;
+    padding: 0 20px;
     max-width: 100vw;
     overflow: visible;
   }
@@ -438,19 +467,35 @@ export default {
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border-radius: 10px;
     width: 100%;
-    max-width: 340px;
+    max-width: 320px;
     min-height: 0;
+    transition: all 0.3s ease;
   }
   .swiper-slide-next .testimonial-card {
     transform: none !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   }
+  /* Mobile slide animation */
+  .swiper-slide {
+    opacity: 0.85;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+  }
+  .swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+  }
   .swiper {
-    padding: 0 !important;
+    padding: 20px 0 !important;
     overflow: visible;
   }
-  .testimonial-nav {
-    flex-direction: row; /* Tetap horizontal di mobile */
+  /* Hide desktop navigation, show mobile navigation */
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: flex !important;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 10px;
