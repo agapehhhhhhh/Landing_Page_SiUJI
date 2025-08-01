@@ -332,8 +332,9 @@ export default {
   border-radius: 12px;
   border: 1px solid #555;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: clamp(300px, 28vw, 400px); /* sedikit diperbesar dari 24vw ke 28vw */
-  padding: clamp(24px, 2.5vw, 32px);
+  width: clamp(260px, 26vw, 360px);
+  max-width: 95vw;
+  padding: clamp(18px, 2vw, 28px);
   margin: 0 auto;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -343,6 +344,14 @@ export default {
   height: 100%;
   text-align: left;
   align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .testimonial-card {
+    width: clamp(200px, 60vw, 320px);
+    max-width: 98vw;
+    padding: clamp(12px, 2vw, 20px);
+  }
 }
 
 .testimonial-card.center {

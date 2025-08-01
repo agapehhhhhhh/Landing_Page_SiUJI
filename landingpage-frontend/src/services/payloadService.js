@@ -912,3 +912,20 @@ export const fetchTestimonials = async () => {
     ];
   }
 };
+
+export const sendContactMessage = async (formData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/contact-messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.errors ? res.errors[0].message : 'Failed to send message');
+    }
+    return true;
+  } catch (err) {
+    throw err;
+  }
+};
