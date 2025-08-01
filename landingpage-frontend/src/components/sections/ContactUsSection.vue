@@ -11,17 +11,65 @@
         </p>
         
         <form class="contact-form" @submit.prevent="handleSubmit">
-          <input type="text" v-model="form.name" placeholder="What is your name (or institution)? *" required />
-          <input type="tel" v-model="form.phone" placeholder="What is your phone number? *" required />
-          <input type="text" v-model="form.email" placeholder="Email address *" required />
-          <textarea v-model="form.message" placeholder="Your message... *" required></textarea>
-          <button type="submit" class="send-button">Send Message &gt;</button>
+          <!-- Success Message -->
+          <div v-if="formState.isSuccess" class="success-message">
+            <p>{{ formState.successMessage }}</p>
+          </div>
+
+          <!-- Error Message -->
+          <div v-if="formState.isError" class="error-message">
+            <p>{{ formState.errorMessage }}</p>
+          </div>
+
+          <input 
+            type="text" 
+            v-model="form.name" 
+            placeholder="What is your name (or institution)? *" 
+            required 
+            :disabled="formState.isSubmitting"
+          />
+          <input 
+            type="tel" 
+            v-model="form.phone" 
+            placeholder="What is your phone number? *" 
+            required 
+            :disabled="formState.isSubmitting"
+          />
+          <input 
+            type="email" 
+            v-model="form.email" 
+            placeholder="Email address *" 
+            required 
+            :disabled="formState.isSubmitting"
+          />
+          <textarea 
+            v-model="form.message" 
+            placeholder="Your message... *" 
+            required
+            :disabled="formState.isSubmitting"
+          ></textarea>
+          <button 
+            type="submit" 
+            class="send-button" 
+            :disabled="formState.isSubmitting"
+          >
+            <span v-if="formState.isSubmitting">Sending...</span>
+            <span v-else>Send Message &gt;</span>
+          </button>
         </form>
       </div>
 
       <!-- Right Column: Map -->
       <div class="map-column">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7744774219545!2d107.61524227414148!3d-6.917543767703492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ccfaa20b87%3A0x737853f7eedf64a9!2sSomeah%20Kreatif%20Nusantara!5e0!3m2!1sid!2sid!4v1753412975191!5m2!1sid!2sid" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.7744774219545!2d107.61524227414148!3d-6.917543767703492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ccfaa20b87%3A0x737853f7eedf64a9!2sSomeah%20Kreatif%20Nusantara!5e0!3m2!1sid!2sid!4v1753412975191!5m2!1sid!2sid" 
+          width="800" 
+          height="600" 
+          style="border:0;" 
+          :allowfullscreen="true" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
       </div>
     </div>
   </section>
@@ -29,18 +77,89 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { submitContactForm } from '@/services/payloadService'
 
 const form = ref({
   name: '',
   phone: '',
   email: '',
-  subject: '',
   message: '',
 })
 
-function handleSubmit() {
-  console.log('Form Submitted:', form.value)
-  // TODO: Integrasi ke Payload CMS, Email API, dsb.
+const formState = ref({
+  isSubmitting: false,
+  isSuccess: false,
+  isError: false,
+  successMessage: '',
+  errorMessage: ''
+})
+
+const resetFormState = () => {
+  formState.value.isSuccess = false
+  formState.value.isError = false
+  formState.value.successMessage = ''
+  formState.value.errorMessage = ''
+}
+
+const resetForm = () => {
+  form.value = {
+    name: '',
+    phone: '',
+    email: '',
+    message: '',
+  }
+}
+
+async function handleSubmit() {
+  // Reset previous states
+  resetFormState()
+  
+  // Validate form
+  if (!form.value.name.trim() || !form.value.phone.trim() || !form.value.email.trim() || !form.value.message.trim()) {
+    formState.value.isError = true
+    formState.value.errorMessage = 'Semua field harus diisi'
+    return
+  }
+
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(form.value.email)) {
+    formState.value.isError = true
+    formState.value.errorMessage = 'Format email tidak valid'
+    return
+  }
+
+  formState.value.isSubmitting = true
+
+  try {
+    const result = await submitContactForm({
+      name: form.value.name.trim(),
+      phone: form.value.phone.trim(),
+      email: form.value.email.trim(),
+      message: form.value.message.trim(),
+      source: 'website'
+    })
+
+    if (result.success) {
+      formState.value.isSuccess = true
+      formState.value.successMessage = result.message || 'Pesan berhasil dikirim! Kami akan segera menghubungi Anda.'
+      resetForm()
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        formState.value.isSuccess = false
+      }, 5000)
+    } else {
+      formState.value.isError = true
+      formState.value.errorMessage = result.error || 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.'
+    }
+  } catch (error) {
+    console.error('Contact form submission error:', error)
+    formState.value.isError = true
+    formState.value.errorMessage = 'Terjadi kesalahan jaringan. Silakan periksa koneksi internet Anda.'
+  } finally {
+    formState.value.isSubmitting = false
+  }
 }
 </script>
 
@@ -163,6 +282,49 @@ function handleSubmit() {
 
 .send-button:hover {
   background-color: #f0f0f0;
+}
+
+.send-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.send-button:disabled:hover {
+  background-color: white;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.success-message p {
+  margin: 0;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.error-message p {
+  margin: 0;
+}
+
+.contact-form input:disabled,
+.contact-form textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 700px) {

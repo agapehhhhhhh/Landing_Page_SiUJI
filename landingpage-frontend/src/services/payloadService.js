@@ -1,7 +1,16 @@
 // src/services/payloadService.js
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api";
+// Environment Configuration
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || "http://localhost:5173";
+
+// Helper function to convert relative URL to absolute URL
+const toAbsoluteUrl = (url) => {
+  if (!url) return null;
+  return url.startsWith("http") ? url : `${SERVER_URL}${url}`;
+};
 
 // Helper function to extract plain text from Payload's rich text format
 const extractPlainText = (richTextContent) => {
@@ -34,7 +43,7 @@ function toAbsUrl(maybe) {
   if (!maybe || typeof maybe === "string") return null;
   const url = maybe.url;
   if (!url) return null;
-  return url.startsWith("http") ? url : `${ORIGIN}${url}`;
+  return url.startsWith("http") ? url : `${SERVER_URL}${url}`;
 }
 
 export const fetchLandingPage = async () => {
@@ -59,7 +68,7 @@ export const fetchLandingPage = async () => {
               orn.image && orn.image.url
                 ? (orn.image.url.startsWith("http")
                     ? orn.image.url
-                    : `${API_BASE_URL.replace("/api", "")}${orn.image.url}`)
+                    : `${SERVER_URL}${orn.image.url}`)
                 : null,
           }))
         : [];
@@ -71,7 +80,7 @@ export const fetchLandingPage = async () => {
               ...hero.heroImage,
               url: hero.heroImage.url.startsWith("http")
                 ? hero.heroImage.url
-                : `${API_BASE_URL.replace("/api", "")}${hero.heroImage.url}`,
+                : `${SERVER_URL}${hero.heroImage.url}`,
             }
           : { url: "/assets/ilustrasi-hero.png" },
         ornaments,
@@ -88,7 +97,7 @@ export const fetchLandingPage = async () => {
       processedPortfolio = portfolio.logos.map((logoItem) => ({
         url: logoItem.logo?.url.startsWith("http")
           ? logoItem.logo.url
-          : `${API_BASE_URL.replace("/api", "")}${logoItem.logo?.url}`,
+          : `${SERVER_URL}${logoItem.logo?.url}`,
         name: logoItem.name,
         website: logoItem.url || null,
       }));
@@ -151,7 +160,7 @@ export const fetchPortfolioData = async () => {
       url: logoItem.logo?.url
         ? logoItem.logo.url.startsWith("http")
           ? logoItem.logo.url
-          : `${API_BASE_URL.replace("/api", "")}${logoItem.logo.url}`
+          : `${SERVER_URL}${logoItem.logo.url}`
         : "/assets/default-logo.png",
       name: logoItem.name || "Partner Logo",
       website: logoItem.url || null,
@@ -355,7 +364,7 @@ export const fetchPricingData = async () => {
           ? {
               url: plan.icon.url.startsWith("http")
                 ? plan.icon.url
-                : `${API_BASE_URL.replace("/api", "")}${plan.icon.url}`,
+                : `${SERVER_URL}${plan.icon.url}`,
               alt: plan.icon.alt || plan.name,
             }
           : null,
@@ -473,7 +482,7 @@ export const fetchTestimonialsData = async () => {
           ? {
               url: testimonial.avatar.url.startsWith("http")
                 ? testimonial.avatar.url
-                : `${API_BASE_URL.replace("/api", "")}${
+                : `${SERVER_URL}${
                     testimonial.avatar.url
                   }`,
               alt: testimonial.avatar.alt || testimonial.name,
@@ -565,7 +574,7 @@ export const fetchFeaturesData = async () => {
           ? {
               url: feature.image.url.startsWith("http")
                 ? feature.image.url
-                : `${API_BASE_URL.replace("/api", "")}${feature.image.url}`,
+                : `${SERVER_URL}${feature.image.url}`,
               alt: feature.image.alt || feature.title,
             }
           : null,
@@ -910,5 +919,37 @@ export const fetchTestimonials = async () => {
         order: 4
       }
     ];
+  }
+};
+
+// Function to submit contact form
+export const submitContactForm = async (formData) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/contact-messages`, {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      message: formData.message,
+      source: formData.source || 'website',
+      userAgent: navigator.userAgent
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return {
+      success: true,
+      data: response.data,
+      message: 'Pesan berhasil dikirim! Kami akan segera menghubungi Anda.'
+    };
+  } catch (error) {
+    console.error("[submitContactForm] Error:", error);
+    
+    return {
+      success: false,
+      error: error.response?.data?.message || 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.',
+      details: error.response?.data || null
+    };
   }
 };

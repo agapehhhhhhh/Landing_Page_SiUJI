@@ -173,8 +173,8 @@ function prevFeature() {
 .visual img {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9; /* 💡 atur rasio tetap */
-  object-fit: contain;
+  aspect-ratio: 16 / 9; /* Paksa rasio 16:9 untuk side image */
+  object-fit: cover; /* Crop jika perlu agar tetap landscape */
   max-width: clamp(700px, 85vw, 900px);
   border-radius: 16px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
