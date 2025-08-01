@@ -35,10 +35,10 @@
                 @mouseleave="resumeSlide"
               >
                 <div
-                  v-for="(img, index) in rotatingImages"
-                  v-if="rotatingImages.length > 0"
-                  :key="img"
+                  v-for="(img, index) in visibleImages"
+                  :key="`${img}-${index}`"
                   class="stack-image"
+                  :class="`position-${index}`"
                   :style="{ zIndex: getZIndex(index) }"
                   @mouseover="hoveredIndex = index"
                   @mouseleave="hoveredIndex = -1"
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { fetchAboutSectionData } from '@/services/payloadService'
 
 interface Slide {
@@ -139,6 +139,11 @@ const hoveredIndex = ref(-1)
 
 // Gambar yang akan berputar otomatis
 const rotatingImages = ref<string[]>([])
+
+// Computed property untuk hanya mengambil 3 gambar pertama dengan key yang unik
+const visibleImages = computed(() => {
+  return rotatingImages.value.slice(0, 3)
+})
 
 // Load data from API
 async function loadAboutData() {
@@ -456,27 +461,28 @@ function moveImageToCenter(clickedIndex: number) {
 /* Image Stack dengan efek layering sederhana */
 .stack-image {
   position: absolute;
-  transition: transform 0.35s ease, z-index 0.3s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
-/* Semua gambar dengan style yang sama, hanya beda posisi dan z-index */
-.stack-image:first-child {
+/* Position-based styling untuk animasi yang smooth */
+.stack-image.position-0 {
   z-index: 1;
   left: -190px;
   transform: scale(0.8);
   cursor: pointer;
 }
 
-.stack-image:nth-child(2) {
+.stack-image.position-1 {
   z-index: 3;
+  left: 0;
   transform: scale(1.1);
   cursor: default;
 }
 
-.stack-image:nth-child(3) {
+.stack-image.position-2 {
   z-index: 2;
   right: -190px;
   transform: scale(0.8);
@@ -484,7 +490,7 @@ function moveImageToCenter(clickedIndex: number) {
 }
 
 /* Hover effects - hanya untuk gambar tengah */
-.stack-image:nth-child(2):hover {
+.stack-image.position-1:hover {
   transform: scale(1.25);
   z-index: 10;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
@@ -513,8 +519,8 @@ function moveImageToCenter(clickedIndex: number) {
   background: #fff;
   border: 2px solid #19d3c5;
   border-radius: 10px;
-  width: 90px;
-  height: 38px;
+  width: 60px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -582,14 +588,40 @@ function moveImageToCenter(clickedIndex: number) {
   opacity: 0;
   transform: translateY(20px);
 }
-.fade-image-enter-active,
-.fade-image-leave-active {
-  transition: all 0.4s ease;
+
+/* Animasi untuk image stack rotation */
+.fade-image-enter-active {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.fade-image-enter-from,
+
+.fade-image-leave-active {
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-image-enter-from {
+  opacity: 0;
+  transform: translateX(100px) scale(0.8);
+}
+
 .fade-image-leave-to {
   opacity: 0;
-  transform: translateX(15px);
+}
+
+.fade-image-move {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Pastikan gambar yang bergeser posisi tidak fade */
+.stack-image.position-0,
+.stack-image.position-1,
+.stack-image.position-2 {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Override untuk gambar yang moving dari satu posisi ke posisi lain */
+.fade-image-move.position-1,
+.fade-image-move.position-2 {
+  opacity: 1 !important;
 }
 
 /* === Dekorasi === */
@@ -652,10 +684,10 @@ function moveImageToCenter(clickedIndex: number) {
   }
   
   .card {
-    width: 90%; /* Lebarkan sedikit dari 100% */
-    max-width: 340px;
-    margin: 0 auto; /* Ini yang membuat card berada di tengah */
-    padding: 24px;
+    width: 100%;
+    max-width: clamp(350px, 100vw, 1200px); /* Samakan dengan .section-title */
+    margin: 0 auto;
+    padding: 0 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     order: 1;
     display: flex;
