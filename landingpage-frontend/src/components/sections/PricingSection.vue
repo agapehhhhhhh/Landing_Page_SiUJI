@@ -59,7 +59,7 @@
             </p>
 
             <div class="price-container">
-              <span class="currency">$</span>
+              <span class="currency">Rp</span>
               <span class="price">{{ getCurrentPrice(plan) || 0 }}</span>
             </div>
 
@@ -349,7 +349,15 @@ export default {
 
       const priceType =
         this.billingType === "yearly" ? "yearlyPrice" : "monthlyPrice";
-      return this.getPlanProperty(plan, priceType, 0);
+      const price = this.getPlanProperty(plan, priceType, 0);
+
+      // Format price for Rupiah - convert to more readable format
+      if (price >= 1000000) {
+        return Math.floor(price / 1000000) + "jt"; // Convert to millions
+      } else if (price >= 1000) {
+        return Math.floor(price / 1000) + "rb"; // Convert to thousands
+      }
+      return price;
     },
 
     getFeatures(plan) {
@@ -673,7 +681,7 @@ export default {
 }
 
 .price {
-  font-size: 64px;
+  font-size: 52px;
   font-weight: 700;
   line-height: 1;
   word-break: break-all;
@@ -682,11 +690,11 @@ export default {
 
 /* Responsive font size based on content length */
 .price[data-length="long"] {
-  font-size: 48px;
+  font-size: 42px;
 }
 
 .price[data-length="very-long"] {
-  font-size: 36px;
+  font-size: 32px;
 }
 
 .period {
@@ -826,7 +834,7 @@ export default {
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 12px rgba(76, 197, 189, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);    
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateY(0);
 }
 
@@ -1048,15 +1056,15 @@ export default {
   }
 
   .price {
-    font-size: 48px;
+    font-size: 38px;
   }
 
   .price[data-length="long"] {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .price[data-length="very-long"] {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .period {
@@ -1144,7 +1152,7 @@ export default {
   }
 
   .price {
-    font-size: 42px;
+    font-size: 32px;
   }
 
   .plan-name {
