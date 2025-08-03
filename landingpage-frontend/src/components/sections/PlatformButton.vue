@@ -36,7 +36,7 @@ defineProps<{
   outline: 3px solid #1abc9c;
 }
 .platform-button.active {
-  background-color: #1abc9c; /* tosca hijau */
+  background-color: #4CC5BD; /* tosca hijau */
   color: #fff;
   border-color: #555555;
 }

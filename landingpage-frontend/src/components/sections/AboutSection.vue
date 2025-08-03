@@ -516,54 +516,73 @@ function moveImageToCenter(clickedIndex: number) {
 }
 
 .arrow {
-  background: #fff;
-  border: 1px solid #555555;
+  background: #ffffff;
+  color: #4cc5bd;
+  border: 1px solid #000000;
   border-radius: 10px;
-  width: 64px;
-  height: 48px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(76, 197, 189, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);    
+  transform: translateY(0);
+  width: 64px;
+  height: 48px;
   justify-content: center;
   font-size: 1rem;
-  color: #7bbfc3;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  box-shadow: none;
-  padding: 0;
 }
 
-.arrow span,
-.arrow .material-icons {
-  font-size: 1rem;
-  color: #7bbfc3;
+.arrow:hover:not(:disabled) {
+  background: #4cc5bd;
+  color: white;
+  border-color: #000000;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 197, 189, 0.25);
 }
 
-.arrow:hover {
-  background: #e6faf8;
-  color: #19d3c5;
-  border-color: #19d3c5;
+.arrow:active:not(:disabled) {
+  transform: translateY(-1px);
+  transition: all 0.1s ease;
+}
+
+.arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(76, 197, 189, 0.1);
 }
 
 .carousel-dots {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .carousel-dots span {
-  width: 8px;
   height: 8px;
-  background: #d2f3f1;
-  border-radius: 4px;
+  width: 8px;
+  border-radius: 50%;
+  background: #cbd5e0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  transform: scale(1);
   display: inline-block;
-  transition: background 0.2s, width 0.2s;
+}
+
+.carousel-dots span:hover {
+  background: #a0aec0;
+  transform: scale(1.1);
 }
 
 .carousel-dots span.active {
-  background: #ffffff;
   width: 24px;
+  height: 8px;
   border-radius: 4px;
+  background: #ffffff;
+  transform: scale(1);
 }
 
 /* === Animasi === */
