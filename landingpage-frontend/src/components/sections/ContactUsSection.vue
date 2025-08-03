@@ -100,7 +100,7 @@ async function handleSubmit() {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow: visible;
   height: 100%;
 }
 
@@ -208,13 +208,17 @@ async function handleSubmit() {
     align-items: stretch;
     width: 100%;
     height: auto;
-    min-height: 85vh;
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
   }
   
   .form-column,
   .map-column {
     min-width: 0;
     width: 100%;
+    max-width: 100%;
+    flex: none;
   }
   
   .map-column iframe {
@@ -256,6 +260,39 @@ async function handleSubmit() {
   
   .contact-form {
     justify-content: flex-start;
+    min-height: auto;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 5px;
+    min-height: 100vh;
+  }
+  
+  .contact-container {
+    padding: clamp(12px, 4vw, 20px);
+    gap: clamp(12px, 3vw, 20px);
+    margin: 0;
+    border-radius: 6px;
+  }
+  
+  .section-title {
+    font-size: clamp(1.2rem, 6vw, 1.6rem);
+    margin-bottom: clamp(8px, 2vw, 15px);
+  }
+  
+  .section-description {
+    font-size: clamp(0.8rem, 4vw, 0.95rem);
+    margin-bottom: clamp(12px, 3vw, 18px);
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    font-size: clamp(0.8rem, 4vw, 0.95rem);
+    padding: clamp(6px, 3vw, 10px);
+    margin-bottom: clamp(8px, 2vw, 12px);
   }
 }
 </style>

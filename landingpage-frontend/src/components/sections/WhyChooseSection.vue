@@ -59,13 +59,18 @@
           </transition>
           <div class="carousel-nav">
             <button @click="prevFeature">←</button>
-            <div class="nav-dots">
+            <!-- Dots untuk ≤ 4 fitur -->
+            <div v-if="whyChooseData.points.length <= 4" class="nav-dots">
               <span
                 v-for="(_, index) in whyChooseData.points"
                 :key="index"
                 :class="['nav-dot', { active: index === activeFeatureIndex }]"
                 @click="setActive(index)"
               ></span>
+            </div>
+            <!-- Counter untuk > 4 fitur -->
+            <div v-else class="nav-counter">
+              <span>{{ activeFeatureIndex + 1 }}/{{ whyChooseData.points.length }}</span>
             </div>
             <button @click="nextFeature">→</button>
           </div>
@@ -323,6 +328,19 @@ function prevFeature() {
     gap: 8px;
     min-width: 48px;
     justify-content: center;
+  }
+  .nav-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    padding: 0 8px;
+  }
+  .nav-counter span {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 600;
+    text-align: center;
   }
   .nav-dot {
     width: 10px;

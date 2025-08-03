@@ -229,7 +229,7 @@ const handleButtonClick = (url: string) => {
   }
   .info-banner {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 0.7rem;
     padding: 1rem 0.7rem;
     margin-top: 1.2rem;
@@ -243,6 +243,7 @@ const handleButtonClick = (url: string) => {
     font-size: 0.9rem;
     flex: unset;
     margin-bottom: 0.5rem;
+    text-align: center;
   }
 }
 </style>

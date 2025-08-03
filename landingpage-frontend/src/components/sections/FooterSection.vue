@@ -267,13 +267,13 @@ const handleDownloadClick = (url: string) => {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 40px;
+  gap: clamp(8px, 1vh, 12px);
 }
-.copyright {
-  font-size: clamp(11px, 0.9vw, 14px);
-  color: #9ca3af;
-  margin: 0;
-  text-align: right;
+
+.footer-buttons {
+  display: flex;
+  gap: clamp(8px, 1vh, 12px);
+  align-items: center;
 }
 
 .footer-terms {
@@ -297,10 +297,11 @@ const handleDownloadClick = (url: string) => {
   color: #ffffff;
 }
 
-.footer-buttons {
-  display: flex;
-  gap: clamp(8px, 1vh, 12px);
-  align-items: center;
+.copyright {
+  font-size: clamp(11px, 0.9vw, 14px);
+  color: #9ca3af;
+  margin: 0;
+  text-align: right;
 }
 
 .footer-separator {
@@ -326,47 +327,97 @@ const handleDownloadClick = (url: string) => {
 
   .footer-left {
     max-width: 100%;
+    text-align: left;
   }
 
   .footer-left-content {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: clamp(15px, 2vh, 20px);
   }
 
   .footer-center {
     align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .footer-menu-group {
-    flex-direction: column;
-    gap: clamp(20px, 3vh, 30px);
+    flex-direction: row;
+    gap: clamp(40px, 8vw, 80px);
     text-align: center;
+    justify-content: center;
+    width: 100%;
   }
 
   .footer-column {
     align-items: center;
+    flex: 0 0 auto;
+    width: auto;
+    text-align: center;
   }
 
   .footer-bottom-content {
     flex-direction: column;
     gap: clamp(15px, 3vw, 20px);
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-bottom: clamp(30px, 5vw, 40px);
+  }
+
+  .footer-buttons-copyright {
+    order: 1;
+    align-items: center;
+    gap: clamp(8px, 2vw, 12px);
+    justify-content: center;
+  }
+
+  .footer-buttons-copyright .footer-buttons {
+    order: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: clamp(8px, 2vw, 12px);
+  }
+
+  .footer-buttons-copyright .copyright {
+    order: 3;
+    text-align: center;
+    margin-top: clamp(15px, 3vw, 20px);
+    background: transparent;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 100%;
   }
 
   .footer-terms {
-    flex-direction: column;
-    gap: clamp(10px, 2vw, 15px);
+    order: 2;
+    flex-direction: row;
+    gap: clamp(20px, 4vw, 30px);
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    display: flex;
   }
 
-  .footer-buttons {
-    flex-direction: row;
-    justify-content: center;
-    gap: clamp(10px, 2vw, 15px);
+  .footer-buttons :deep(.download-btn) {
+    width: clamp(110px, 18vw, 120px);
+    height: clamp(25px, 5vw, 32px);
+    font-size: 8px;
+  }
+
+  .footer-buttons :deep(.icon) {
+    width: 16px;
+    height: 16px;
   }
 
   .footer-icons {
-    justify-content: center;
+    justify-content: flex-start;
   }
 }
 
@@ -376,12 +427,32 @@ const handleDownloadClick = (url: string) => {
   }
 
   .footer-menu-group {
-    flex-direction: column;
-    gap: clamp(15px, 2vh, 20px);
+    flex-direction: row;
+    gap: clamp(30px, 6vw, 60px);
+    justify-content: center;
+    width: 100%;
+  }
+
+  .footer-column {
+    align-items: center;
+    flex: 0 0 auto;
+    width: auto;
+    text-align: center;
   }
 
   .footer-buttons {
     width: 100%;
+  }
+
+  .footer-buttons :deep(.download-btn) {
+    width: clamp(110px, 18vw, 120px);
+    height: clamp(25px, 5vw, 32px);
+    font-size: 8px;
+  }
+
+  .footer-buttons :deep(.icon) {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
