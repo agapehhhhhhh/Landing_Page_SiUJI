@@ -1,5 +1,5 @@
 <template>
-  <section class="why-choose-section">
+  <section class="why-choose-section" id="why">
     <svg class="why-bg-svg" width="2502" height="1162" viewBox="0 0 2502 1162" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M1441.66 61.4982C1636.96 82.5764 2459.48 83.6147 2501.99 2.73816L394.711 2.73826L388.232 1096.14C317.721 1121.22 216.855 1143.16 79.0007 1161.34L388.075 1122.76L388.232 1096.14C538.164 1042.81 550.844 975.286 490.027 899.61C437.884 821.575 480.385 664.46 521.493 537.401C572.877 378.576 1197.52 35.1505 1441.66 61.4982Z" fill="#4CC5BD" fill-opacity="0.24"/>
       <path d="M1129.32 97.3943C1324.63 118.472 1746.47 86.0099 1788.99 5.1333L315.709 0.336593L309.231 1093.74C238.72 1118.82 137.853 1140.76 -0.000886972 1158.94L309.073 1120.36L309.231 1093.74C459.162 1040.41 471.842 972.885 411.025 897.208C358.882 819.173 802.054 695.559 843.162 568.5C894.547 409.675 885.187 71.0466 1129.32 97.3943Z" fill="#4CC5BD" fill-opacity="0.24"/>
@@ -59,13 +59,18 @@
           </transition>
           <div class="carousel-nav">
             <button @click="prevFeature">←</button>
-            <div class="nav-dots">
+            <!-- Dots untuk ≤ 4 fitur -->
+            <div v-if="whyChooseData.points.length <= 4" class="nav-dots">
               <span
                 v-for="(_, index) in whyChooseData.points"
                 :key="index"
                 :class="['nav-dot', { active: index === activeFeatureIndex }]"
                 @click="setActive(index)"
               ></span>
+            </div>
+            <!-- Counter untuk > 4 fitur -->
+            <div v-else class="nav-counter">
+              <span>{{ activeFeatureIndex + 1 }}/{{ whyChooseData.points.length }}</span>
             </div>
             <button @click="nextFeature">→</button>
           </div>
@@ -323,6 +328,19 @@ function prevFeature() {
     gap: 8px;
     min-width: 48px;
     justify-content: center;
+  }
+  .nav-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    padding: 0 8px;
+  }
+  .nav-counter span {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 600;
+    text-align: center;
   }
   .nav-dot {
     width: 10px;

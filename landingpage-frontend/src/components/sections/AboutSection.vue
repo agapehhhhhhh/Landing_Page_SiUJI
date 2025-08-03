@@ -1,5 +1,5 @@
 <template>
-  <section class="about-section">
+  <section class="about-section" id="about">
     <!-- Loading State -->
     <div v-if="loading" class="loading-container">
       <div class="loading-spinner">Loading about section...</div>

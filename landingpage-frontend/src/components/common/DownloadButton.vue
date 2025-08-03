@@ -71,11 +71,13 @@ const handleClick = () => {
   align-items: center;
   justify-content: center; 
   gap: 8px;
-  min-width: 140px;
+  width: 150px;
+  height: 40px;
   text-align: center;
   transition: all 0.2s ease;
   font-family: 'Inter';
   border: 1px solid #555; /* Light gray border */
+  box-sizing: border-box;
 }
 
 .download-btn:hover {
