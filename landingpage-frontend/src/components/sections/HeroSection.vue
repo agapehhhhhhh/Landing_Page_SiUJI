@@ -20,22 +20,22 @@
           />
           <!-- Floating elements untuk mobile -->
           <img
-            src="/assets/float-book.svg"
+            src="/assets/float-book.png"
             class="floating-mobile book-mobile"
             alt="book"
           />
           <img
-            src="/assets/float-file.svg"
+            src="/assets/float-file.png"
             class="floating-mobile file-mobile"
             alt="file"
           />
           <img
-            src="/assets/float-pencil.svg"
+            src="/assets/float-pencil.png"
             class="floating-mobile pencil-mobile"
             alt="pencil"
           />
           <img
-            src="/assets/float-pencil.svg"
+            src="/assets/float-score.png"
             class="floating-mobile pen-mobile"
             alt="pen"
           />
@@ -54,18 +54,18 @@
           :src="data?.heroImage?.url || '/assets/ilustrasi-hero.png'"
           alt="Hero Illustration"
         />
-        <img src="/assets/float-book.svg" class="floating book" alt="book" />
-        <img src="/assets/float-file.svg" class="floating file" alt="file" />
+        <img src="/assets/float-book.png" class="floating book" alt="book" />
+        <img src="/assets/float-file.png" class="floating file" alt="file" />
         <img
-          src="/assets/float-pencil.svg"
+          src="/assets/float-pencil.png"
           class="floating pencil"
           alt="pencil"
         />
-        <img src="/assets/float-pencil.svg" class="floating pen" alt="pen" />
+        <img src="/assets/float-pen.png" class="floating pen" alt="pen" />
         <img
-          src="/assets/float-pencil.svg"
-          class="floating monitor"
-          alt="monitor"
+          src="/assets/float-score.png"
+          class="floating score"
+          alt="score"
         />
       </div>
     </div>
@@ -122,7 +122,7 @@ defineProps({
 
 .hero-text {
   flex: 1 1 50%;
-  max-width: 580px;
+  max-width: 650px;
   padding-left: 1rem;
   z-index: 3;
   margin-top: -60px;
@@ -133,7 +133,7 @@ defineProps({
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin-left: 3.9rem;
   color: #1c1c1c;
   line-height: 1.3;
 }
@@ -142,7 +142,7 @@ defineProps({
   font-size: 1.1rem;
   color: #363636;
   margin-bottom: 2rem;
-  margin-left: 1.1rem;
+  margin-left: 3.9rem;
   line-height: 1.6;
 }
 
@@ -154,14 +154,14 @@ defineProps({
   color: white;
   padding: 14px 28px;
   font-weight: 600;
-  border-radius: 32px;
+  border-radius: 10px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   font-size: 1rem;
   text-decoration: none;
   transition: background 0.3s ease;
   gap: 10px;
   border: 2px solid #146657;
-  margin-left: 1rem;
+  margin-left: 3.9rem;
 }
 
 .hero-button:hover {
@@ -253,7 +253,7 @@ defineProps({
   left: 50%;
   animation-delay: 1.5s;
 }
-.monitor {
+.score {
   bottom: 15%;
   left: 50%;
   animation-delay: 2s;
@@ -261,23 +261,23 @@ defineProps({
 
 /* Mobile floating positions */
 .book-mobile {
-  top: 35%;
-  right: 0%;
+  top: 25%;
+  right: 7%;
   animation-delay: 0s;
 }
 .pencil-mobile {
   top: 25%;
-  left: 0%;
+  left: 5%;
   animation-delay: 0.5s;
 }
 .file-mobile {
   bottom: 10%;
-  right: 3%;
+  right: 7%;
   animation-delay: 1s;
 }
 .pen-mobile {
   bottom: 5%;
-  left: 3%;
+  left: 5%;
   animation-delay: 1.5s;
 }
 

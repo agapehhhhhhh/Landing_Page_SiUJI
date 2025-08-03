@@ -448,9 +448,16 @@ onUnmounted(() => {
     padding: 0 16px;
   }
 
+  /* Fix logo position for mobile */
+  .logo {
+    transform: translateX(0); /* Reset transform untuk mobile */
+    margin-left: 0;
+  }
+
   .hamburger-button {
     display: flex;
     margin-left: auto;
+    margin-right: 25px; /* Geser ke kiri agar tidak terpotong */
   }
 
   .desktop-nav,
@@ -466,6 +473,21 @@ onUnmounted(() => {
 @media (max-width: 480px) {
   .container {
     padding: 0 12px;
+  }
+
+  /* Ensure logo is visible on very small screens */
+  .logo {
+    transform: translateX(0);
+    margin-left: 0;
+  }
+
+  .logo img {
+    height: 36px; /* Slightly smaller for very small screens */
+  }
+
+  /* Extra margin for hamburger on small screens */
+  .hamburger-button {
+    margin-right: 25px; /* Lebih dekat ke tepi untuk layar kecil */
   }
 
   .mobile-menu-content {
