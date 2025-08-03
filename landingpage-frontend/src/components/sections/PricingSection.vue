@@ -1,5 +1,5 @@
 <template>
-  <section class="pricing-section">
+  <section class="pricing-section" id="pricing">
     <div class="pricing-header">
       <h2>Choose Plan</h2>
       <h3>That's Right For You</h3>

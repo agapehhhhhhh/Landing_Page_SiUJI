@@ -24,8 +24,14 @@
         :loop="reviews.length > 3"
         :autoplay="reviews.length > 1 ? { delay: 3000, disableOnInteraction: false } : false"
         :breakpoints="{
-          0: { slidesPerView: 1 },
-          601: { slidesPerView: reviews.length === 2 ? 2 : Math.min(3, reviews.length) }
+          0: { 
+            slidesPerView: 1, 
+            spaceBetween: 20 
+          },
+          601: { 
+            slidesPerView: reviews.length === 2 ? 2 : Math.min(3, reviews.length),
+            spaceBetween: reviews.length === 2 ? 40 : 0
+          }
         }"
         @slideChange="onSlideChange"
         ref="swiperRef"
@@ -59,8 +65,8 @@
       </div>
     </div>
 
-    <!-- Custom Navigation -->
-    <div v-if="!loading && reviews.length > 3" class="testimonial-nav">
+    <!-- Custom Navigation for Desktop -->
+    <div v-if="!loading && reviews.length > 3" class="testimonial-nav desktop-nav">
       <button @click="slidePrev" class="nav-btn">
         Prev
       </button>
@@ -76,6 +82,19 @@
       <button @click="slideNext" class="nav-btn">
         Next
       </button>
+    </div>
+
+    <!-- Custom Navigation for Mobile -->
+    <div v-if="!loading && reviews.length > 1" class="testimonial-nav mobile-nav">
+      <div class="nav-progress">
+        <span
+          v-for="(_, idx) in reviews"
+          :key="idx"
+          :class="['nav-dot', { active: idx === currentIndex }]"
+          @click="goToSlide(idx)"
+          style="cursor:pointer"
+        ></span>
+      </div>
     </div>
   </section>
 </template>
@@ -147,12 +166,24 @@ export default {
 <style scoped>
 /* Jika testimonial kurang dari 3, jarak antar card lebih dekat dan CSS benar di sini */
 .swiper-container.few-testimonials {
-  padding-left: clamp(40px, 6vw, 120px);
-  padding-right: clamp(40px, 6vw, 120px);
-}
-.swiper-container.few-testimonials .swiper-wrapper {
+  padding-left: clamp(40px, 5vw, 100px);
+  padding-right: clamp(40px, 5vw, 100px);
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.swiper-container.few-testimonials .swiper-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  transform: none !important;
+}
+.swiper-container.few-testimonials .swiper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 /* Loading state */
 .loading-testimonials {
@@ -190,6 +221,29 @@ export default {
   box-sizing: border-box;
 }
 
+/* Khusus untuk 2 testimoni - absolute centering */
+.swiper-container.few-testimonials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-container.few-testimonials .swiper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-container.few-testimonials .swiper-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  transform: none !important;
+  gap: clamp(30px, 4vw, 60px) !important;
+}
+
 /* Jika testimonial kurang dari 3, semua card sama besar dan rata tengah */
 .swiper-container.few-testimonials .swiper-slide-next .testimonial-card,
 .swiper-container.few-testimonials .testimonial-card {
@@ -197,10 +251,26 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #555;
   z-index: 1;
+  width: clamp(280px, 26vw, 380px); /* Sedikit lebih kecil untuk 2 card */
 }
 .swiper-container.few-testimonials .swiper-slide {
-  justify-content: center;
-  align-items: center;
+  justify-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  margin: 0 auto !important;
+}
+
+/* Khusus untuk 2 testimonial - membagi ruang menjadi dua bagian sama */
+.swiper-container.few-testimonials .swiper-slide:first-child {
+  margin-right: clamp(15px, 2vw, 25px) !important;
+  margin-left: auto !important;
+}
+
+.swiper-container.few-testimonials .swiper-slide:last-child {
+  margin-left: clamp(15px, 2vw, 25px) !important;
+  margin-right: auto !important;
 }
 
 /* Pastikan card testimonial yang di-scale tidak terpotong */
@@ -229,12 +299,12 @@ export default {
     circle at center,
     rgba(107, 194, 161, 0.5) 0%,
     rgba(107, 194, 161, 0.3) 30%,
-    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.8) 55%,
     #ffffff 100%
   );
-  background-size: 100% 100%;
+  background-size: 100% 100%; /* Reduced from 100% 100% to make circle smaller */
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center;
   font-family: Inter;
   text-align: center;
   overflow: visible;
@@ -262,8 +332,9 @@ export default {
   border-radius: 12px;
   border: 1px solid #555;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: clamp(300px, 28vw, 400px); /* sedikit diperbesar dari 24vw ke 28vw */
-  padding: clamp(24px, 2.5vw, 32px);
+  width: clamp(260px, 26vw, 360px);
+  max-width: 95vw;
+  padding: clamp(18px, 2vw, 28px);
   margin: 0 auto;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -273,6 +344,14 @@ export default {
   height: 100%;
   text-align: left;
   align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .testimonial-card {
+    width: clamp(200px, 60vw, 320px);
+    max-width: 98vw;
+    padding: clamp(12px, 2vw, 20px);
+  }
 }
 
 .testimonial-card.center {
@@ -358,6 +437,16 @@ export default {
   gap: 16px;
   font-family: 'Inter';
 }
+
+/* Desktop navigation - default visible */
+.desktop-nav {
+  display: flex;
+}
+
+/* Mobile navigation - hidden by default */
+.mobile-nav {
+  display: none;
+}
 .nav-btn {
   background: #fff;
   color: #222;
@@ -418,7 +507,7 @@ export default {
     overflow: hidden;
   }
   .swiper-container {
-    padding: 0;
+    padding: 0 20px;
     max-width: 100vw;
     overflow: visible;
   }
@@ -438,19 +527,35 @@ export default {
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border-radius: 10px;
     width: 100%;
-    max-width: 340px;
+    max-width: 320px;
     min-height: 0;
+    transition: all 0.3s ease;
   }
   .swiper-slide-next .testimonial-card {
     transform: none !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   }
+  /* Mobile slide animation */
+  .swiper-slide {
+    opacity: 0.85;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+  }
+  .swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+  }
   .swiper {
-    padding: 0 !important;
+    padding: 20px 0 !important;
     overflow: visible;
   }
-  .testimonial-nav {
-    flex-direction: row; /* Tetap horizontal di mobile */
+  /* Hide desktop navigation, show mobile navigation */
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: flex !important;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 10px;

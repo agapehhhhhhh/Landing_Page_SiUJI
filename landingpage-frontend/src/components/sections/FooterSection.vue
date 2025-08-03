@@ -1,66 +1,94 @@
 <template>
   <footer class="footer">
     <div class="footer-container">
-      <div class="footer-top">
-        <div class="footer-column">
-          <h4>Privacy Policy</h4>
-          <p>Lorem Ipsum</p>
+      <div class="footer-main">
+        <!-- Left Section: Logo and Contact Info -->
+        <div class="footer-left">
+          <div class="footer-left-content">
+            <div class="footer-logo-section">
+              <img :src="logo" alt="SiUJI Logo" class="logo" />
+            </div>
+            <div class="footer-contact-section">
+              <p class="footer-contact-text">
+                <strong class="contact-label">Office</strong><br />
+                <a href="https://maps.app.goo.gl/Z2P9NgFrWW9bKWvc6" target="_blank" rel="noopener">
+                Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung, 
+                Kota Bandung, Jawa Barat 40112
+                </a>
+              </p>
+              <p class="footer-contact-text">
+                <strong class="contact-label">Workshop</strong><br />
+                <a href="https://maps.app.goo.gl/8wU85U4m9NDBr99U6" target="_blank" rel="noopener">
+                  Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222
+                </a>
+              </p>
+              <p class="footer-contact-text">
+                <a href="mailto:info@someah.id">info@someah.id</a>
+              </p>
+              <p class="footer-contact-text">
+                <a href="tel:+6285117242221">+62 851 1724 2221</a>
+              </p>
+              <div class="footer-icons">
+                <a href="https://www.facebook.com/someah.id" target="_blank" rel="noopener">
+                  <img :src="FacebookIcon" alt="Facebook" class="footer-svg-icon" />
+                </a>
+                <a href="https://www.instagram.com/someahkreatif/" target="_blank" rel="noopener">
+                  <img :src="InstagramIcon" alt="Instagram" class="footer-svg-icon" />
+                </a>
+                <a href="https://www.linkedin.com/company/someah-kreatif-nusantara/" target="_blank" rel="noopener">
+                  <img :src="LinkedInIcon" alt="LinkedIn" class="footer-svg-icon" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="footer-column">
-          <h4>Terms of Condition</h4>
-          <p>Lorem Ipsum</p>
-        </div>
-        <div class="footer-column">
-          <h4>Help</h4>
-          <p>About Us</p>
-          <p>FAQs</p>
-        </div>
-        <div class="footer-column">
-          <h4>Contact Us</h4>
-          <p>Contact Us</p>
+
+        <!-- Center Section: Menu Links -->
+        <div class="footer-center">
+          <div class="footer-menu-group">
+            <div class="footer-column">
+              <h4>SIUJI</h4>
+              <p><a href="#about">About Us</a></p>
+              <p><a href="#why">Why Choose Us</a></p>
+              <p><a href="#pricing">Pricing</a></p>
+            </div>
+            <div class="footer-column">
+              <h4>Help</h4>
+              <p><a href="#user-guide">User Guide</a></p>
+              <p><a href="#faq">FAQs</a></p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="footer-separator"></div>
 
       <div class="footer-bottom">
-        <div class="footer-info">
-          <div class="footer-brand">
-            <img :src="logo" alt="SiUJI Logo" class="logo" />
-            <p class="copyright">© 2021 All Rights Reserved</p>
+        <div class="footer-bottom-content">
+          <div class="footer-terms">
+            <p><a href="#terms">Terms of Condition</a></p>
+            <p><a href="#privacy">Privacy Policy</a></p>
           </div>
-          <div class="footer-contact">
-            <p style="font-weight: bold;">Office</p>
-            <address><a href="https://maps.app.goo.gl/E9RGvBWK6qMgahpJ9" target="_blank" rel="noopener noreferrer">Jl. Sunda No.85, RT 12/RW 06, Kb. Pisang, Kec. Sumur Bandung, Kota Bandung, Jawa Barat 40112</a></address>
-            <p style="font-weight: bold;">Workshop</p>
-            <address><a href="https://maps.app.goo.gl/4KuJQPBfXt1nNANE6" target="_blank" rel="noopener noreferrer">Komp. Holis Regency D7, Babakan, Babakan Ciparay, Kota Bandung, Jawa Barat 40222</a></address>
-            <p><a href="mailto:info@someah.id">info@someah.id</a></p>
-            <p><a href="tel:+6285117242221">+62 851 1724 2221</a></p>
-          </div>
-        </div>
-
-        <div class="footer-actions">
-          <div class="footer-buttons">
-            <DownloadButton 
-              type="web"
-              :url="downloadLinks.web" 
-              @click="handleDownloadClick"
-            />
-            <DownloadButton 
-              type="appstore"
-              :url="downloadLinks.appStore" 
-              @click="handleDownloadClick"
-            />
-            <DownloadButton 
-              type="googleplay"
-              :url="downloadLinks.googlePlay" 
-              @click="handleDownloadClick"
-            />
-          </div>
-          <div class="footer-icons">
-            <a v-for="icon in icons" :key="icon.alt" :href="icon.link" target="_blank">
-              <img :src="icon.src" :alt="icon.alt" />
-            </a>
+          
+          <div class="footer-buttons-copyright">
+            <div class="footer-buttons">
+              <DownloadButton 
+                type="web"
+                :url="downloadLinks.web" 
+                @click="handleDownloadClick"
+              />
+              <DownloadButton 
+                type="appstore"
+                :url="downloadLinks.appStore" 
+                @click="handleDownloadClick"
+              />
+              <DownloadButton 
+                type="googleplay"
+                :url="downloadLinks.googlePlay" 
+                @click="handleDownloadClick"
+              />
+            </div>
+            <p class="copyright">© 2023 All Rights Reserved</p>
           </div>
         </div>
       </div>
@@ -71,15 +99,9 @@
 <script setup lang="ts">
 import logo from '@/assets/logo.svg'
 import DownloadButton from '@/components/common/DownloadButton.vue'
-import facebookIcon from '@/assets/facebook.png'
-import instagramIcon from '@/assets/instagram.png'
-import linkedinIcon from '@/assets/linkedin.png'
-
-const icons = [
-  { src: facebookIcon, alt: "Facebook", link: "https://web.facebook.com/someah.id?_rdc=1&_rdr#" },
-  { src: instagramIcon, alt: "Instagram", link: "https://www.instagram.com/someahkreatif/" },
-  { src: linkedinIcon, alt: "LinkedIn", link: "https://www.linkedin.com/company/somearch-nusantara/" },
-]
+import FacebookIcon from '@/assets/fb-vector.svg'
+import InstagramIcon from '@/assets/ig-vector.svg'
+import LinkedInIcon from '@/assets/in-vector.svg'
 
 // Download links - can be easily configured
 const downloadLinks = {
@@ -99,230 +121,338 @@ const handleDownloadClick = (url: string) => {
 .footer {
   background-color: #0f172a;
   color: white;
-  padding: clamp(30px, 5vh, 60px) clamp(20px, 3vw, 40px);
-  font-family: sans-serif;
+  padding: clamp(10px, 6vh, 40px) 0;
+  font-family: 'Inter';
   font-size: clamp(13px, 1.1vw, 16px);
 }
 
 .footer-container {
-  max-width: clamp(1000px, 95vw, 1600px);
+  max-width: clamp(1200px, 95vw, 1550px);
   margin: 0 auto;
   width: 100%;
 }
 
-.footer-top {
+.footer-main {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(80px, 12vw, 160px);
-  margin-bottom: clamp(20px, 3vh, 30px);
-  max-width: clamp(800px, 85vw, 1200px);
-  margin: 0 auto clamp(20px, 3vh, 30px);
-  width: 100%;
-  padding: 0 clamp(20px, 3vw, 40px);
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: clamp(80px, 6vw, 200px);
 }
 
-.footer-column {
-  text-align: left;
-  white-space: nowrap;
+.footer-left {
+  flex: 1.5;
+  max-width: 1000px;
 }
 
-.footer-column h4 {
-  margin-bottom: clamp(6px, 1vh, 12px);
-  font-weight: bold;
-  font-size: clamp(14px, 1.2vw, 18px);
-}
-
-.footer-column p {
-  font-size: clamp(12px, 1vw, 15px);
-  line-height: 1.4;
-  margin: clamp(2px, 0.5vh, 4px) 0;
-}
-
-.footer-separator {
-  height: 1px;
-  background-color: #374151;
-  margin: clamp(20px, 3vh, 35px) auto;
-  max-width: clamp(1100px, 95vw, 1400px);
-  width: 100%;
-}
-
-.footer-bottom {
+.footer-left-content {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  max-width: clamp(1100px, 95vw, 1400px);
-  margin: 0 auto;
-  width: 100%;
-}
-
-.footer-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.footer-info .logo {
-  height: clamp(28px, 3vw, 40px);
-  margin-bottom: clamp(3px, 0.5vh, 6px);
-}
-
-.footer-info address,
-.footer-info p {
-  margin: clamp(1px, 0.2vh, 3px) 0;
-  color: #cbd5e1;
-  font-size: clamp(12px, 1vw, 15px);
-  line-height: 1.5;
-}
-
-.footer-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  gap: clamp(80px, 6vw, 200px);
   align-items: flex-start;
 }
 
-.footer-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(6px, 1vw, 12px);
+.footer-logo-section {
+  flex-shrink: 0;
 }
 
-.footer-icons {
-  margin-top: 2px;
-  align-self: flex-start;
-  margin-left: 0;
+.footer-logo-section .logo {
+  height: clamp(40px, 4vw, 60px);
 }
 
-.footer-icons img {
-  height: clamp(20px, 2.5vw, 32px);
-  width: clamp(20px, 2.5vw, 32px);
-  margin-right: clamp(8px, 1.5vw, 15px);
-  vertical-align: middle;
+.footer-contact-section {
+  flex: 1;
+  margin-top: 0;
 }
 
-.footer-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.footer-brand .logo {
-  height: clamp(28px, 3vw, 40px);
-  margin-bottom: clamp(3px, 0.5vh, 6px);
-}
-
-.footer-brand .copyright {
-  font-size: clamp(11px, 0.9vw, 14px);
-  margin: clamp(1px, 0.2vh, 2px) 0;
-}
-
-.footer-contact {
-  color: #cbd5e1;
+.footer-contact-text {
   font-size: clamp(12px, 1vw, 15px);
-}
-
-
-.footer-contact address,
-.footer-contact p {
-  margin: clamp(1px, 0.2vh, 3px) 0;
-  font-style: normal;
+  color: #cbd5e1;
   line-height: 1.5;
-  display: block;
+  margin-bottom: clamp(8px, 1vh, 12px);
+  margin-top: 0;
 }
 
-.footer-contact address a {
-  display: inline;
-  white-space: normal;
-  vertical-align: baseline;
+.footer-contact-text:first-child {
+  margin-top: 0;
 }
 
-.footer-contact address {
-  margin: clamp(1px, 0.2vh, 3px) 0;
-  font-style: normal;
-  line-height: 1.5;
-  display: block;
-  padding: 0;
-  text-indent: 0;
-}
-
-.footer-contact a {
+.footer-contact-text a {
   color: #cbd5e1;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.footer-contact a:hover {
+.footer-contact-text a:hover {
   color: #ffffff;
   text-decoration: underline;
 }
 
-@media (min-width: 768px) {
-  .footer {
-    padding: clamp(40px, 6vh, 80px) clamp(30px, 4vw, 60px);
-  }
-  
-  .footer-top {
-    gap: clamp(100px, 14vw, 180px);
-    margin-bottom: clamp(25px, 4vh, 40px);
-    justify-content: center;
-    flex-wrap: nowrap;
-    padding: 0 clamp(30px, 4vw, 50px);
-  }
-  
-  .footer-column {
-    white-space: nowrap;
+.contact-label {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.footer-icons {
+  display: flex;
+  gap: clamp(12px, 2vw, 16px);
+}
+
+.footer-icons img {
+  height: clamp(10px, 2.5vw, 20px);
+  width: clamp(10px, 2.5vw, 20px);
+  transition: opacity 0.3s ease;
+}
+
+.footer-icons img:hover {
+  opacity: 0.8;
+}
+
+.footer-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 30px);
+}
+
+.footer-menu-group {
+  display: flex;
+  gap: clamp(80px, 6vw, 200px);
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1vh, 12px);
+}
+
+.footer-column h4 {
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: bold;
+  color: white;
+  margin-bottom: clamp(8px, 1vh, 12px);
+  margin-top: 0;
+}
+
+.footer-column p {
+  font-size: clamp(12px, 1vw, 15px);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.footer-column a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: clamp(1200px, 95vw, 1550px);
+  gap: clamp(20px, 4vw, 40px);
+}
+.footer-buttons-copyright {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: clamp(8px, 1vh, 12px);
+}
+
+.footer-buttons {
+  display: flex;
+  gap: clamp(8px, 1vh, 12px);
+  align-items: center;
+}
+
+.footer-terms {
+  display: flex;
+  gap: clamp(20px, 3vw, 30px);
+  align-items: center;
+}
+
+.footer-terms p {
+  font-size: clamp(12px, 1vw, 15px);
+  margin: 0;
+}
+
+.footer-terms a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-terms a:hover {
+  color: #ffffff;
+}
+
+.copyright {
+  font-size: clamp(11px, 0.9vw, 14px);
+  color: #9ca3af;
+  margin: 0;
+  text-align: right;
+}
+
+.footer-separator {
+  height: 1px;
+  background-color: #374151; /* Dark gray */
+  margin: clamp(20px, 3vh, 30px) 0;
+  width: 100%;
+}
+
+.copyright {
+  font-size: clamp(11px, 0.9vw, 14px);
+  color: #9ca3af;
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .footer-main {
+    flex-direction: column;
+    gap: clamp(30px, 5vh, 40px);
+    text-align: center;
   }
 
-  .footer-bottom {
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
+  .footer-left {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .footer-left-content {
+    flex-direction: column;
     align-items: flex-start;
-    max-width: clamp(1200px, 95vw, 1500px);
-    margin: 0 auto;
+    gap: clamp(15px, 2vh, 20px);
+  }
+
+  .footer-center {
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-menu-group {
+    flex-direction: row;
+    gap: clamp(40px, 8vw, 80px);
+    text-align: center;
+    justify-content: center;
     width: 100%;
   }
 
-  .footer-actions {
-    align-items: flex-start;
+  .footer-column {
+    align-items: center;
+    flex: 0 0 auto;
+    width: auto;
+    text-align: center;
   }
-  
-  .footer-info {
+
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: clamp(15px, 3vw, 20px);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-bottom: clamp(30px, 5vw, 40px);
+  }
+
+  .footer-buttons-copyright {
+    order: 1;
+    align-items: center;
+    gap: clamp(8px, 2vw, 12px);
+    justify-content: center;
+  }
+
+  .footer-buttons-copyright .footer-buttons {
+    order: 1;
+    display: flex;
     flex-direction: row;
+    justify-content: center;
+    gap: clamp(8px, 2vw, 12px);
+  }
+
+  .footer-buttons-copyright .copyright {
+    order: 3;
+    text-align: center;
+    margin-top: clamp(15px, 3vw, 20px);
+    background: transparent;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 100%;
+  }
+
+  .footer-terms {
+    order: 2;
+    flex-direction: row;
+    gap: clamp(20px, 4vw, 30px);
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .footer-buttons :deep(.download-btn) {
+    width: clamp(110px, 18vw, 120px);
+    height: clamp(25px, 5vw, 32px);
+    font-size: 8px;
+  }
+
+  .footer-buttons :deep(.icon) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .footer-icons {
     justify-content: flex-start;
-    align-items: flex-start;
-    gap: 15px;
-    flex: 1;
-  }
-  
-  .footer-brand {
-    min-width: clamp(150px, 20vw, 250px);
-  }
-  
-  .footer-contact {
-    flex: 1;
-    max-width: clamp(300px, 40vw, 500px);
   }
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 480px) {
   .footer {
-    padding: clamp(50px, 7vh, 100px) clamp(40px, 5vw, 80px);
+    padding: clamp(30px, 5vh, 40px) clamp(15px, 3vw, 20px);
   }
-  
-  .footer-top {
-    gap: clamp(120px, 16vw, 200px);
+
+  .footer-menu-group {
+    flex-direction: row;
+    gap: clamp(30px, 6vw, 60px);
+    justify-content: center;
+    width: 100%;
   }
-  
-  .footer-info {
-    gap: 20px;
+
+  .footer-column {
+    align-items: center;
+    flex: 0 0 auto;
+    width: auto;
+    text-align: center;
   }
-  .footer-separator {
-    max-width: 1200px;
+
+  .footer-buttons {
+    width: 100%;
   }
-  .footer-bottom {
-    max-width: 1200px;
+
+  .footer-buttons :deep(.download-btn) {
+    width: clamp(110px, 18vw, 120px);
+    height: clamp(25px, 5vw, 32px);
+    font-size: 8px;
+  }
+
+  .footer-buttons :deep(.icon) {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
