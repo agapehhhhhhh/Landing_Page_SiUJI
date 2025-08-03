@@ -448,34 +448,45 @@ export default {
   display: none;
 }
 .nav-btn {
-  background: #fff;
-  color: #222;
-  border: 2px solid #54be96;
+  background: #ffffff;
+  color: #4cc5bd;
+  border: 1px solid #000000;
   border-radius: 10px;
-  padding: 15px 20px;
+  padding: 12px 24px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  box-shadow: 0 2px 8px rgba(84, 190, 150, 0.08);
-  transition: background 0.2s, border 0.2s;
-}
-.nav-btn:hover {
-  background: #54be96;
-  color: #fff;
-  border-color: #009e7a;
+  box-shadow: 0 4px 12px rgba(76, 197, 189, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);    
+  transform: translateY(0);
 }
 
-.nav-btn:hover .arrow-svg {
-  stroke: #fff;
+.nav-btn:hover:not(:disabled) {
+  background: #4cc5bd;
+  color: white;
+  border-color: #000000;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 197, 189, 0.25);
+}
+
+.nav-btn:active:not(:disabled) {
+  transform: translateY(-1px);
+  transition: all 0.1s ease;
+}
+
+.nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(76, 197, 189, 0.1);
 }
 
 .nav-progress {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   min-width: 120px;
   justify-content: center;
   background: transparent;
@@ -485,18 +496,28 @@ export default {
 }
 
 .nav-dot {
-  width: 12px;
-  height: 12px;
+  height: 8px;
+  width: 8px;
   border-radius: 50%;
-  background: #c2c2c2;
-  transition: all 0.3s;
+  background: #cbd5e0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  transform: scale(1);
   opacity: 1;
   display: inline-block;
 }
+
+.nav-dot:hover {
+  background: #a0aec0;
+  transform: scale(1.1);
+}
+
 .nav-dot.active {
-  width: 48px;
-  border-radius: 5px;
-  background: #6BC2A1;
+  width: 24px;
+  height: 8px;
+  border-radius: 4px;
+  background: #4cc5bd;
+  transform: scale(1);
   opacity: 1;
 }
 
@@ -562,31 +583,31 @@ export default {
     margin-top: 18px;
   }
   .nav-btn {
-    padding: 10px 10px;
+    padding: 10px 20px;
     font-size: 14px;
     min-width: 44px;
     min-height: 44px;
   }
   .nav-progress {
-    gap: 10px;
+    gap: 6px;
     padding: 0 8px;
     min-width: 80px;
     height: 14px;
   }
   .nav-dot {
-    width: 14px;
-    height: 14px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: #c2c2c2;
-    transition: all 0.3s;
+    background: #cbd5e0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     display: inline-block;
   }
   .nav-dot.active {
-    width: 28px;
-    height: 14px;
-    border-radius: 5px;
-    background: #6BC2A1;
+    width: 20px;
+    height: 6px;
+    border-radius: 3px;
+    background: #4cc5bd;
     opacity: 1;
   }
 }
