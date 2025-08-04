@@ -58,9 +58,14 @@
             />
           </transition>
           <div class="carousel-nav">
-            <button @click="prevFeature">←</button>
+            <button
+              @click="prevFeature"
+              class="nav-btn"
+            >
+              Prev
+            </button>
             <!-- Dots untuk ≤ 4 fitur -->
-            <div v-if="whyChooseData.points.length <= 4" class="nav-dots">
+            <div v-if="whyChooseData.points.length <= 4" class="nav-progress">
               <span
                 v-for="(_, index) in whyChooseData.points"
                 :key="index"
@@ -69,10 +74,15 @@
               ></span>
             </div>
             <!-- Counter untuk > 4 fitur -->
-            <div v-else class="nav-counter">
-              <span>{{ activeFeatureIndex + 1 }}/{{ whyChooseData.points.length }}</span>
+            <div v-else class="nav-progress">
+              <span class="nav-counter">{{ activeFeatureIndex + 1 }} / {{ whyChooseData.points.length }}</span>
             </div>
-            <button @click="nextFeature">→</button>
+            <button
+              @click="nextFeature"
+              class="nav-btn"
+            >
+              Next
+            </button>
           </div>
         </div>
         <!-- Empty State -->
@@ -307,28 +317,78 @@ function prevFeature() {
     justify-content: center;
     align-items: center;
     gap: 12px;
-    margin-top: 0.5rem;
+    margin-top: 30px;
   }
-  .carousel-nav button {
-    background: #4CC5BD;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-size: 1.1rem;
+  
+  .nav-btn {
+    background: #ffffff;
+    color: #4cc5bd;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
-  }
-  .carousel-nav button:active {
-    background: #319e8c;
-  }
-  .nav-dots {
     display: flex;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 4px 12px rgba(76, 197, 189, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
+  }
+  
+  .nav-btn:hover:not(:disabled) {
+    background: #4cc5bd;
+    color: white;
+    border-color: #000000;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(76, 197, 189, 0.25);
+  }
+  
+  .nav-btn:active:not(:disabled) {
+    transform: translateY(-1px);
+    transition: all 0.1s ease;
+  }
+  
+  .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(76, 197, 189, 0.1);
+  }
+  
+  .nav-progress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     min-width: 48px;
     justify-content: center;
   }
+  
+  .nav-dot {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #cbd5e0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    transform: scale(1);
+    flex-shrink: 0;
+  }
+  
+  .nav-dot:hover {
+    background: #a0aec0;
+    transform: scale(1.1);
+  }
+  
+  .nav-dot.active {
+    width: 20px;
+    height: 6px;
+    border-radius: 3px;
+    background: #4cc5bd;
+    transform: scale(1);
+  }
+  
   .nav-counter {
     display: flex;
     align-items: center;
@@ -336,35 +396,11 @@ function prevFeature() {
     min-width: 48px;
     padding: 0 8px;
   }
+  
   .nav-counter span {
     font-size: 0.9rem;
     color: #333;
     font-weight: 600;
-    text-align: center;
-  }
-  .nav-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    background: #c2c2c2;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    flex-shrink: 0;
-    transform: scale(1);
-  }
-  .nav-dot:hover {
-    transform: scale(1.1);
-  }
-  .nav-dot.active {
-    background: #4CC5BD;
-    width: 10px;
-    height: 10px;
-    transform: scale(1.2);
-  }
-  .carousel-nav span {
-    font-size: 1rem;
-    color: #333;
-    min-width: 48px;
     text-align: center;
   }
   .vertical-divider {
