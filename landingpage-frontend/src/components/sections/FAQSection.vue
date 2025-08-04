@@ -4,7 +4,13 @@
     <div class="faq-header">
       <div class="header-content">
         <img src="@/assets/faq.svg" alt="FAQ Icon" class="faq-logo" />
-        <h2>Frequently Asked Questions</h2>
+        <div class="header-text">
+          <h2>Punya Pertanyaan?<br />Tim Kami Siap Membantu!</h2>
+          <p class="header-description">
+            Ingin tahu lebih banyak tentang fitur-fitur unggulan SiUJI?<br />Temukan
+            jawaban dari pertanyaan yang sering ditanyakan pengguna kami.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -166,7 +172,7 @@ export default {
 .faq-section {
   position: relative;
   padding: 80px 20px 100px;
-  background: linear-gradient(135deg, #4cc5bd 0%, #7dd3b0 50%, #8ee4bf 100%);
+  background: #4cc5bd;
   overflow: hidden;
   min-height: 600px;
 }
@@ -200,12 +206,12 @@ export default {
   justify-content: center;
   gap: 40px;
   position: relative;
-  margin-left: -150px;
+  margin-left: -200px;
 }
 
 .faq-logo {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -213,9 +219,20 @@ export default {
 .faq-header h2 {
   font-size: 50px;
   font-weight: 700;
-  color: white;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  text-align: center;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-description {
+  font-size: 18px;
+  color: #2d3748;
   margin: 0;
   text-align: center;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
 /* Category Navigation */
@@ -230,7 +247,7 @@ export default {
 
 .category-tabs {
   background: white;
-  border-radius: 50px;
+  border-radius: 10px;
   padding: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -245,7 +262,7 @@ export default {
 .category-btn {
   padding: 12px 20px;
   border: none;
-  border-radius: 25px;
+  border-radius: 10px;
   background: transparent;
   color: #333;
   font-weight: 500;
@@ -281,28 +298,19 @@ export default {
 
 .faq-items {
   max-height: none;
-  transition: max-height 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .faq-container.expanded .faq-items {
   max-height: 600px;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  /* Hide scrollbar completely */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .faq-container.expanded .faq-items::-webkit-scrollbar {
-  width: 6px;
-}
-
-.faq-container.expanded .faq-items::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.faq-container.expanded .faq-items::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* FAQ Items */
@@ -427,10 +435,10 @@ export default {
 
 .read-more-btn {
   background: white;
-  color: #4cc5bd;
-  border: 3px solid rgba(0, 0, 0, 0.2);
+  color: #000000;
+  border: 1px solid #000000;
   padding: 14px 32px;
-  border-radius: 25px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;

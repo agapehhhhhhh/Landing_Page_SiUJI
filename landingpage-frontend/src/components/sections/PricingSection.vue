@@ -440,7 +440,7 @@ export default {
 }
 
 .pricing-header h2 {
-  font-size: 48px;
+  font-size: 50px;
   font-weight: 700;
   color: #2d3748;
   margin-bottom: -30px;

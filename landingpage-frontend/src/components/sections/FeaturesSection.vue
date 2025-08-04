@@ -1,5 +1,5 @@
 <template>
-  <section class="features-section">
+  <section id="features" class="features-section">
     <div class="container">
       <!-- Header Section -->
       <div v-if="showHeader" class="features-header">
@@ -138,12 +138,6 @@ onMounted(() => {
 <style scoped>
 .features-section {
   padding: 80px 0;
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    rgba(76, 197, 189, 0.02) 50%,
-    #ffffff 100%
-  );
   position: relative;
   overflow: hidden;
 }
@@ -170,8 +164,8 @@ onMounted(() => {
 }
 
 .section-subtitle {
-  font-size: 24px;
-  color: #6b7280;
+  font-size: 18px;
+  color: #718096;
   max-width: 6000px;
   margin: 0 auto;
   line-height: 1.6;

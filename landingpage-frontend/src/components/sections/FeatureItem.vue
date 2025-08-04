@@ -2,8 +2,44 @@
   <div class="feature-item" :class="{ reverse: layout === 'left' }">
     <!-- Feature Text -->
     <div class="feature-text">
-      <h3 class="feature-title">{{ featureTitle }}</h3>
+      <div class="title-container">
+        <div class="title-ellipse">
+          <img src="@/assets/Ellipse-Hero3.svg" alt="Decoration" />
+        </div>
+        <h3 class="feature-title">{{ featureTitle }}</h3>
+      </div>
       <p class="feature-description">{{ description }}</p>
+
+      <!-- Feature Points -->
+      <div
+        class="feature-points"
+        v-if="featurePoints && featurePoints.length > 0"
+      >
+        <div
+          v-for="(point, index) in featurePoints"
+          :key="index"
+          class="feature-point"
+        >
+          <div class="feature-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                stroke="#4CC5BD"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <span class="feature-point-text">{{ point }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Illustration -->
@@ -15,17 +51,6 @@
         </div>
         <div class="ellipse-decoration ellipse-2">
           <img src="@/assets/Ellipse-Hero2.svg" alt="Decoration" />
-        </div>
-        <div class="ellipse-decoration ellipse-3">
-          <img src="@/assets/Ellipse-Hero3.svg" alt="Decoration" />
-        </div>
-
-        <!-- Rectangle Background Decoration -->
-        <div class="rectangle-decoration rectangle-1">
-          <img src="@/assets/Rectangle-hero.svg" alt="Background Decoration" />
-        </div>
-        <div class="rectangle-decoration rectangle-2">
-          <img src="@/assets/Rectangle-hero.svg" alt="Background Decoration" />
         </div>
 
         <div class="illustration-bg">
@@ -40,12 +65,20 @@
 const props = defineProps({
   featureTitle: {
     type: String,
-    default: "Sistem Pembelajaran Digital Terdepan untuk Masa Depan Pendidikan",
+    default: "Manajemen Siswa & Kelas",
   },
   description: {
     type: String,
     default:
-      "SiUJI hadir sebagai solusi pembelajaran digital yang revolusioner, menggabungkan teknologi canggih dengan metode pengajaran inovatif. Platform kami menyediakan pengalaman belajar yang interaktif dan personal, memungkinkan siswa untuk mengakses materi pembelajaran berkualitas tinggi kapan saja dan di mana saja. Dengan fitur-fitur seperti ujian online yang adaptif, tracking progress real-time, dan sistem manajemen kelas yang terintegrasi, SiUJI membantu meningkatkan efektivitas pembelajaran sambil memberikan kemudahan bagi guru dan siswa dalam mencapai tujuan akademik mereka.",
+      "Mengelola data siswa dan kelas lebih mudah dan terpusat, tanpa pencatatan manual yang rawan tercecer.",
+  },
+  featurePoints: {
+    type: Array,
+    default: () => [
+      "Manajemen data siswa dan kelas dalam satu sistem digital terpusat",
+      "Pengaturan jadwal belajar dan wali kelas yang fleksibel dan efisien",
+      "Akses cepat dan terstruktur ke informasi akademik",
+    ],
   },
   imageSrc: {
     type: String,
@@ -103,35 +136,67 @@ const props = defineProps({
   padding-left: 40px; /* Add left padding for spacing */
 }
 
+/* Title Container with Ellipse */
+.title-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.title-ellipse {
+  position: absolute;
+  left: -180px; /* Move further to the left */
+  top: 50px; /* Moved down by 15px more (35 + 15) */
+  z-index: 1;
+}
+
+.title-ellipse img {
+  width: 60px;
+  height: 60px;
+  filter: brightness(0) saturate(100%) invert(70%) sepia(32%) saturate(849%)
+    hue-rotate(136deg) brightness(91%) contrast(88%);
+}
+
+.feature-item.reverse .title-ellipse {
+  left: auto;
+  right: 450px; /* Move further to the left for reverse layout */
+  top: 50px; /* Moved down by 15px more (35 + 15) */
+}
+
 /* Feature Title - Layout Right (gambar di kanan) */
 .feature-item:not(.reverse) .feature-title {
   font-size: 50px;
   font-weight: 700;
-  margin-bottom: 28px;
+  margin-bottom: 0; /* Remove margin since container handles it */
   color: #1f2937;
   line-height: 1.2;
   text-align: left;
   letter-spacing: -0.02em;
   font-family: "Inter", sans-serif;
   margin-left: -150px;
+  position: relative;
+  z-index: 2;
 }
 
 /* Feature Title - Layout Left (gambar di kiri) */
 .feature-item.reverse .feature-title {
   font-size: 50px;
   font-weight: 700;
-  margin-bottom: 28px;
+  margin-bottom: 0; /* Remove margin since container handles it */
   color: #1f2937;
   line-height: 1.2;
   text-align: left;
   letter-spacing: -0.02em;
   font-family: "Inter", sans-serif;
+  position: relative;
+  z-index: 2;
 }
 
 /* Feature Description - Layout Right (gambar di kanan) */
 .feature-item:not(.reverse) .feature-description {
-  font-size: 24px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
   color: #6b7280;
   text-align: left;
   letter-spacing: 0.015em;
@@ -139,15 +204,15 @@ const props = defineProps({
   text-rendering: optimizeLegibility;
   font-feature-settings: "liga", "kern";
   font-family: "Inter", sans-serif;
-  flex: 1;
+  margin-bottom: 32px;
   display: block;
   margin-left: -150px;
 }
 
 /* Feature Description - Layout Left (gambar di kiri) */
 .feature-item.reverse .feature-description {
-  font-size: 24px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
   color: #6b7280;
   text-align: left;
   letter-spacing: 0.015em;
@@ -155,10 +220,44 @@ const props = defineProps({
   text-rendering: optimizeLegibility;
   font-feature-settings: "liga", "kern";
   font-family: "Inter", sans-serif;
-  flex: 1;
+  margin-bottom: 32px;
   display: block;
   overflow: hidden;
   margin-right: -150px; /* Different margin for reverse layout */
+}
+
+/* Feature Points */
+.feature-points {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: -150px;
+}
+
+.feature-item.reverse .feature-points {
+  margin-left: 0;
+  margin-right: -150px;
+}
+
+.feature-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+}
+
+.feature-point-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #4a5568;
+  font-family: "Inter", sans-serif;
+  flex: 1;
 }
 
 /* Illustration */
@@ -192,7 +291,7 @@ const props = defineProps({
   z-index: 4; /* Bring background container above ellipses */
   width: 520px;
   height: 390px; /* 4:3 aspect ratio (520/390 = 1.33) */
-  background: linear-gradient(135deg, #4cc5bd 0%, #3bb3ab 100%);
+  background: linear-gradient(135deg, #4cc5bd 0%, #4cc5bd 100%);
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -242,29 +341,29 @@ const props = defineProps({
 /* Ellipse 1 - Top Left - Warna hijau terang #6BC2A1 */
 /* Highest ellipse */
 .ellipse-1 {
-  top: 350px;
-  left: 515px;
+  top: 300px;
+  left: 485px;
   width: 140px;
   height: 140px;
   opacity: 0.8;
-  animation: float 6s ease-in-out infinite;
+  /* floating animation removed */
   z-index: 3;
 }
 
 .ellipse-1 img {
-  filter: brightness(0) saturate(100%) invert(65%) sepia(45%) saturate(347%)
-    hue-rotate(120deg) brightness(96%) contrast(89%);
+  filter: brightness(0) saturate(100%) invert(70%) sepia(32%) saturate(849%)
+    hue-rotate(136deg) brightness(91%) contrast(88%);
 }
 
 /* Ellipse 2 - Top Right - Warna hijau sedang #4CC5BD */
 /* Middle ellipse */
 .ellipse-2 {
-  top: -60px;
-  right: 525px;
+  top: -35px;
+  right: 515px;
   width: 100px;
   height: 100px;
   opacity: 0.9;
-  animation: float 4s ease-in-out infinite 1s;
+  /* floating animation removed */
   z-index: 2;
 }
 
@@ -273,89 +372,9 @@ const props = defineProps({
     hue-rotate(136deg) brightness(91%) contrast(88%);
 }
 
-/* Ellipse 3 - Bottom Left - Warna hijau terang #6BC2A1 */
-/* Lowest ellipse */
-.ellipse-3 {
-  bottom: 365px;
-  left: -50px;
-  width: 120px;
-  height: 120px;
-  opacity: 0.7;
-  animation: float 5s ease-in-out infinite 2s;
-  z-index: 1;
-}
-
-.ellipse-3 img {
-  filter: brightness(0) saturate(100%) invert(65%) sepia(45%) saturate(347%)
-    hue-rotate(120deg) brightness(96%) contrast(89%);
-}
-
-/* Rectangle Background Decorations */
-.rectangle-decoration {
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.4;
-}
-
-.rectangle-decoration img {
-  width: 100%;
-  height: 100%;
-  filter: brightness(0) saturate(100%) invert(70%) sepia(32%) saturate(849%)
-    hue-rotate(136deg) brightness(91%) contrast(88%);
-}
-
-/* Rectangle 1 - Behind and to the left */
-.rectangle-1 {
-  top: 60px;
-  left: -120px;
-  width: 180px;
-  height: 120px;
-  transform: rotate(-15deg);
-  animation: floatSlow 8s ease-in-out infinite;
-}
-
-/* Rectangle 2 - Behind and to the right */
-.rectangle-2 {
-  bottom: 80px;
-  right: -100px;
-  width: 160px;
-  height: 100px;
-  transform: rotate(20deg);
-  animation: floatSlowReverse 7s ease-in-out infinite 3s;
-}
-
 /* Floating animation for ellipses */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(5deg);
-  }
-}
 
 /* Slower floating animation for rectangles */
-@keyframes floatSlow {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-15deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(-10deg);
-  }
-}
-
-@keyframes floatSlowReverse {
-  0%,
-  100% {
-    transform: translateY(0) rotate(20deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(25deg);
-  }
-}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -372,7 +391,7 @@ const props = defineProps({
 
   .feature-text {
     max-width: 100%;
-    text-align: center;
+    text-align: left;
     padding: 0 15px;
     height: auto; /* Remove fixed height on mobile */
     justify-content: center; /* Reset to center for mobile */
@@ -395,17 +414,36 @@ const props = defineProps({
 
   .feature-title {
     font-size: 40px; /* Responsive size for tablet */
-    margin-bottom: 24px;
-    text-align: center;
+    margin-bottom: 0; /* Container handles margin */
+    text-align: left;
     letter-spacing: -0.01em;
     line-height: 1.25;
     margin-left: 0 !important; /* Override negative margin */
     margin-right: 0 !important; /* Override negative margin */
   }
 
+  .title-container {
+    margin-bottom: 24px;
+  }
+
+  .title-ellipse img {
+    width: 48px; /* Proportional to tablet font size */
+    height: 48px;
+  }
+
+  .title-ellipse {
+    left: -90px; /* Move further to the left for tablet */
+    top: 47px; /* Moved down by 15px more (32 + 15) */
+  }
+
+  .feature-item.reverse .title-ellipse {
+    right: -90px; /* Move further to the left for reverse layout on tablet */
+    top: 47px; /* Moved down by 15px more (32 + 15) */
+  }
+
   .feature-description {
     font-size: 18px; /* Responsive size for tablet */
-    text-align: center;
+    text-align: left;
     line-height: 1.6;
     letter-spacing: 0.01em;
     word-spacing: 0.01em;
@@ -442,7 +480,7 @@ const props = defineProps({
 @media (max-width: 480px) {
   .feature-title {
     font-size: 28px !important; /* Smaller size for mobile with important */
-    margin-bottom: 16px;
+    margin-bottom: 0; /* Container handles margin */
     letter-spacing: -0.005em;
     line-height: 1.3;
     margin-left: 0 !important; /* Override negative margin */
@@ -450,8 +488,28 @@ const props = defineProps({
     padding: 0 15px; /* Add padding for better spacing */
   }
 
+  .title-container {
+    margin-bottom: 16px;
+    padding: 0 15px;
+  }
+
+  .title-ellipse img {
+    width: 36px; /* Proportional to mobile font size */
+    height: 36px;
+  }
+
+  .title-ellipse {
+    left: -40px; /* Move further to the left for mobile */
+    top: 43px; /* Moved down by 15px more (28 + 15) */
+  }
+
+  .feature-item.reverse .title-ellipse {
+    right: -40px; /* Move further to the left for reverse layout on mobile */
+    top: 43px; /* Moved down by 15px more (28 + 15) */
+  }
+
   .feature-description {
-    font-size: 14px !important; /* Smaller size for mobile with important */
+    font-size: 16px !important; /* Smaller size for mobile with important */
     line-height: 1.6;
     max-width: 100%;
     padding: 0 15px !important; /* Consistent padding with important */
@@ -459,6 +517,21 @@ const props = defineProps({
     text-justify: none; /* Remove justify for mobile */
     margin-left: 0 !important; /* Override negative margin */
     margin-right: 0 !important; /* Override negative margin */
+    margin-bottom: 24px !important;
+  }
+
+  .feature-points {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 15px;
+  }
+
+  .feature-point {
+    gap: 12px;
+  }
+
+  .feature-point-text {
+    font-size: 14px;
   }
 
   .feature-text {
@@ -477,84 +550,44 @@ const props = defineProps({
 /* Mobile adjustments for ellipses */
 @media (max-width: 768px) {
   .ellipse-decoration {
-    /* Remove generic scaling to fine-tune positions */
+    /* Keep ellipses at full size for mobile like desktop */
     transform: none;
   }
 
-  /* Scaled desktop positions */
+  /* Keep similar proportions to desktop */
   .ellipse-1 {
-    top: 210px;    /* ~350px * 0.6 */
-    left: 310px;   /* ~515px * 0.6 */
-    width: 84px;   /* 140px * 0.6 */
-    height: 84px;  /* 140px * 0.6 */
+    top: 200px;
+    left: 280px;
+    width: 120px; /* Larger size, closer to desktop */
+    height: 120px;
   }
 
   .ellipse-2 {
-    top: -36px;    /* -60px * 0.6 */
-    right: 315px;  /* 525px * 0.6 */
-    width: 60px;   /* 100px * 0.6 */
-    height: 60px;  /* 100px * 0.6 */
-  }
-
-  .ellipse-3 {
-    bottom: 35px;  /* 365px bottom -> 35px from bottom */
-    left: -30px;   /* -50px * 0.6 */
-    width: 72px;   /* 120px * 0.6 */
-    height: 72px;  /* 120px * 0.6 */
-  }
-
-  /* Rectangle adjustments for tablet */
-  .rectangle-decoration {
-    transform: scale(0.7);
-  }
-
-  .rectangle-1 {
-    left: -80px;
-    width: 120px;
+    top: -25px;
+    right: 290px;
+    width: 80px; /* Larger size, closer to desktop */
     height: 80px;
-  }
-
-  .rectangle-2 {
-    right: -60px;
-    width: 100px;
-    height: 70px;
   }
 }
 
 @media (max-width: 480px) {
   .ellipse-decoration {
-    transform: scale(0.4);
+    /* Remove the scale reduction to keep ellipses visible */
+    transform: none;
   }
 
   .ellipse-1 {
-    top: -20px;
-    left: -25px;
+    top: 170px;
+    left: 285px;
+    width: 100px; /* Still substantial size for mobile */
+    height: 100px;
   }
 
   .ellipse-2 {
-    top: -10px;
-    right: -15px;
-  }
-
-  .ellipse-3 {
-    bottom: -15px;
-    left: -10px;
-  }
-
-  /* Rectangle adjustments for mobile */
-  .rectangle-decoration {
-    transform: scale(0.5);
-    opacity: 0.2;
-  }
-
-  .rectangle-1 {
-    left: -50px;
-    top: 40px;
-  }
-
-  .rectangle-2 {
-    right: -40px;
-    bottom: 50px;
+    top: -15px;
+    right: 300px;
+    width: 70px; /* Still substantial size for mobile */
+    height: 70px;
   }
 }
 </style>

@@ -62,11 +62,7 @@
           alt="pencil"
         />
         <img src="/assets/float-pen.png" class="floating pen" alt="pen" />
-        <img
-          src="/assets/float-score.png"
-          class="floating score"
-          alt="score"
-        />
+        <img src="/assets/float-score.png" class="floating score" alt="score" />
       </div>
     </div>
   </section>
@@ -160,7 +156,7 @@ defineProps({
   text-decoration: none;
   transition: background 0.3s ease;
   gap: 10px;
-  border: 2px solid #146657;
+  border: 1px solid #000000;
   margin-left: 3.9rem;
 }
 
@@ -223,13 +219,13 @@ defineProps({
 }
 
 .floating {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 }
 
 .floating-mobile {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
 }
 
 /* Desktop floating positions */
@@ -336,8 +332,8 @@ defineProps({
   }
 
   .floating {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
   }
 
   .hero-visual-mobile {
@@ -358,7 +354,18 @@ defineProps({
 
   .shape-svg {
     height: 100vh;
+    width: 50%;
     bottom: -68px;
+    top: 0;
+    right: 0;
+    position: absolute;
+  }
+
+  .shape-svg img {
+    width: 1000%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
   }
 
   .shape-svg svg {
@@ -391,6 +398,7 @@ defineProps({
 
   .hero-button {
     margin: 1.5rem 0 0 0;
+    margin-bottom: 120px;
   }
 
   .hero-visual-mobile {
@@ -403,8 +411,8 @@ defineProps({
   }
 
   .floating-mobile {
-    width: 32px;
-    height: 32px;
+    width: 42px;
+    height: 42px;
   }
 
   .hero-visual {
@@ -425,7 +433,18 @@ defineProps({
 
   .shape-svg {
     height: 100vh;
+    width: 1000%;
     bottom: -68px;
+    top: 0;
+    right: 0;
+    position: absolute;
+  }
+
+  .shape-svg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
   }
 
   .shape-svg svg {
@@ -441,26 +460,26 @@ defineProps({
   }
 
   .hero-text {
-    margin: 65px 0 0 0;
+    margin: 50px 0 0 0;
     padding: 0;
     max-width: 100%;
   }
 
   .hero-text h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     line-height: 1.2;
     margin: 0 0 1rem 0;
   }
 
   .hero-text p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.5;
-    margin: 55px 0 1.2rem 0;
+    margin: 30px 0 1.2rem 0;
   }
 
   .hero-button {
     padding: 10px 20px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin: 1.2rem 0 0 0;
   }
 
@@ -474,8 +493,8 @@ defineProps({
   }
 
   .floating-mobile {
-    width: 26px;
-    height: 26px;
+    width: 36px;
+    height: 36px;
   }
 
   .hero-visual {
@@ -504,8 +523,8 @@ defineProps({
   }
 
   .floating-mobile {
-    width: 24px;
-    height: 24px;
+    width: 34px;
+    height: 34px;
   }
 }
 
@@ -518,7 +537,18 @@ defineProps({
 
   .shape-svg {
     height: 100vh;
+    width: 50%;
     bottom: -68px;
+    top: 0;
+    right: 0;
+    position: absolute;
+  }
+
+  .shape-svg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
   }
 
   .shape-svg svg {
@@ -561,8 +591,8 @@ defineProps({
   }
 
   .floating-mobile {
-    width: 22px;
-    height: 22px;
+    width: 32px;
+    height: 32px;
   }
 
   .hero-visual {
