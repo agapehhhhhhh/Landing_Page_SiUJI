@@ -439,7 +439,7 @@ export default {
   border: 1px solid #000000;
   padding: 14px 32px;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1rem;
