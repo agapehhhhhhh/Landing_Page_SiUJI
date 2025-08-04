@@ -267,7 +267,7 @@ async function handleSubmit() {
 
 @media (max-width: 480px) {
   .contact-section {
-    padding: 5px;
+    padding: 20px;
     min-height: 100vh;
   }
   
