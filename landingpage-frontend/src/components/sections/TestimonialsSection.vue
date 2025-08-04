@@ -86,6 +86,9 @@
 
     <!-- Custom Navigation for Mobile -->
     <div v-if="!loading && reviews.length > 1" class="testimonial-nav mobile-nav">
+      <button @click="slidePrev" class="nav-btn">
+        Prev
+      </button>
       <div class="nav-progress">
         <span
           v-for="(_, idx) in reviews"
@@ -95,6 +98,9 @@
           style="cursor:pointer"
         ></span>
       </div>
+      <button @click="slideNext" class="nav-btn">
+        Next
+      </button>
     </div>
   </section>
 </template>
@@ -579,14 +585,14 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     margin-top: 18px;
   }
   .nav-btn {
     padding: 10px 20px;
     font-size: 14px;
     min-width: 44px;
-    min-height: 44px;
+    min-height: 22px;
   }
   .nav-progress {
     gap: 6px;
@@ -600,14 +606,21 @@ export default {
     border-radius: 50%;
     background: #cbd5e0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    transform: scale(1);
     opacity: 1;
     display: inline-block;
+  }
+  .nav-dot:hover {
+    background: #a0aec0;
+    transform: scale(1.1);
   }
   .nav-dot.active {
     width: 20px;
     height: 6px;
     border-radius: 3px;
     background: #4cc5bd;
+    transform: scale(1);
     opacity: 1;
   }
 }

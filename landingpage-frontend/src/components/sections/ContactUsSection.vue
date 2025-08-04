@@ -78,7 +78,7 @@ async function handleSubmit() {
   background-color: #38b2ac;
   padding: clamp(20px, 3vw, 40px);
   border-radius: 12px;
-  width: clamp(300px, 90vw, 1400px);
+  width: clamp(300px, 90vw, 1550px);
   max-height: 85vh;
   min-height: clamp(500px, 70vh, 800px);
   display: flex;
@@ -267,7 +267,7 @@ async function handleSubmit() {
 
 @media (max-width: 480px) {
   .contact-section {
-    padding: 5px;
+    padding: 20px;
     min-height: 100vh;
   }
   
