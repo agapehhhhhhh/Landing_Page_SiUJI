@@ -288,7 +288,7 @@ function moveImageToCenter(clickedIndex: number) {
   width: 100%;
   min-height: calc(100vh - 80px); /* 80px sesuai tinggi navbar */
   padding: clamp(8px, 1.5vh, 18px) clamp(8px, 2vw, 20px); /* dari 24px~48px jadi 8px~18px */
-  padding-top: 35px;
+  padding-top: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -378,7 +378,7 @@ function moveImageToCenter(clickedIndex: number) {
   margin: 0 auto;
   padding: 0 clamp(24px, 4vw, 72px);
   min-height: unset; /* atau min-height: 0; */
-  margin-top: 35px;
+  margin-top: 30px;
   box-sizing: border-box;
 }
 
