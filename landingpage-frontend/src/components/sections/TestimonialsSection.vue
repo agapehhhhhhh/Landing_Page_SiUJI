@@ -2,10 +2,9 @@
 <template>
   <section class="testimonial-section">
     <div class="testimonial-header">
-      <h2>What They say</h2>
+      <h2>Apa Kata Mereka</h2>
       <p>
-        Skilline is one powerful online software suite that combines<br />
-        all the tools needed to run a successful school or office.
+        Siuji adalah platform yang dirancang untuk membantu siswa dan guru dalam proses belajar mengajar. Berikut adalah beberapa testimoni dari pengguna kami.
       </p>
     </div>
 
@@ -326,7 +325,7 @@ export default {
 
 .testimonial-header p {
   font-size: clamp(14px, 1.8vw, 18px);
-  color: #555;
+  color: #718096;
   margin-bottom: 40px;
   max-width: 800px;
   margin-left: auto;
