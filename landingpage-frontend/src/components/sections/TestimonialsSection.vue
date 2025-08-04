@@ -351,6 +351,10 @@ export default {
   align-items: flex-start;
 }
 
+.testimonial-card h3{
+  text-align: left !important;
+}
+
 @media (max-width: 900px) {
   .testimonial-card {
     width: clamp(200px, 60vw, 320px);
