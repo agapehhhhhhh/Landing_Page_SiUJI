@@ -347,22 +347,22 @@ const handleDownloadClick = (url: string) => {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Jarak konsisten dari icons ke menu */
+    /* margin-top: 20px; Jarak konsisten dari icons ke menu */
   }
 
   .footer-menu-group {
     flex-direction: row;
     gap: clamp(40px, 8vw, 80px);
-    text-align: center;
+    text-align: center; /* Ubah ke left alignment */
     justify-content: center;
     width: 100%;
   }
 
   .footer-column {
-    align-items: center;
+    align-items: flex-start; /* Ubah ke flex-start untuk align left */
     flex: 0 0 auto;
     width: auto;
-    text-align: center;
+    text-align: left; /* Ubah ke left alignment */
   }
 
   .footer-separator {
@@ -439,13 +439,14 @@ const handleDownloadClick = (url: string) => {
     gap: clamp(30px, 6vw, 60px);
     justify-content: center;
     width: 100%;
+    text-align: center; /* Tambahkan left alignment */
   }
 
   .footer-column {
-    align-items: center;
+    align-items: flex-start; /* Ubah ke flex-start untuk align left */
     flex: 0 0 auto;
     width: auto;
-    text-align: center;
+    text-align: left; /* Ubah ke left alignment */
   }
 
   .footer-buttons {
