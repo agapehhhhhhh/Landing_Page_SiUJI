@@ -8,10 +8,37 @@
 
       <!-- Desktop Navigation -->
       <nav class="nav-links desktop-nav">
-        <a href="#">Product</a>
-        <a href="#">About Us</a>
-        <a href="#">Feature</a>
-        <a href="#">Help</a>
+        <a href="#" @click.prevent="scrollToTop">Product</a>
+        <a href="#about" @click.prevent="scrollToSection('about')">About Us</a>
+        <a href="#features" @click.prevent="scrollToSection('features')"
+          >Feature</a
+        >
+        <div class="dropdown">
+          <a
+            href="#"
+            class="dropdown-toggle"
+            @click.prevent="toggleHelpDropdown"
+          >
+            Help
+            <span class="dropdown-arrow" :class="{ active: showHelpDropdown }"
+              >▼</span
+            >
+          </a>
+          <div class="dropdown-menu" :class="{ active: showHelpDropdown }">
+            <a
+              href="#contact"
+              @click.prevent="scrollToSection('contact')"
+              class="dropdown-item"
+              >Contact Us</a
+            >
+            <a
+              href="#faq"
+              @click.prevent="scrollToSection('faq')"
+              class="dropdown-item"
+              >FAQ</a
+            >
+          </div>
+        </div>
       </nav>
 
       <!-- Desktop Login Button -->
@@ -40,27 +67,49 @@
           <div class="mobile-nav-section">
             <h3 class="section-title">Navigation</h3>
             <nav class="mobile-nav-links">
-              <a href="#" @click="closeMobileMenu" class="nav-item">
+              <a href="#" @click.prevent="scrollToTopMobile" class="nav-item">
                 <div class="nav-item-content">
                   <span class="nav-text">Product</span>
                 </div>
                 <span class="nav-arrow">→</span>
               </a>
-              <a href="#" @click="closeMobileMenu" class="nav-item">
+              <a
+                href="#about"
+                @click.prevent="scrollToSectionMobile('about')"
+                class="nav-item"
+              >
                 <div class="nav-item-content">
                   <span class="nav-text">About Us</span>
                 </div>
                 <span class="nav-arrow">→</span>
               </a>
-              <a href="#" @click="closeMobileMenu" class="nav-item">
+              <a
+                href="#features"
+                @click.prevent="scrollToSectionMobile('features')"
+                class="nav-item"
+              >
                 <div class="nav-item-content">
                   <span class="nav-text">Feature</span>
                 </div>
                 <span class="nav-arrow">→</span>
               </a>
-              <a href="#" @click="closeMobileMenu" class="nav-item">
+              <a
+                href="#contact"
+                @click.prevent="scrollToSectionMobile('contact')"
+                class="nav-item"
+              >
                 <div class="nav-item-content">
-                  <span class="nav-text">Help</span>
+                  <span class="nav-text">Contact Us</span>
+                </div>
+                <span class="nav-arrow">→</span>
+              </a>
+              <a
+                href="#faq"
+                @click.prevent="scrollToSectionMobile('faq')"
+                class="nav-item"
+              >
+                <div class="nav-item-content">
+                  <span class="nav-text">FAQ</span>
                 </div>
                 <span class="nav-arrow">→</span>
               </a>
@@ -90,6 +139,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 const isScrolled = ref(false);
 const showMobileMenu = ref(false);
+const showHelpDropdown = ref(false);
 const isMobile = ref(false);
 
 const handleScroll = () => {
@@ -113,6 +163,132 @@ const toggleMobileMenu = () => {
   }
 };
 
+const toggleHelpDropdown = () => {
+  showHelpDropdown.value = !showHelpDropdown.value;
+};
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+const scrollToSection = (sectionId) => {
+  showHelpDropdown.value = false; // Close dropdown when clicking
+
+  // Try multiple possible IDs for the section
+  const possibleIds = [
+    sectionId,
+    sectionId + "-section",
+    sectionId + "Section",
+  ];
+  let element = null;
+
+  for (const id of possibleIds) {
+    element = document.getElementById(id);
+    if (element) break;
+  }
+
+  // If still not found, try querySelector with class names
+  if (!element) {
+    const possibleClasses = [
+      `.${sectionId}`,
+      `.${sectionId}-section`,
+      `.section-${sectionId}`,
+      `[data-section="${sectionId}"]`,
+    ];
+
+    for (const className of possibleClasses) {
+      element = document.querySelector(className);
+      if (element) break;
+    }
+  }
+
+  if (element) {
+    let navbarHeight = 60; // Reduced offset for better positioning
+
+    // Special cases for different sections
+    if (sectionId === "about") {
+      navbarHeight = 80; // More offset for About Us since it was too low
+    } else if (sectionId === "faq") {
+      navbarHeight = 40; // Less offset for FAQ
+    } else if (sectionId === "features") {
+      navbarHeight = 70; // Adjusted offset for Features
+    }
+
+    const elementPosition = element.offsetTop - navbarHeight;
+    window.scrollTo({
+      top: elementPosition,
+      behavior: "smooth",
+    });
+  } else {
+    console.warn(`Section with ID "${sectionId}" not found`);
+  }
+};
+
+const scrollToTopMobile = () => {
+  closeMobileMenu();
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+const scrollToSectionMobile = (sectionId) => {
+  closeMobileMenu();
+  setTimeout(() => {
+    // Try multiple possible IDs for the section
+    const possibleIds = [
+      sectionId,
+      sectionId + "-section",
+      sectionId + "Section",
+    ];
+    let element = null;
+
+    for (const id of possibleIds) {
+      element = document.getElementById(id);
+      if (element) break;
+    }
+
+    // If still not found, try querySelector with class names
+    if (!element) {
+      const possibleClasses = [
+        `.${sectionId}`,
+        `.${sectionId}-section`,
+        `.section-${sectionId}`,
+        `[data-section="${sectionId}"]`,
+      ];
+
+      for (const className of possibleClasses) {
+        element = document.querySelector(className);
+        if (element) break;
+      }
+    }
+
+    if (element) {
+      let navbarHeight = 60; // Reduced offset for better positioning
+
+      // Special cases for different sections
+      if (sectionId === "about") {
+        navbarHeight = 80; // More offset for About Us since it was too low
+      } else if (sectionId === "faq") {
+        navbarHeight = 40; // Less offset for FAQ
+      } else if (sectionId === "features") {
+        navbarHeight = 70; // Adjusted offset for Features
+      }
+
+      const elementPosition = element.offsetTop - navbarHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      });
+    } else {
+      console.warn(`Section with ID "${sectionId}" not found`);
+    }
+  }, 300); // Wait for mobile menu to close
+};
+
 const closeMobileMenu = () => {
   showMobileMenu.value = false;
   document.body.style.overflow = "auto";
@@ -133,11 +309,16 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Enable smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 1rem 0;
+  padding: 0.375rem 0;
   z-index: 50;
   transition: all 0.3s ease;
   background-color: transparent;
@@ -164,11 +345,11 @@ onUnmounted(() => {
 
 .logo {
   margin-left: 0px;
-  transform: translateX(-180px);
+  transform: translateX(0);
 }
 
 .logo img {
-  height: 50px;
+  height: 42px;
 }
 
 /* Desktop Navigation */
@@ -191,6 +372,78 @@ onUnmounted(() => {
   background: none;
 }
 
+/* Dropdown Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  text-decoration: none;
+  color: #1c1c1c;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.dropdown-toggle:hover {
+  color: #4cc5bd;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.active {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 140px;
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.dropdown-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #1c1c1c;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #4cc5bd;
+  color: white;
+}
+
 .desktop-login {
   flex-shrink: 0;
   padding: 8px 20px;
@@ -198,10 +451,10 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   transition: all 0.3s;
-  border: 2px solid #000;
+  border: 1px solid #000;
   cursor: pointer;
   color: #1c1c1c;
-  transform: translateX(180px);
+  transform: translateX(0);
 }
 
 .desktop-login:hover {
@@ -285,7 +538,7 @@ onUnmounted(() => {
 }
 
 .mobile-logo img {
-  height: 60px;
+  height: 50px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
@@ -380,7 +633,7 @@ onUnmounted(() => {
 .mobile-login-button {
   width: 100%;
   padding: 24px 32px;
-  border-radius: 10px;
+  border-radius: 4px;
   background: #4cc5bd;
   color: white;
   font-weight: 600;
@@ -450,14 +703,14 @@ onUnmounted(() => {
 
   /* Fix logo position for mobile */
   .logo {
-    transform: translateX(0); /* Reset transform untuk mobile */
+    transform: translateX(20px); /* Move logo 10px to the right for mobile */
     margin-left: 0;
   }
 
   .hamburger-button {
     display: flex;
     margin-left: auto;
-    margin-right: 25px; /* Geser ke kiri agar tidak terpotong */
+    margin-right: 10px; /* Move hamburger 5px to the right (was 25px, now 20px) */
   }
 
   .desktop-nav,
@@ -466,7 +719,7 @@ onUnmounted(() => {
   }
 
   .logo img {
-    height: 40px;
+    height: 34px;
   }
 }
 
@@ -477,17 +730,19 @@ onUnmounted(() => {
 
   /* Ensure logo is visible on very small screens */
   .logo {
-    transform: translateX(0);
+    transform: translateX(
+      10px
+    ); /* Keep consistent positioning on very small screens */
     margin-left: 0;
   }
 
   .logo img {
-    height: 36px; /* Slightly smaller for very small screens */
+    height: 30px; /* Slightly smaller for very small screens */
   }
 
   /* Extra margin for hamburger on small screens */
   .hamburger-button {
-    margin-right: 25px; /* Lebih dekat ke tepi untuk layar kecil */
+    margin-right: 20px; /* Keep consistent positioning with mobile */
   }
 
   .mobile-menu-content {
@@ -533,6 +788,17 @@ onUnmounted(() => {
 
   .container {
     padding: 0 24px;
+  }
+
+  /* Reset logo position for tablet */
+  .logo {
+    transform: translateX(0);
+    margin-left: 0;
+  }
+
+  /* Reset login button position for tablet */
+  .desktop-login {
+    transform: translateX(0);
   }
 }
 
