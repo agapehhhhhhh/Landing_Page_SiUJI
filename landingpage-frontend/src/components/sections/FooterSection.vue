@@ -66,8 +66,9 @@
       <div class="footer-bottom">
         <div class="footer-bottom-content">
           <div class="footer-terms">
-            <p><a href="#terms">Terms of Condition</a></p>
-            <p><a href="#privacy">Privacy Policy</a></p>
+            <p><a href="#terms">Syarat dan Ketentuan</a></p>
+            <p><a href="#cookies"> | </a></p>
+            <p><a href="#privacy">Kebijakan Privasi</a></p>
           </div>
           
           <div class="footer-buttons-copyright">
@@ -123,7 +124,7 @@ const handleDownloadClick = (url: string) => {
   color: white;
   padding: clamp(10px, 6vh, 40px) 0;
   font-family: 'Inter';
-  font-size: clamp(13px, 1.1vw, 16px);
+  font-size: clamp(14px, 1.1vw, 16px);
 }
 
 .footer-container {
@@ -164,7 +165,7 @@ const handleDownloadClick = (url: string) => {
 }
 
 .footer-contact-text {
-  font-size: clamp(12px, 1vw, 15px);
+  font-size: clamp(14px, 1vw, 15px);
   color: #cbd5e1;
   line-height: 1.5;
   margin-bottom: clamp(8px, 1vh, 12px);
@@ -197,8 +198,8 @@ const handleDownloadClick = (url: string) => {
 }
 
 .footer-icons img {
-  height: clamp(10px, 2.5vw, 20px);
-  width: clamp(10px, 2.5vw, 20px);
+  height: clamp(20px, 2.5vw, 20px);
+  width: clamp(20px, 2.5vw, 20px);
   transition: opacity 0.3s ease;
 }
 
@@ -233,7 +234,7 @@ const handleDownloadClick = (url: string) => {
 }
 
 .footer-column p {
-  font-size: clamp(12px, 1vw, 15px);
+  font-size: clamp(14px, 1vw, 15px);
   line-height: 1.4;
   margin: 0;
 }
@@ -283,7 +284,7 @@ const handleDownloadClick = (url: string) => {
 }
 
 .footer-terms p {
-  font-size: clamp(12px, 1vw, 15px);
+  font-size: clamp(14px, 1vw, 15px);
   margin: 0;
 }
 
@@ -321,7 +322,7 @@ const handleDownloadClick = (url: string) => {
 @media (max-width: 768px) {
   .footer-main {
     flex-direction: column;
-    gap: clamp(30px, 5vh, 40px);
+    gap: 30px; /* Jarak konsisten antar elemen utama */
     text-align: center;
   }
 
@@ -333,7 +334,12 @@ const handleDownloadClick = (url: string) => {
   .footer-left-content {
     flex-direction: column;
     align-items: flex-start;
-    gap: clamp(15px, 2vh, 20px);
+    gap: 20px; /* Jarak konsisten antara logo dan contact */
+  }
+
+  .footer-icons {
+    justify-content: flex-start;
+    margin-top: 20px; /* Jarak konsisten dari contact ke icons */
   }
 
   .footer-center {
@@ -341,6 +347,7 @@ const handleDownloadClick = (url: string) => {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 20px; /* Jarak konsisten dari icons ke menu */
   }
 
   .footer-menu-group {
@@ -358,20 +365,24 @@ const handleDownloadClick = (url: string) => {
     text-align: center;
   }
 
+  .footer-separator {
+    margin: 30px 0; /* Jarak konsisten untuk separator */
+  }
+
   .footer-bottom-content {
     flex-direction: column;
-    gap: clamp(15px, 3vw, 20px);
+    gap: 20px; /* Jarak konsisten antar elemen bottom */
     text-align: center;
     align-items: center;
     justify-content: center;
     position: relative;
-    padding-bottom: clamp(30px, 5vw, 40px);
+    padding-bottom: 60px; /* Space untuk copyright di bawah */
   }
 
   .footer-buttons-copyright {
     order: 1;
     align-items: center;
-    gap: clamp(8px, 2vw, 12px);
+    gap: 20px; /* Jarak konsisten antara buttons dan copyright */
     justify-content: center;
   }
 
@@ -386,7 +397,7 @@ const handleDownloadClick = (url: string) => {
   .footer-buttons-copyright .copyright {
     order: 3;
     text-align: center;
-    margin-top: clamp(15px, 3vw, 20px);
+    margin-top: 20px; /* Jarak konsisten ke copyright */
     background: transparent;
     position: absolute;
     left: 50%;
@@ -403,6 +414,7 @@ const handleDownloadClick = (url: string) => {
     align-self: center;
     width: 100%;
     display: flex;
+    margin-top: 20px; /* Jarak konsisten dari buttons ke terms */
   }
 
   .footer-buttons :deep(.download-btn) {
@@ -412,12 +424,8 @@ const handleDownloadClick = (url: string) => {
   }
 
   .footer-buttons :deep(.icon) {
-    width: 16px;
-    height: 16px;
-  }
-
-  .footer-icons {
-    justify-content: flex-start;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -447,7 +455,7 @@ const handleDownloadClick = (url: string) => {
   .footer-buttons :deep(.download-btn) {
     width: clamp(110px, 18vw, 120px);
     height: clamp(25px, 5vw, 32px);
-    font-size: 8px;
+    font-size: 9px;
   }
 
   .footer-buttons :deep(.icon) {
