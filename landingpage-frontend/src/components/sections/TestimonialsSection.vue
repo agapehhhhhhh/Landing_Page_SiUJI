@@ -530,7 +530,7 @@ export default {
   .testimonial-section {
     padding: 16px 0;
     min-height: calc(100vh - 80px); /* Restore min-height */
-    overflow: visible; /* Change from hidden to visible */
+    overflow: hidden; /* Change from hidden to visible */
     background: radial-gradient(
       circle at center,
       rgba(107, 194, 161, 0.5) 0%,
