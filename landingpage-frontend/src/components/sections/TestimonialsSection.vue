@@ -304,8 +304,8 @@ export default {
   background: radial-gradient(
     circle at center,
     rgba(107, 194, 161, 0.5) 0%,
-    rgba(107, 194, 161, 0.3) 30%,
-    rgba(255, 255, 255, 0.8) 55%,
+    rgba(107, 194, 161, 0.3) 20%,
+    rgba(255, 255, 255, 0.8) 45%,
     #ffffff 100%
   );
   background-size: 100% 100%; /* Reduced from 100% 100% to make circle smaller */
