@@ -378,7 +378,7 @@ function moveImageToCenter(clickedIndex: number) {
   margin: 0 auto;
   padding: 0 clamp(24px, 4vw, 72px);
   min-height: unset; /* atau min-height: 0; */
-  margin-top: 30px;
+  margin-top: 35px;
   box-sizing: border-box;
 }
 
