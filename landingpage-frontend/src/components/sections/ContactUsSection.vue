@@ -5,9 +5,7 @@
       <div class="form-column">
         <h2 class="section-title">Hubungi Kami!</h2>
         <p class="section-description">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-          Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus saut lioad sapati elit
-          bumjerit mus.
+          Hubungi tim kami untuk pertanyaan, masukan, atau kolaborasi. Kami akan dengan senang hati membantu Anda!
         </p>
 
         <form class="contact-form" @submit.prevent="handleSubmit">
