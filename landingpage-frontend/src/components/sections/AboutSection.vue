@@ -678,6 +678,10 @@ function moveImageToCenter(clickedIndex: number) {
 
 /* === Mobile Only === */
 @media (max-width: 768px) {
+  .section-title {
+    max-width: 300px;
+    margin: 0;
+  }
   .section-content {
     display: flex;
     flex-direction: column;
@@ -745,7 +749,7 @@ function moveImageToCenter(clickedIndex: number) {
 
   .single-image {
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
