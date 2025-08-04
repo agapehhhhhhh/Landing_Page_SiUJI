@@ -207,42 +207,45 @@ const handleButtonClick = (url: string) => {
 
 @media (max-width: 640px) {
   .available-section {
-    padding: 1rem 0.5rem;
+    padding: 2rem 1rem; /* Perbesar padding */
     max-width: 100vw;
   }
   .headline {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-size: 1.6rem; /* Perbesar font headline */
+    margin-bottom: 1.5rem; /* Perbesar margin */
   }
   .platform-toggle {
-    gap: 0.5rem;
-    margin-bottom: 1.2rem;
+    gap: 0.8rem; /* Perbesar gap */
+    margin-bottom: 1rem; /* Perbesar margin */
     flex-wrap: wrap;
   }
   .mockup-container {
-    min-height: 180px;
-    margin-bottom: 1.2rem;
+    min-height: 280px; /* Perbesar container */
+    margin-bottom: 1rem; /* Perbesar margin */
+  }
+  .mockup-wrapper {
+    aspect-ratio: 4 / 3;
   }
   .mockup-image {
     max-width: 95vw;
-    border-radius: 10px;
+    border-radius: 10px; /* Perbesar border radius */
   }
   .info-banner {
     flex-direction: column;
     align-items: center;
-    gap: 0.7rem;
-    padding: 1rem 0.7rem;
-    margin-top: 1.2rem;
-    font-size: 0.95rem;
+    gap: 1rem; /* Perbesar gap */
+    padding: 1rem 1rem; /* Perbesar padding */
+    margin-top: 1rem; /* Perbesar margin top */
+    font-size: 1rem; /* Perbesar font size */
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
   }
   .info-text {
-    font-size: 0.9rem;
+    font-size: 1rem; /* Perbesar font text */
     flex: unset;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem; /* Perbesar margin */
     text-align: center;
   }
 }
