@@ -64,18 +64,14 @@
             >
               Prev
             </button>
-            <!-- Dots untuk ≤ 4 fitur -->
-            <div v-if="whyChooseData.points.length <= 4" class="nav-progress">
+            <!-- Dots untuk semua fitur -->
+            <div class="nav-progress">
               <span
                 v-for="(_, index) in whyChooseData.points"
                 :key="index"
                 :class="['nav-dot', { active: index === activeFeatureIndex }]"
                 @click="setActive(index)"
               ></span>
-            </div>
-            <!-- Counter untuk > 4 fitur -->
-            <div v-else class="nav-progress">
-              <span class="nav-counter">{{ activeFeatureIndex + 1 }} / {{ whyChooseData.points.length }}</span>
             </div>
             <button
               @click="nextFeature"
@@ -387,21 +383,6 @@ function prevFeature() {
     border-radius: 3px;
     background: #4cc5bd;
     transform: scale(1);
-  }
-  
-  .nav-counter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 48px;
-    padding: 0 8px;
-  }
-  
-  .nav-counter span {
-    font-size: 0.9rem;
-    color: #333;
-    font-weight: 600;
-    text-align: center;
   }
   .vertical-divider {
     display: none;
