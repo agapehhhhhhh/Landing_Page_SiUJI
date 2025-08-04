@@ -70,6 +70,8 @@ async function handleSubmit() {
   min-height: calc(100vh - 80px); /* Jaga jarak atas-bawah tetap */
   box-sizing: border-box;
   font-family: 'Inter';
+  margin-bottom: 30px;
+  margin-top: -30px;
 }
 
 .contact-container {
