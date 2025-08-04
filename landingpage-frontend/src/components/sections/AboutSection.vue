@@ -301,6 +301,7 @@ function moveImageToCenter(clickedIndex: number) {
   background: white;
   border-radius: 20px;
   padding: clamp(20px, 1.5vw, 40px);
+  padding-top: 0;
   text-align: center;
   max-width: clamp(350px, 95vw, 1200px); /* Lebih lebar */
   margin: 0 auto 20px; /* dari clamp(18px, 2vh, 28px) -> 12px saja, atau bisa 8px kalau mau lebih dekat */

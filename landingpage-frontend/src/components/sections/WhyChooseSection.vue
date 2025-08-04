@@ -174,7 +174,7 @@ function prevFeature() {
   text-align: center;
 }
 .section-title {
-  font-size: clamp(2rem, 3.5vw + 1rem, 3.5rem);
+  font-size: clamp(2rem, 3.5vw + 1rem, 3rem);
   font-weight: 700;
   margin-bottom: 3rem;
 }
