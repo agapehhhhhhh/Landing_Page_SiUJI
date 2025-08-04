@@ -485,12 +485,12 @@ const props = defineProps({
     line-height: 1.3;
     margin-left: 0 !important; /* Override negative margin */
     margin-right: 0 !important; /* Override negative margin */
-    padding: 0 15px; /* Add padding for better spacing */
+    padding: 0 10px; /* Reduced padding for better left alignment */
   }
 
   .title-container {
     margin-bottom: 16px;
-    padding: 0 15px;
+    padding: 0 5px; /* Reduced padding to match title */
   }
 
   .title-ellipse img {
@@ -499,13 +499,14 @@ const props = defineProps({
   }
 
   .title-ellipse {
-    left: -40px; /* Move further to the left for mobile */
-    top: 43px; /* Moved down by 15px more (28 + 15) */
+    left: -2px; /* Position for mobile */
+    top: 28px; /* Raised position for mobile */
   }
 
   .feature-item.reverse .title-ellipse {
-    right: -40px; /* Move further to the left for reverse layout on mobile */
-    top: 43px; /* Moved down by 15px more (28 + 15) */
+    left: -2px; /* Same position as regular layout on mobile */
+    right: auto; /* Reset right positioning */
+    top: 28px; /* Same position as regular layout on mobile */
   }
 
   .feature-description {

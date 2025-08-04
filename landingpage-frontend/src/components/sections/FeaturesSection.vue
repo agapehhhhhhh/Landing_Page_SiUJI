@@ -140,6 +140,7 @@ onMounted(() => {
   padding: 80px 0;
   position: relative;
   overflow: hidden;
+  background-color: white;
 }
 
 .container {

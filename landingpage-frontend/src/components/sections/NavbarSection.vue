@@ -42,7 +42,9 @@
       </nav>
 
       <!-- Desktop Login Button -->
-      <button class="login-button desktop-login">Login</button>
+      <button class="login-button desktop-login" @click="handleLogin">
+        Login
+      </button>
 
       <!-- Mobile Hamburger Button -->
       <button
@@ -118,7 +120,7 @@
 
           <!-- Login Section -->
           <div class="mobile-login-section">
-            <button class="mobile-login-button" @click="closeMobileMenu">
+            <button class="mobile-login-button" @click="handleMobileLogin">
               <span class="login-text">Sign In to Your Account</span>
             </button>
             <p class="login-subtitle">Access your dashboard and settings</p>
@@ -294,6 +296,17 @@ const closeMobileMenu = () => {
   document.body.style.overflow = "auto";
 };
 
+const handleLogin = () => {
+  const loginUrl = import.meta.env.VITE_LOGIN_URL;
+  window.location.href = loginUrl;
+};
+
+const handleMobileLogin = () => {
+  closeMobileMenu();
+  const loginUrl = import.meta.env.VITE_LOGIN_URL;
+  window.location.href = loginUrl;
+};
+
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
   window.addEventListener("resize", handleResize);
@@ -336,28 +349,30 @@ html {
   max-width: 1200px;
   margin: auto;
   padding: 0 20px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
 }
 
 .logo {
-  margin-left: 0px;
+  margin-left: 0; /* Reset logo position for desktop */
   transform: translateX(0);
 }
 
 .logo img {
-  height: 42px;
+  height: 52px; /* Increased by 10px from 42px */
 }
 
 /* Desktop Navigation */
 .desktop-nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   gap: 2rem;
-  flex-grow: 1;
-  justify-content: center;
+  z-index: 10;
 }
 
 .nav-links a {
@@ -446,15 +461,16 @@ html {
 
 .desktop-login {
   flex-shrink: 0;
-  padding: 8px 20px;
+  padding: 10px 24px; /* Increased padding from 8px 20px */
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.9);
   font-weight: 500;
+  font-size: 15px; /* Increased font size */
   transition: all 0.3s;
   border: 1px solid #000;
   cursor: pointer;
   color: #1c1c1c;
-  transform: translateX(0);
+  transform: translateX(0); /* Reset login button position for desktop */
 }
 
 .desktop-login:hover {
@@ -710,7 +726,7 @@ html {
   .hamburger-button {
     display: flex;
     margin-left: auto;
-    margin-right: 10px; /* Move hamburger 5px to the right (was 25px, now 20px) */
+    margin-right: 0px; /* Move hamburger 10px more to the right (was 10px, now 20px) */
   }
 
   .desktop-nav,
@@ -719,7 +735,7 @@ html {
   }
 
   .logo img {
-    height: 34px;
+    height: 44px; /* Increased by 10px from 34px */
   }
 }
 
@@ -737,12 +753,12 @@ html {
   }
 
   .logo img {
-    height: 30px; /* Slightly smaller for very small screens */
+    height: 40px; /* Increased by 10px from 30px */
   }
 
   /* Extra margin for hamburger on small screens */
   .hamburger-button {
-    margin-right: 20px; /* Keep consistent positioning with mobile */
+    margin-right: 10px; /* Move hamburger 10px more to the right (was 20px, now 30px) */
   }
 
   .mobile-menu-content {
@@ -790,13 +806,13 @@ html {
     padding: 0 24px;
   }
 
-  /* Reset logo position for tablet */
+  /* Keep normal positioning for tablet */
   .logo {
     transform: translateX(0);
     margin-left: 0;
   }
 
-  /* Reset login button position for tablet */
+  /* Keep normal positioning for tablet */
   .desktop-login {
     transform: translateX(0);
   }

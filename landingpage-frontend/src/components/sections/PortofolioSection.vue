@@ -22,7 +22,8 @@ import { computed, onMounted, ref } from "vue";
 const props = defineProps({
   title: {
     type: String,
-    default: "SIUJI Telah Dipercaya oleh Institusi Pendidikan di Seluruh Indonesia",
+    default:
+      "SIUJI Telah Dipercaya oleh Institusi Pendidikan di Seluruh Indonesia",
   },
   logos: {
     type: Array,
@@ -132,8 +133,9 @@ onMounted(() => {
 <style scoped>
 .portfolio {
   text-align: center;
-  padding: 4rem 2rem;
-  background: #f6fdfc;
+  padding: 1rem 2rem 4rem; /* Reduced top padding from 4rem to 2rem */
+  background: white;
+  margin-bottom: 6rem; /* Added bottom margin */
 }
 
 .portfolio-title {
