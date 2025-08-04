@@ -529,8 +529,18 @@ export default {
 @media (max-width: 600px) {
   .testimonial-section {
     padding: 16px 0;
-    min-height: 0;
-    overflow: hidden;
+    min-height: calc(100vh - 80px); /* Restore min-height */
+    overflow: visible; /* Change from hidden to visible */
+    background: radial-gradient(
+      circle at center,
+      rgba(107, 194, 161, 0.5) 0%,
+      rgba(107, 194, 161, 0.3) 50%,
+      rgba(255, 255, 255, 0.8) 80%,
+      #ffffff 100%
+    ); /* Ensure radial gradient is applied */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .swiper-container {
     padding: 0 20px;
