@@ -2,10 +2,10 @@
 <template>
   <section class="testimonial-section">
     <div class="testimonial-header">
-      <h2>What They say</h2>
+      <h2>Apa Kata Mereka</h2>
       <p>
-        Skilline is one powerful online software suite that combines<br />
-        all the tools needed to run a successful school or office.
+        Siuji adalah platform yang dirancang untuk membantu siswa dan guru dalam proses belajar mengajar. Berikut adalah beberapa testimoni dari pengguna kami.
+
       </p>
     </div>
 
@@ -15,7 +15,7 @@
       <div v-if="loading" class="loading-testimonials">
         <p>Loading testimonials...</p>
       </div>
-      
+
       <!-- Testimonials swiper -->
       <Swiper
         v-else-if="reviews.length > 0"
@@ -58,7 +58,7 @@
           </div>
         </SwiperSlide>
       </Swiper>
-      
+
       <!-- No testimonials state -->
       <div v-else-if="!loading && reviews.length === 0" class="no-testimonials">
         <p>No testimonials available at the moment.</p>
@@ -304,8 +304,8 @@ export default {
   background: radial-gradient(
     circle at center,
     rgba(107, 194, 161, 0.5) 0%,
-    rgba(107, 194, 161, 0.3) 30%,
-    rgba(255, 255, 255, 0.8) 55%,
+    rgba(107, 194, 161, 0.3) 20%,
+    rgba(255, 255, 255, 0.8) 45%,
     #ffffff 100%
   );
   background-size: 100% 100%; /* Reduced from 100% 100% to make circle smaller */
@@ -326,7 +326,7 @@ export default {
 
 .testimonial-header p {
   font-size: clamp(14px, 1.8vw, 18px);
-  color: #555;
+  color: #718096;
   margin-bottom: 40px;
   max-width: 800px;
   margin-left: auto;
@@ -530,8 +530,18 @@ export default {
 @media (max-width: 600px) {
   .testimonial-section {
     padding: 16px 0;
-    min-height: 0;
-    overflow: hidden;
+    min-height: calc(100vh - 80px); /* Restore min-height */
+    overflow: visible; /* Change from hidden to visible */
+    background: radial-gradient(
+      circle at center,
+      rgba(107, 194, 161, 0.5) 0%,
+      rgba(107, 194, 161, 0.3) 50%,
+      rgba(255, 255, 255, 0.8) 80%,
+      #ffffff 100%
+    ); /* Ensure radial gradient is applied */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .swiper-container {
     padding: 0 20px;

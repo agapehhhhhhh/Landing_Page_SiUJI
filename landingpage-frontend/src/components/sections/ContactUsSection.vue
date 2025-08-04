@@ -3,20 +3,20 @@
     <div class="contact-container">
       <!-- Left Column: Form Contact -->
       <div class="form-column">
-        <h2 class="section-title">Get In Touch With us!</h2>
+        <h2 class="section-title">Hubungi Kami!</h2>
         <p class="section-description">
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
           Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus saut lioad sapati elit
           bumjerit mus.
         </p>
-        
+
         <form class="contact-form" @submit.prevent="handleSubmit">
-          <input type="text" v-model="form.name" placeholder="What is your name (or institution)? *" required />
-          <input type="tel" v-model="form.phone" placeholder="What is your phone number? *" required />
-          <input type="text" v-model="form.email" placeholder="Email address *" required />
-          <textarea v-model="form.message" placeholder="Your message... *" required></textarea>
+          <input type="text" v-model="form.name" placeholder="Siapa nama anda (atau institusi)? *" required />
+          <input type="tel" v-model="form.phone" placeholder="Apa nomor anda? *" required />
+          <input type="text" v-model="form.email" placeholder="Alamat Email *" required />
+          <textarea v-model="form.message" placeholder="Pesan anda... *" required></textarea>
           <button type="submit" class="send-button" :disabled="sending">
-            {{ sending ? 'Sending...' : 'Send Message >' }}
+            {{ sending ? 'Sending...' : 'Kirim Pesan >' }}
           </button>
           <div v-if="success" class="success-message" style="color: #fff; margin-top: 10px; font-weight: bold;">Pesan berhasil dikirim!</div>
           <div v-if="error" class="error-message" style="color: #ffdddd; margin-top: 10px; font-weight: bold;">{{ error }}</div>
