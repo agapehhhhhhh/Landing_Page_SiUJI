@@ -1,9 +1,12 @@
 <template>
   <section class="pricing-section" id="pricing">
     <div class="pricing-header">
-      <h2>Choose Plan</h2>
-      <h3>That's Right For You</h3>
-      <p>Choose plan that works best for you, feel free to contact us</p>
+      <h2>Pilih Paket</h2>
+      <h3>Yang Tepat Untuk Anda</h3>
+      <p>
+        Pilih paket yang paling sesuai dengan kebutuhan Anda, jangan ragu untuk
+        menghubungi kami
+      </p>
 
       <!-- Billing Toggle -->
       <div

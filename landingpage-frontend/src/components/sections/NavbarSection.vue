@@ -356,7 +356,7 @@ html {
 }
 
 .logo {
-  margin-left: 0; /* Reset logo position for desktop */
+  margin-left: -180px; /* Move logo 100px to the left */
   transform: translateX(0);
 }
 
@@ -470,7 +470,9 @@ html {
   border: 1px solid #000;
   cursor: pointer;
   color: #1c1c1c;
-  transform: translateX(0); /* Reset login button position for desktop */
+  transform: translateX(
+    180px
+  ); /* Move login button 150px to the right (was 100px) */
 }
 
 .desktop-login:hover {
@@ -719,8 +721,8 @@ html {
 
   /* Fix logo position for mobile */
   .logo {
-    transform: translateX(20px); /* Move logo 10px to the right for mobile */
-    margin-left: 0;
+    transform: translateX(-100px); /* Move logo 10px to the right for mobile */
+    margin-left: 0; /* Reset to original mobile positioning */
   }
 
   .hamburger-button {
@@ -749,7 +751,7 @@ html {
     transform: translateX(
       10px
     ); /* Keep consistent positioning on very small screens */
-    margin-left: 0;
+    margin-left: 0px; /* Reset to original mobile positioning */
   }
 
   .logo img {
@@ -758,7 +760,7 @@ html {
 
   /* Extra margin for hamburger on small screens */
   .hamburger-button {
-    margin-right: 10px; /* Move hamburger 10px more to the right (was 20px, now 30px) */
+    margin-right: 15px; /* Move hamburger 10px more to the right (was 20px, now 30px) */
   }
 
   .mobile-menu-content {
@@ -806,15 +808,17 @@ html {
     padding: 0 24px;
   }
 
-  /* Keep normal positioning for tablet */
+  /* Keep positioning for tablet */
   .logo {
     transform: translateX(0);
-    margin-left: 0;
+    margin-left: -100px; /* Keep logo 100px to the left for tablet */
   }
 
-  /* Keep normal positioning for tablet */
+  /* Keep positioning for tablet */
   .desktop-login {
-    transform: translateX(0);
+    transform: translateX(
+      150px
+    ); /* Keep login button 150px to the right for tablet (was 100px) */
   }
 }
 

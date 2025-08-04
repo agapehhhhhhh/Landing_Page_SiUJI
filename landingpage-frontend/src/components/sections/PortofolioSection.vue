@@ -135,7 +135,6 @@ onMounted(() => {
   text-align: center;
   padding: 1rem 2rem 4rem; /* Reduced top padding from 4rem to 2rem */
   background: white;
-  margin-bottom: 6rem; /* Added bottom margin */
 }
 
 .portfolio-title {
