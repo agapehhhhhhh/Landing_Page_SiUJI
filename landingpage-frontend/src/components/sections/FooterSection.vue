@@ -48,14 +48,14 @@
           <div class="footer-menu-group">
             <div class="footer-column">
               <h4>SIUJI</h4>
-              <p><a href="#about">About Us</a></p>
-              <p><a href="#why">Why Choose Us</a></p>
-              <p><a href="#pricing">Pricing</a></p>
+              <p><a href="#about" @click="scrollToSection">About Us</a></p>
+              <p><a href="#why" @click="scrollToSection">Why Choose Us</a></p>
+              <p><a href="#pricing" @click="scrollToSection">Pricing</a></p>
             </div>
             <div class="footer-column">
               <h4>Help</h4>
               <p><a href="#user-guide">User Guide</a></p>
-              <p><a href="#faq">FAQs</a></p>
+              <p><a href="#faq" @click="scrollToSection">FAQs</a></p>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@
           <div class="footer-terms">
             <p><a href="#terms">Syarat dan Ketentuan</a></p>
             <p><a href="#cookies"> | </a></p>
-            <p><a href="#privacy">Kebijakan Privasi</a></p>
+            <p><RouterLink to="/privacy-policy">Kebijakan Privasi</RouterLink></p>
           </div>
           
           <div class="footer-buttons-copyright">
@@ -103,6 +103,7 @@ import DownloadButton from '@/components/common/DownloadButton.vue'
 import FacebookIcon from '@/assets/fb-vector.svg'
 import InstagramIcon from '@/assets/ig-vector.svg'
 import LinkedInIcon from '@/assets/in-vector.svg'
+import { RouterLink } from 'vue-router'
 
 // Download links - can be easily configured
 const downloadLinks = {
@@ -115,6 +116,23 @@ const downloadLinks = {
 const handleDownloadClick = (url: string) => {
   console.log('Download button clicked:', url)
   // Add analytics tracking here if needed
+}
+
+// Handle smooth scroll to section
+const scrollToSection = (event: Event) => {
+  event.preventDefault()
+  const target = event.target as HTMLAnchorElement
+  const sectionId = target.getAttribute('href')?.substring(1)
+  
+  if (sectionId) {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
 }
 </script>
 

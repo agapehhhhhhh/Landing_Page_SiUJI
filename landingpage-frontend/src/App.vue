@@ -1,8 +1,7 @@
 <template>
-  <LandingPage />
+  <router-view />
 </template>
 
-
 <script setup>
-import LandingPage from './views/LandingPage.vue'
+// Tidak perlu import LandingPage lagi karena sudah dihandle oleh router
 </script>
